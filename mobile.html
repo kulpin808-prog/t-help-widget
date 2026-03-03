@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Т-Бизнес — Мобильная версия</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #E0E0E0; min-height: 100vh; color: #333; }
+        .mobile-viewport { width: 100%; max-width: 390px; margin: 0 auto; min-height: 100vh; background: #F5F5F5; position: relative; padding-bottom: env(safe-area-inset-bottom); overflow-x: hidden; }
+
+        .mobile-header {
+            background: white;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        .mobile-logo { font-size: 17px; font-weight: 700; }
+        .mobile-user { font-size: 14px; color: #666; }
+
+        .mobile-content { padding: 16px; }
+        .mobile-section { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .mobile-section-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
+        .mobile-account { display: flex; align-items: center; gap: 12px; padding: 14px 0; border-bottom: 1px solid #F0F0F0; min-height: 56px; }
+        .mobile-account:last-child { border-bottom: none; }
+        .mobile-account-icon { width: 44px; height: 44px; background: #E0E0E0; border-radius: 10px; flex-shrink: 0; }
+        .mobile-account-balance { font-size: 16px; font-weight: 600; }
+        .mobile-account-num { font-size: 13px; color: #999; }
+
+        .help-widget-inner { background: white; border-radius: 12px; overflow: hidden; }
+        .help-header { display: flex; align-items: center; padding: 14px 16px; background: white; }
+        .help-title { font-size: 16px; font-weight: 600; }
+        .help-chips-wrap { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding: 12px 16px 8px; background: white; }
+        .help-chips-wrap::-webkit-scrollbar { display: none; }
+        .help-chips { display: flex; gap: 8px; padding: 0; flex-wrap: nowrap; width: max-content; }
+        .help-chip { padding: 10px 16px; font-size: 14px; border-radius: 20px; border: 1px solid #E0E0E0; background: white; cursor: pointer; flex-shrink: 0; min-height: 44px; display: flex; align-items: center; }
+        .help-chip.active { background: #FFD600; border-color: #FFD600; }
+        .help-search { padding: 8px 16px 12px; }
+        .help-search input { width: 100%; padding: 12px 14px 12px 40px; font-size: 16px; border: 1px solid #E0E0E0; border-radius: 10px; background: #FAFAFA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 14px center; min-height: 48px; }
+        .help-questions { max-height: 240px; overflow-y: auto; padding: 8px 16px 16px; -webkit-overflow-scrolling: touch; }
+        .help-q { padding: 14px 12px; border-radius: 10px; cursor: pointer; margin-bottom: 4px; min-height: 56px; display: flex; flex-direction: column; justify-content: center; }
+        .help-q:active { background: #F0F0F0; }
+        .help-q.hidden { display: none !important; }
+        .help-q-text { font-size: 15px; font-weight: 500; line-height: 1.4; }
+        .help-q-meta { font-size: 13px; color: #999; margin-top: 4px; }
+        .help-footer { padding: 14px 16px; border-top: 1px solid #E8E8E8; }
+        .help-footer a { font-size: 14px; color: #1976D2; text-decoration: none; padding: 4px 0; min-height: 44px; display: flex; align-items: center; }
+
+        .help-drawer-wrapper { position: absolute; inset: 0; z-index: 1000; pointer-events: none; overflow: hidden; }
+        .help-drawer-wrapper.active { pointer-events: auto; }
+        .help-drawer-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.25s ease; }
+        .help-drawer-wrapper.active .help-drawer-overlay { opacity: 1; }
+        .help-drawer { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 88%; max-height: 700px; background: white; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); display: flex; flex-direction: column; pointer-events: auto; box-shadow: 0 -4px 24px rgba(0,0,0,0.2); border-radius: 16px 16px 0 0; }
+        .help-drawer-wrapper.active .help-drawer { transform: translateY(0); }
+        .help-drawer-handle { width: 36px; height: 4px; background: #D0D0D0; border-radius: 2px; margin: 10px auto 6px; flex-shrink: 0; }
+        .help-article-view { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+        .help-article-header { display: flex; align-items: center; gap: 12px; padding: 16px 16px; padding-top: calc(16px + env(safe-area-inset-top)); border-bottom: 1px solid #E8E8E8; background: white; flex-shrink: 0; }
+        .help-article-back { width: 44px; height: 44px; border: none; background: #E8E8E8; border-radius: 10px; cursor: pointer; font-size: 18px; flex-shrink: 0; }
+        .help-article-title { font-size: 16px; font-weight: 600; flex: 1; line-height: 1.4; }
+        .help-article-body { flex: 1; overflow-y: auto; padding: 20px 16px; font-size: 16px; line-height: 1.6; -webkit-overflow-scrolling: touch; }
+        .help-article-body p, .help-article-body li { margin-bottom: 12px; }
+        .help-article-body ul { padding-left: 20px; }
+        .help-article-body .example { background: #F5F5F5; padding: 14px; border-radius: 10px; margin: 14px 0; font-size: 14px; }
+        .help-article-img-placeholder { background: #E8E8E8; border-radius: 10px; padding: 40px 20px; text-align: center; font-size: 14px; color: #666; margin: 14px 0; }
+        .help-article-fb { padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom)); border-top: 1px solid #E8E8E8; }
+        .help-article-fb .help-fb-label { font-size: 12px; color: #999; margin-bottom: 10px; }
+        .help-fb-btns { display: flex; gap: 10px; margin-bottom: 10px; }
+        .help-fb-btn { padding: 14px 20px; font-size: 15px; border: 1px solid #E0E0E0; background: white; border-radius: 10px; cursor: pointer; min-height: 48px; }
+        .help-fb-done { display: none; font-size: 14px; color: #2E7D32; margin-top: 8px; }
+        .help-fb-done.visible { display: block; }
+        .help-fb-support-btn { display: none; width: 100%; padding: 14px 20px; font-size: 15px; font-weight: 500; color: #1976D2; background: #E3F2FD; border: 1px solid #BBDEFB; border-radius: 10px; cursor: pointer; margin-top: 12px; min-height: 48px; }
+        .help-fb-support-btn.visible { display: block; }
+        .help-fb-comment-toggle { display: none; font-size: 14px; color: #666; margin-top: 10px; cursor: pointer; text-decoration: underline; padding: 8px 0; min-height: 44px; align-items: center; }
+        .help-fb-comment-toggle.visible { display: flex; }
+        .help-fb-comment { display: none; margin-top: 10px; }
+        .help-fb-comment.visible { display: flex; gap: 10px; align-items: flex-end; }
+        .help-fb-comment textarea { flex: 1; padding: 12px 14px; font-size: 16px; border: 1px solid #E0E0E0; border-radius: 10px; resize: none; min-height: 48px; }
+        .help-fb-send { width: 48px; height: 48px; flex-shrink: 0; border: none; border-radius: 50%; background: #1976D2; color: white; cursor: pointer; font-size: 18px; }
+
+        .mobile-link { display: block; text-align: center; padding: 12px; font-size: 13px; color: #1976D2; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="mobile-viewport">
+    <header class="mobile-header">
+        <span class="mobile-logo">Т БИЗНЕС</span>
+        <span class="mobile-user">ИП Христов А.</span>
+    </header>
+
+    <main class="mobile-content">
+        <div class="mobile-section">
+            <div class="mobile-section-title">Счета</div>
+            <div class="mobile-account">
+                <div class="mobile-account-icon"></div>
+                <div>
+                    <div class="mobile-account-balance">28,70 ₽</div>
+                    <div class="mobile-account-num">Рублевый счет •••• 6617</div>
+                </div>
+            </div>
+            <div class="mobile-account">
+                <div class="mobile-account-icon"></div>
+                <div>
+                    <div class="mobile-account-balance">0,00 ₽</div>
+                    <div class="mobile-account-num">Рублевый счет •••• 3654</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="help-widget-inner">
+            <div class="help-header"><span class="help-title">Помощь</span></div>
+            <div class="help-chips-wrap">
+            <div class="help-chips" id="helpChips">
+                <button class="help-chip active" data-cat="all">Все</button>
+                <button class="help-chip" data-cat="terminal">Терминалы</button>
+                <button class="help-chip" data-cat="refunds">Возвраты</button>
+                <button class="help-chip" data-cat="setup">Настройка</button>
+                <button class="help-chip" data-cat="rates">Тарифы</button>
+            </div>
+            </div>
+            <div class="help-search">
+                <input type="text" placeholder="Терминал, возврат, ошибка 51..." id="helpSearch">
+            </div>
+            <div class="help-questions" id="helpQuestions">
+                <div class="help-q" data-cat="terminal" data-article="code51">
+                    <div class="help-q-text">Транзакция отклонена, код 51 — что делать?</div>
+                    <div class="help-q-meta">1 мин</div>
+                </div>
+                <div class="help-q" data-cat="terminal" data-article="terminal_blocked">
+                    <div class="help-q-text">Терминал заблокирован — как разблокировать?</div>
+                    <div class="help-q-meta">1 мин</div>
+                </div>
+                <div class="help-q" data-cat="setup" data-article="sbp_setup">
+                    <div class="help-q-text">Как настроить СБП на терминале?</div>
+                    <div class="help-q-meta">2 мин</div>
+                </div>
+                <div class="help-q" data-cat="setup" data-article="close_shift">
+                    <div class="help-q-text">Как закрыть смену?</div>
+                    <div class="help-q-meta">2 мин</div>
+                </div>
+                <div class="help-q" data-cat="refunds" data-article="refund">
+                    <div class="help-q-text">Как сделать возврат на карту?</div>
+                    <div class="help-q-meta">2 мин</div>
+                </div>
+                <div class="help-q" data-cat="terminal" data-article="error02">
+                    <div class="help-q-text">Ошибка 02 при оплате — что значит?</div>
+                    <div class="help-q-meta">1 мин</div>
+                </div>
+                <div class="help-q" data-cat="rates" data-article="rates">
+                    <div class="help-q-text">Сколько стоят услуги эквайринга?</div>
+                    <div class="help-q-meta">5 мин</div>
+                </div>
+                <div class="help-q" data-cat="rates" data-article="change_tariff">
+                    <div class="help-q-text">Как изменить схему оплаты и тариф?</div>
+                    <div class="help-q-meta">8 мин</div>
+                </div>
+                <div class="help-q" data-cat="terminal" data-article="no_receipt">
+                    <div class="help-q-text">Терминал не печатает чек</div>
+                    <div class="help-q-meta">1 мин</div>
+                </div>
+            </div>
+            <div class="help-footer">
+                <a href="#" id="helpSupport">Не нашли ответ? Написать в поддержку</a>
+            </div>
+        </div>
+
+        <a href="prototype.html" class="mobile-link">← Desktop версия</a>
+    </main>
+
+    <div class="help-drawer-wrapper" id="helpDrawerWrapper">
+        <div class="help-drawer-overlay" id="helpDrawerOverlay"></div>
+        <div class="help-drawer">
+            <div class="help-drawer-handle" aria-hidden="true"></div>
+            <div class="help-article-view" id="helpArticleView">
+                <div class="help-article-header">
+                    <button class="help-article-back" id="helpArticleBack">←</button>
+                    <span class="help-article-title" id="helpArticleTitle"></span>
+                </div>
+                <div class="help-article-body" id="helpArticleBody"></div>
+                <div class="help-article-fb">
+                    <div class="help-fb-label">Помогло?</div>
+                    <div class="help-fb-btns">
+                        <button class="help-fb-btn positive" id="artFbYes">👍 Да</button>
+                        <button class="help-fb-btn negative" id="artFbNo">👎 Нет</button>
+                    </div>
+                    <div class="help-fb-done" id="artFbDone">✓ Спасибо!</div>
+                    <div class="help-fb-comment" id="artFbComment">
+                        <textarea id="artFbTextarea" placeholder="Ваш комментарий"></textarea>
+                        <button class="help-fb-send" id="artFbSend" title="Отправить">➤</button>
+                    </div>
+                    <button class="help-fb-support-btn" id="artSupportBtn">Написать в поддержку</button>
+                    <span class="help-fb-comment-toggle" id="artFbCommentToggle">Добавить комментарий</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        const articles = {
+            code51: { title: 'Транзакция отклонена, код 51 — что делать?', body: '<p>Недостаточно средств. Предложите другую карту, СБП или наличные.</p>' },
+            terminal_blocked: { title: 'Терминал заблокирован — как разблокировать?', body: '<p>Код из СМС или приложения. Сбросьте в ЛК, если не помните.</p>' },
+            sbp_setup: { title: 'Как настроить СБП на терминале?', body: '<p>Меню → Настройки → СБП. Привяжите к счёту в приложении банка.</p>' },
+            close_shift: { title: 'Как закрыть смену?', body: '<p>Меню → Отчёты → Закрытие смены. Z-отчёт распечатается.</p>' },
+            refund: { title: 'Как сделать возврат на карту?', body: '<p>Меню → Возврат. Сумма + 4 цифры карты. Текущий день — сразу.</p>' },
+            error02: { title: 'Ошибка 02 при оплате — что значит?', body: '<p>Отказ банка-эмитента. Другая карта или связь с банком.</p>' },
+            rates: { title: 'Сколько стоят услуги эквайринга?', body: '<p>Аренда терминала бесплатная. Стоимость зависит от тарифа счёта, схемы и способа приёма.</p><div class="example">Пример: пакет на тарифе «Простой» 1 990 ₽.</div>' },
+            no_receipt: { title: 'Терминал не печатает чек', body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>' },
+            change_tariff: { title: 'Как изменить схему оплаты и тариф?', body: '<p>Напишите в чат поддержки или позвоните 8 800 700‑66‑66. Назовите дату смены тарифа.</p><div class="help-article-img-placeholder">[Скриншот: кнопка чата]</div>' }
+        };
+        const helpChips = document.getElementById('helpChips');
+        const helpSearch = document.getElementById('helpSearch');
+        const helpArticleTitle = document.getElementById('helpArticleTitle');
+        const helpArticleBody = document.getElementById('helpArticleBody');
+        const helpDrawerWrapper = document.getElementById('helpDrawerWrapper');
+        const helpDrawerOverlay = document.getElementById('helpDrawerOverlay');
+        const helpArticleBack = document.getElementById('helpArticleBack');
+        const artFbYes = document.getElementById('artFbYes');
+        const artFbNo = document.getElementById('artFbNo');
+        const artFbDone = document.getElementById('artFbDone');
+        const artSupportBtn = document.getElementById('artSupportBtn');
+        const artFbCommentToggle = document.getElementById('artFbCommentToggle');
+        const artFbComment = document.getElementById('artFbComment');
+        const artFbTextarea = document.getElementById('artFbTextarea');
+        const artFbSend = document.getElementById('artFbSend');
+
+        helpChips.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('help-chip')) return;
+            helpChips.querySelectorAll('.help-chip').forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+            filterHelp();
+        });
+        helpSearch.addEventListener('input', filterHelp);
+        filterHelp();
+
+        document.querySelectorAll('.help-q').forEach(q => {
+            q.addEventListener('click', () => {
+                const artId = q.dataset.article;
+                if (artId && articles[artId]) {
+                    helpArticleTitle.textContent = articles[artId].title;
+                    helpArticleBody.innerHTML = articles[artId].body;
+                    helpDrawerWrapper.classList.add('active');
+                }
+            });
+        });
+
+        const closeDrawer = () => {
+            helpDrawerWrapper.classList.remove('active');
+            artFbYes.style.display = ''; artFbNo.style.display = '';
+            artFbDone.classList.remove('visible');
+            artSupportBtn.classList.remove('visible');
+            artFbCommentToggle.classList.remove('visible');
+            artFbComment.classList.remove('visible');
+            artFbTextarea.value = '';
+        };
+        helpDrawerOverlay.addEventListener('click', closeDrawer);
+        helpArticleBack.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && helpDrawerWrapper.classList.contains('active')) closeDrawer(); });
+
+        artFbYes.addEventListener('click', function() {
+            this.style.display = 'none'; artFbNo.style.display = 'none';
+            artFbDone.classList.add('visible');
+            artFbCommentToggle.classList.add('visible');
+        });
+        artFbNo.addEventListener('click', function() {
+            this.style.display = 'none'; artFbYes.style.display = 'none';
+            artSupportBtn.classList.add('visible');
+            artFbComment.classList.add('visible');
+            artFbTextarea.placeholder = 'Что не так?';
+        });
+        artFbCommentToggle.addEventListener('click', () => { artFbCommentToggle.classList.remove('visible'); artFbComment.classList.add('visible'); });
+        const sendFb = () => { const t = artFbTextarea.value.trim(); alert(t ? 'Обратная связь: ' + t : 'Отправлено'); };
+        artFbSend.addEventListener('click', sendFb);
+        artFbTextarea.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFb(); } });
+        artSupportBtn.addEventListener('click', () => alert('Чат поддержки'));
+
+        function filterHelp() {
+            const cat = helpChips.querySelector('.help-chip.active').dataset.cat;
+            const q = helpSearch.value.toLowerCase().trim();
+            document.querySelectorAll('.help-q').forEach(item => {
+                const matchCat = cat === 'all' || item.dataset.cat === cat;
+                const matchSearch = !q || item.querySelector('.help-q-text').textContent.toLowerCase().includes(q);
+                item.classList.toggle('hidden', !(matchCat && matchSearch));
+            });
+        }
+        document.getElementById('helpSupport').addEventListener('click', (e) => { e.preventDefault(); alert('Чат поддержки'); });
+    </script>
+</body>
+</html>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Т-Бизнес — Счета и платежи</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F5F5F5; min-height: 100vh; color: #333; }
+
+        .app { display: flex; flex-direction: column; min-height: 100vh; }
+
+        .top-header {
+            background: white;
+            border-bottom: 1px solid #E0E0E0;
+            padding: 12px 24px;
+        }
+        .top-header-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo { display: flex; align-items: center; gap: 8px; }
+        .logo-icon { width: 32px; height: 32px; background: #4CAF50; border-radius: 8px; }
+        .logo-text { font-size: 18px; font-weight: 700; color: #333; }
+        .nav-tabs { display: flex; gap: 4px; }
+        .nav-tab {
+            padding: 8px 16px;
+            font-size: 14px;
+            color: #666;
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .nav-tab:hover { background: #F5F5F5; color: #333; }
+        .nav-tab.active { color: #1976D2; font-weight: 500; border-bottom: 2px solid #1976D2; border-radius: 0; }
+        .header-right { display: flex; align-items: center; gap: 16px; }
+        .header-right span { font-size: 14px; color: #666; }
+
+        .sub-nav {
+            background: white;
+            padding: 0 24px;
+            border-bottom: 1px solid #E0E0E0;
+        }
+        .sub-nav-inner { max-width: 1400px; margin: 0 auto; }
+        .sub-tabs { display: flex; gap: 8px; }
+        .sub-tab { padding: 12px 0; font-size: 14px; color: #666; background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer; }
+        .sub-tab.active { color: #1976D2; border-bottom-color: #1976D2; }
+
+        .main-layout { display: flex; flex: 1; min-height: 0; max-width: 1400px; margin: 0 auto; width: 100%; overflow: hidden; }
+
+        .help-article-panel { width: 0; min-width: 0; overflow: hidden; transition: width 0.3s ease, min-width 0.3s ease; flex-shrink: 0; display: flex; flex-direction: column; background: white; border-right: 1px solid #E0E0E0; min-height: 0; align-self: flex-end; }
+        .help-article-panel.active { width: 420px; min-width: 420px; max-height: calc(100vh - 120px); }
+        .help-article-panel.pos-left { border-right: none; border-left: 1px solid #E0E0E0; order: -1; }
+        .help-article-panel.pos-bottom { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; max-width: none; height: 50%; max-height: 480px; min-height: 0; align-self: auto; order: unset; border-radius: 12px 12px 0 0; box-shadow: 0 -4px 24px rgba(0,0,0,0.15); border: none; transform: translateY(100%); z-index: 1000; transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), width 0.3s ease; }
+        .help-article-panel.pos-bottom.active { transform: translateY(0); width: 100%; min-width: unset; }
+        .help-panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+        .help-panel-overlay.visible { opacity: 1; pointer-events: auto; }
+        .help-panel-pos { display: flex; gap: 4px; margin-left: auto; }
+        .help-panel-pos-btn { width: 28px; height: 28px; padding: 0; border: 1px solid #E0E0E0; background: white; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.6; }
+        .help-panel-pos-btn:hover { opacity: 1; background: #F5F5F5; }
+        .help-panel-pos-btn.active { opacity: 1; background: #E3F2FD; border-color: #1976D2; }
+        .help-panel-pos-btn svg { width: 14px; height: 14px; }
+
+        .left-sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            min-height: 0;
+            overflow-y: auto;
+            background: #E8E8E8;
+            border-right: 1px solid #E0E0E0;
+        }
+        .sidebar-widget-block {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .sidebar-title { font-size: 18px; font-weight: 700; color: #333; margin-bottom: 16px; }
+        .credit-card {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .credit-card p { font-size: 13px; color: #2E7D32; margin-bottom: 4px; }
+        .credit-card .sum { font-size: 20px; font-weight: 700; color: #333; }
+        .accounts-card .account-item:first-child { padding-top: 0; }
+        .account-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        .account-icon { width: 40px; height: 40px; background: #E0E0E0; border-radius: 10px; }
+        .account-balance { font-size: 15px; font-weight: 600; }
+        .account-num { font-size: 12px; color: #999; }
+        .sidebar-link { font-size: 14px; color: #1976D2; margin: 12px 0; cursor: pointer; }
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #F5F5F5;
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .right-content { flex: 1; padding: 24px; overflow-y: auto; }
+        .content-title { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .action-btn {
+            background: #FAFAFA;
+            border: 1px solid #E8E8E8;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .action-btn span { display: block; font-size: 13px; color: #333; margin-top: 8px; }
+        .ops-search {
+            width: 100%;
+            padding: 10px 14px 10px 40px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            background: #FAFAFA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 12px center;
+        }
+        .ops-chips { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .ops-chip { padding: 6px 12px; border-radius: 20px; font-size: 13px; border: 1px solid #E0E0E0; background: white; cursor: pointer; }
+        .ops-chip.active { background: #FFD600; border-color: #FFD600; }
+        .txn-list { background: white; border-radius: 12px; border: 1px solid #E8E8E8; }
+        .txn-date { font-size: 12px; color: #999; padding: 12px 16px; border-bottom: 1px solid #F0F0F0; }
+        .txn-item { display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #F5F5F5; }
+        .txn-item:last-child { border-bottom: none; }
+        .txn-desc { font-size: 14px; }
+        .txn-amount { font-size: 14px; font-weight: 500; }
+        .txn-amount.neg { color: #C62828; }
+
+        .help-widget-inner {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .help-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            background: white;
+        }
+        .help-title { font-size: 14px; font-weight: 600; }
+        .help-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 8px 12px 4px;
+            background: white;
+        }
+        .help-chip { padding: 4px 10px; font-size: 11px; border-radius: 12px; border: 1px solid #E0E0E0; background: white; cursor: pointer; }
+        .help-chip.active { background: #FFD600; border-color: #FFD600; }
+        .help-search { padding: 6px 12px; }
+        .help-search input {
+            width: 100%;
+            padding: 6px 10px 6px 28px;
+            font-size: 12px;
+            border: 1px solid #E0E0E0;
+            border-radius: 6px;
+            background: #FAFAFA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 8px center;
+        }
+        .help-questions {
+            max-height: 168px;
+            overflow-y: auto;
+            padding: 4px 12px 12px;
+        }
+        .help-q {
+            padding: 8px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-bottom: 2px;
+        }
+        .help-q:hover { background: #F0F0F0; }
+        .help-q.expanded { background: #E3F2FD; }
+        .help-q.hidden { display: none !important; }
+        .help-q-text { font-size: 13px; font-weight: 500; line-height: 1.4; }
+        .help-q-meta { font-size: 11px; color: #999; margin-top: 2px; }
+        .help-q-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s;
+        }
+        .help-q.expanded .help-q-answer { max-height: 240px; overflow-y: auto; }
+        .help-q-answer-inner { padding: 8px 0 0; font-size: 13px; color: #555; line-height: 1.5; }
+        .help-feedback { padding: 6px 0; }
+        .help-fb-btns { display: flex; gap: 6px; margin-bottom: 8px; }
+        .help-fb-btn { padding: 4px 10px; font-size: 11px; border: 1px solid #E0E0E0; background: white; border-radius: 6px; cursor: pointer; }
+        .help-fb-done { display: none; font-size: 12px; color: #2E7D32; margin-top: 6px; }
+        .help-fb-done.visible { display: block; }
+        .help-fb-support-btn {
+            display: none;
+            width: 100%;
+            padding: 10px 14px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #1976D2;
+            background: #E3F2FD;
+            border: 1px solid #BBDEFB;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .help-fb-support-btn.visible { display: block; }
+        .help-fb-support-btn:hover { background: #BBDEFB; }
+        .help-fb-comment-toggle { display: none; font-size: 11px; color: #666; margin-top: 6px; cursor: pointer; text-decoration: underline; }
+        .help-fb-comment-toggle.visible { display: block; }
+        .help-fb-comment { display: none; margin-top: 6px; }
+        .help-fb-comment.visible { display: flex; gap: 6px; align-items: flex-end; }
+        .help-fb-comment textarea { flex: 1; padding: 6px 10px; font-size: 12px; border: 1px solid #E0E0E0; border-radius: 6px; resize: none; min-height: 32px; }
+        .help-fb-send { width: 32px; height: 32px; flex-shrink: 0; border: none; border-radius: 50%; background: #1976D2; color: white; cursor: pointer; font-size: 14px; }
+        .help-footer { padding: 8px 12px; border-top: 1px solid #E8E8E8; }
+        .help-footer a { font-size: 11px; color: #1976D2; text-decoration: none; }
+        .help-footer a:hover { text-decoration: underline; }
+
+        .help-article-view { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        .help-article-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #E8E8E8; background: white; flex-shrink: 0; }
+        .help-article-back { width: 32px; height: 32px; border: none; background: #E8E8E8; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .help-article-title { font-size: 14px; font-weight: 600; flex: 1; line-height: 1.4; }
+        .help-article-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; font-size: 14px; line-height: 1.6; -webkit-overflow-scrolling: touch; }
+        .help-article-body h3 { font-size: 14px; margin: 12px 0 6px; font-weight: 600; }
+        .help-article-body h3:first-child { margin-top: 0; }
+        .help-article-body p, .help-article-body li { margin-bottom: 8px; }
+        .help-article-body ul { padding-left: 16px; }
+        .help-article-body a { color: #1976D2; }
+        .help-article-body .example { background: #F5F5F5; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; line-height: 1.5; }
+        .help-article-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 10px 0; display: block; }
+        .help-article-img-placeholder { background: #E8E8E8; border-radius: 6px; padding: 24px; text-align: center; font-size: 12px; color: #666; margin: 10px 0; min-height: 60px; }
+        .help-article-fb { padding: 8px 12px; border-top: 1px solid #E8E8E8; flex-shrink: 0; }
+        .help-article-fb .help-fb-label { font-size: 10px; color: #999; margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <header class="top-header">
+            <div class="top-header-inner">
+                <div class="logo">
+                    <div class="logo-icon"></div>
+                    <span class="logo-text">Т БИЗНЕС</span>
+                </div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab">Интернет-эквайринг</button>
+                    <button class="nav-tab">Бухгалтерия</button>
+                    <button class="nav-tab active">Счета и платежи</button>
+                    <button class="nav-tab">Торговый эквайринг и QR-код</button>
+                    <button class="nav-tab">Все сервисы ▾</button>
+                </nav>
+                <div class="header-right">
+                    <a href="mobile.html" style="font-size: 13px; color: #1976D2; text-decoration: none;">📱 Мобильная</a>
+                    <span>🔍</span>
+                    <span>ИП Христов А.</span>
+                    <span>💼</span>
+                </div>
+            </div>
+        </header>
+        <div class="sub-nav">
+            <div class="sub-nav-inner">
+                <div class="sub-tabs">
+                    <button class="sub-tab active">Главное</button>
+                    <button class="sub-tab">Платежи</button>
+                    <button class="sub-tab">Репутация</button>
+                    <button class="sub-tab">Выставление счета</button>
+                    <button class="sub-tab">Документы</button>
+                    <button class="sub-tab">Лимиты</button>
+                    <button class="sub-tab">Тарифы</button>
+                    <button class="sub-tab">ВЭД</button>
+                    <button class="sub-tab">Контрагенты</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-layout">
+            <aside class="left-sidebar">
+                <div class="sidebar-widget-block">
+                <div class="sidebar-card">
+                    <h2 class="sidebar-title">Ваши счета</h2>
+                    <div class="credit-card">
+                        <p>Вам одобрена кредитная линия под залог недвижимости</p>
+                        <div class="sum">10 000 000,00 ₽</div>
+                    </div>
+                </div>
+                <div class="sidebar-card accounts-card">
+                    <div class="account-item">
+                        <div class="account-icon"></div>
+                        <div>
+                            <div class="account-balance">28,70 ₽</div>
+                            <div class="account-num">Рублевый счет •••• 6617</div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-icon"></div>
+                        <div>
+                            <div class="account-balance">0,00 ₽</div>
+                            <div class="account-num">Рублевый счет •••• 3654</div>
+                        </div>
+                    </div>
+                    <div class="account-item">
+                        <div class="account-icon"></div>
+                        <div>
+                            <div class="account-balance">0,00 ₽</div>
+                            <div class="account-num">Бизнес-копилка</div>
+                        </div>
+                    </div>
+                    <a class="sidebar-link">Показать все счета</a>
+                    <button class="add-btn">+ Добавить Счет, кредит</button>
+                </div>
+
+                <div class="help-widget sidebar-card" id="helpWidget">
+                    <div class="help-widget-inner">
+                        <div class="help-header">
+                            <span class="help-title">Помощь</span>
+                        </div>
+                        <div class="help-body">
+                            <div class="help-list-view" id="helpListView">
+                                <div class="help-chips" id="helpChips">
+                                    <button class="help-chip active" data-cat="all">Все</button>
+                                    <button class="help-chip" data-cat="terminal">Терминалы</button>
+                                    <button class="help-chip" data-cat="refunds">Возвраты</button>
+                                    <button class="help-chip" data-cat="setup">Настройка</button>
+                                    <button class="help-chip" data-cat="rates">Тарифы</button>
+                                </div>
+                                <div class="help-search">
+                                    <input type="text" placeholder="Терминал, возврат, ошибка 51..." id="helpSearch">
+                                </div>
+                                <div class="help-questions" id="helpQuestions">
+                                    <div class="help-q" data-cat="terminal" data-article="code51">
+                                        <div class="help-q-text">Транзакция отклонена, код 51 — что делать?</div>
+                                        <div class="help-q-meta">1 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="terminal" data-article="terminal_blocked">
+                                        <div class="help-q-text">Терминал заблокирован — как разблокировать?</div>
+                                        <div class="help-q-meta">1 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="setup" data-article="sbp_setup">
+                                        <div class="help-q-text">Как настроить СБП на терминале?</div>
+                                        <div class="help-q-meta">2 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="setup" data-article="close_shift">
+                                        <div class="help-q-text">Как закрыть смену?</div>
+                                        <div class="help-q-meta">2 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="refunds" data-article="refund">
+                                        <div class="help-q-text">Как сделать возврат на карту?</div>
+                                        <div class="help-q-meta">2 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="terminal" data-article="error02">
+                                        <div class="help-q-text">Ошибка 02 при оплате — что значит?</div>
+                                        <div class="help-q-meta">1 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="rates" data-article="rates">
+                                        <div class="help-q-text">Сколько стоят услуги эквайринга?</div>
+                                        <div class="help-q-meta">5 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="rates" data-article="change_tariff">
+                                        <div class="help-q-text">Как изменить схему оплаты и тариф?</div>
+                                        <div class="help-q-meta">8 мин</div>
+                                    </div>
+                                    <div class="help-q" data-cat="terminal" data-article="no_receipt">
+                                        <div class="help-q-text">Терминал не печатает чек</div>
+                                        <div class="help-q-meta">1 мин</div>
+                                    </div>
+                                </div>
+                                <div class="help-footer">
+                                    <a href="#" id="helpSupport">Не нашли ответ? Написать в поддержку</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </aside>
+
+            <div class="help-article-panel" id="helpArticlePanel">
+                <div class="help-article-view" id="helpArticleView">
+                    <div class="help-article-header">
+                        <button class="help-article-back" id="helpArticleBack">✕</button>
+                        <span class="help-article-title" id="helpArticleTitle"></span>
+                        <div class="help-panel-pos" id="helpPanelPos">
+                            <button class="help-panel-pos-btn active" data-pos="right" title="Панель справа"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="14" y="4" width="6" height="16" rx="1"/><rect x="4" y="4" width="6" height="16" rx="1" opacity="0.3"/></svg></button>
+                            <button class="help-panel-pos-btn" data-pos="bottom" title="Панель снизу"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="14" width="16" height="6" rx="1"/><rect x="4" y="4" width="16" height="6" rx="1" opacity="0.3"/></svg></button>
+                            <button class="help-panel-pos-btn" data-pos="left" title="Панель слева"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="4" width="6" height="16" rx="1"/><rect x="14" y="4" width="6" height="16" rx="1" opacity="0.3"/></svg></button>
+                        </div>
+                    </div>
+                    <div class="help-article-body" id="helpArticleBody"></div>
+                    <div class="help-article-fb">
+                        <div class="help-fb-label">Помогло?</div>
+                        <div class="help-fb-btns">
+                            <button class="help-fb-btn positive" id="artFbYes">👍 Да</button>
+                            <button class="help-fb-btn negative" id="artFbNo">👎 Нет</button>
+                        </div>
+                        <div class="help-fb-done" id="artFbDone">✓ Спасибо!</div>
+                        <div class="help-fb-comment" id="artFbComment">
+                            <textarea id="artFbTextarea" placeholder="Ваш комментарий"></textarea>
+                            <button class="help-fb-send" id="artFbSend" title="Отправить">➤</button>
+                        </div>
+                        <button class="help-fb-support-btn" id="artSupportBtn">Написать в поддержку</button>
+                        <span class="help-fb-comment-toggle" id="artFbCommentToggle">Добавить комментарий</span>
+                    </div>
+                </div>
+            </div>
+
+            <main class="right-content">
+                <h2 class="content-title">Действия</h2>
+                <div class="actions-grid">
+                    <div class="action-btn"><span>Выписки</span></div>
+                    <div class="action-btn"><span>Создать платеж или перевод</span></div>
+                    <div class="action-btn"><span>Выставить счет</span></div>
+                    <div class="action-btn"><span>Реквизиты</span></div>
+                    <div class="action-btn"><span>Пополнить счет</span></div>
+                    <div class="action-btn"><span>Создать ссылку на оплату СБП</span></div>
+                </div>
+                <h2 class="content-title">Операции</h2>
+                <input type="text" class="ops-search" placeholder="Контрагент, назначение, счет или сумма">
+                <div class="ops-chips">
+                    <button class="ops-chip active">Все</button>
+                    <button class="ops-chip">Списания</button>
+                    <button class="ops-chip">Поступления</button>
+                    <button class="ops-chip">За все время</button>
+                    <button class="ops-chip">Категории</button>
+                </div>
+                <div class="txn-list">
+                    <div class="txn-date">12 февраля</div>
+                    <div class="txn-item">
+                        <div class="txn-desc">АО "ТБанк" Комиссия за вывод средств</div>
+                        <div class="txn-amount neg">−8,27 ₽</div>
+                    </div>
+                    <div class="txn-date">10 февраля</div>
+                    <div class="txn-item">
+                        <div class="txn-desc">Поступление</div>
+                        <div class="txn-amount">+225,00 ₽</div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="help-panel-overlay" id="helpPanelOverlay"></div>
+
+    <script>
+        const helpChips = document.getElementById('helpChips');
+        const helpSearch = document.getElementById('helpSearch');
+        const helpArticleView = document.getElementById('helpArticleView');
+        const helpArticleTitle = document.getElementById('helpArticleTitle');
+        const helpArticleBody = document.getElementById('helpArticleBody');
+        const helpArticleBack = document.getElementById('helpArticleBack');
+        const artFbYes = document.getElementById('artFbYes');
+        const artFbNo = document.getElementById('artFbNo');
+        const artFbDone = document.getElementById('artFbDone');
+        const artSupportBtn = document.getElementById('artSupportBtn');
+        const artFbCommentToggle = document.getElementById('artFbCommentToggle');
+        const artFbComment = document.getElementById('artFbComment');
+        const artFbTextarea = document.getElementById('artFbTextarea');
+        const artFbSend = document.getElementById('artFbSend');
+
+        const articles = {
+            code51: {
+                title: 'Транзакция отклонена, код 51 — что делать?',
+                body: '<p>Недостаточно средств. Предложите другую карту, СБП или наличные.</p>'
+            },
+            terminal_blocked: {
+                title: 'Терминал заблокирован — как разблокировать?',
+                body: '<p>Код из СМС или приложения. Сбросьте в ЛК, если не помните.</p>'
+            },
+            sbp_setup: {
+                title: 'Как настроить СБП на терминале?',
+                body: '<p>Меню → Настройки → СБП. Привяжите к счёту в приложении банка.</p>'
+            },
+            close_shift: {
+                title: 'Как закрыть смену?',
+                body: '<p>Меню → Отчёты → Закрытие смены. Z-отчёт распечатается.</p>'
+            },
+            refund: {
+                title: 'Как сделать возврат на карту?',
+                body: '<p>Меню → Возврат. Сумма + 4 цифры карты. Текущий день — сразу.</p>'
+            },
+            error02: {
+                title: 'Ошибка 02 при оплате — что значит?',
+                body: '<p>Отказ банка-эмитента. Другая карта или связь с банком.</p>'
+            },
+            rates: {
+                title: 'Сколько стоят услуги эквайринга?',
+                body: `<p>Аренда терминала бесплатная. Стоимость зависит от тарифа счёта, схемы (пакетная/процентная) и способа приёма (карта/СБП).</p>
+                <ul><li>Тариф расчётного счёта</li><li>Схема оплаты эквайринга</li><li>Способ приёма (карта, СБП)</li></ul>
+                <p>При подключении считаем со дня доставки терминала.</p>
+                <div class="example">Пример: пакет на тарифе «Простой» 1 990 ₽, доставка 7 апреля. Период 28 дней: 1 990 × 28/30 = 1 857 ₽.</div>`
+            },
+            no_receipt: {
+                title: 'Терминал не печатает чек',
+                body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>'
+            },
+            change_tariff: {
+                title: 'Как изменить схему оплаты и тариф?',
+                body: `<p>Напишите в чат поддержки Т‑Бизнеса или позвоните по телефону 8 800 700‑66‑66. Объясните, на какую схему оплаты хотите перейти, и назовите дату, с которой начнёт действовать новый тариф или схема оплаты эквайринга.</p>
+                <div class="help-article-img-placeholder">[Скриншот: жёлтая кнопка чата в ЛК]</div>
+                <p>Перейти в чат поддержки можно с любой страницы личного кабинета Т‑Бизнеса — нажмите на жёлтую кнопку чата.</p>
+                <p>Если у вас пакетная схема и вы переходите на новый тариф, текущий пакет обнулится, а новый подключится за полную стоимость.</p>
+                <div class="example">Например, вы перешли с тарифа «Простой» на «Продвинутый» до конца расчётного периода. На момент перехода вы получили платежей на 90 000 ₽ — то есть не успели использовать 10 000 ₽ оборота. Они сгорят, когда подключится новый пакет, — в дату, которую вы назовёте, но не ранее следующего дня после подачи заявки. В этот день спишется 2 690 ₽ — плата за пакет на тарифе «Продвинутый».</div>
+                <p>Если у вас процентная схема и вы переходите на новый тариф, изменится минимальный платёж. Если комиссия за операции по картам будет меньше, чем минимальный платёж, мы спишем разницу с расчётного счёта.</p>
+                <div class="example">Например, на тарифе «Простой» каждое 15‑е число с вашего расчётного счёта списывалась комиссия за операции по карте и минимальный платёж за терминал — 1 990 ₽. 10 апреля вы перешли на тариф «Продвинутый». На тарифе «Простой» вы уже заплатили 1 500 ₽ комиссии за платежи картой. 15 апреля мы сделаем перерасчёт: 1990 × (26 / 31) = 1 669 ₽ — сумма минимального платежа за 26 дней. Так как вы уже заплатили 1500 ₽, мы спишем только разницу — 169 ₽.</div>
+                <p>Если переходите с процентной схемы на пакетную, мы пересчитаем плату за пакет — стоимость зависит от количества терминалов, дней до конца периода и стоимости пакета.</p>
+                <div class="example">Например, 1 июня вы подключили процентную схему на тарифе «Продвинутый» за 2 690 ₽ и получили один терминал. 10 июня вы решили перейти на пакетную схему. Плата с 1 по 10 июня составит: 2 690 × 10 / 30 = 897 ₽. За 10 дней вы провели операций по карте на 15 000 ₽, комиссия: 15 000 × 2,29% = 343 ₽. Поскольку она меньше, чем плата за пакет, в конце расчётного периода мы доспишем разницу: 897 − 343 = 554 ₽. Стоимость пакета на тарифе «Продвинутый» за один терминал — 2 690 ₽. Всего в июне 30 дней, остаток неиспользованного пакета — 20 дней. 11 июня спишется 2 690 × 20 / 30 = 1 793 ₽.</div>
+                <p>Если переходите с пакетной схемы на процентную, день обращения мы посчитаем по старой схеме, а остаток по уже оплаченному пакету сгорит, когда начнёт действовать новая схема.</p>
+                <div class="example">Например, 1 апреля вы подключили пакетную схему на тарифе «Профессиональный» и получили два терминала. Вы заплатили 3990 ₽ × 2 = 7 980 ₽. 10 апреля вы решили изменить схему оплаты и обратились в поддержку. 11 апреля начала действовать процентная схема, а плата за пакеты сгорела. С 11 по 30 апреля вы платили проценты с каждой выплаты — набралось 500 ₽. 30 апреля — в конце расчётного периода — рассчитаем плату за процентную схему. Она составит 3990 × 20 / 30 − 500 = 2 160 ₽ за один терминал, а за два — 4 320 ₽.</div>
+                <p>Схема оплаты изменится в назначенную дату, но не раньше чем на следующий день после подачи заявки через поддержку. День обращения мы посчитаем по старой схеме.</p>`
+            }
+        };
+
+        helpChips.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('help-chip')) return;
+            helpChips.querySelectorAll('.help-chip').forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+            filterHelp();
+        });
+        helpSearch.addEventListener('input', filterHelp);
+        helpSearch.addEventListener('keyup', filterHelp);
+        filterHelp();
+
+        const helpArticlePanel = document.getElementById('helpArticlePanel');
+        const helpPanelOverlay = document.getElementById('helpPanelOverlay');
+        const HELP_POS_KEY = 't-help-panel-pos';
+
+        const setPanelPosition = (pos) => {
+            helpArticlePanel.classList.remove('pos-left', 'pos-right', 'pos-bottom');
+            helpArticlePanel.classList.add('pos-' + pos);
+            document.querySelectorAll('.help-panel-pos-btn').forEach(b => {
+                b.classList.toggle('active', b.dataset.pos === pos);
+            });
+            try { localStorage.setItem(HELP_POS_KEY, pos); } catch (_) {}
+            updateOverlay();
+        };
+
+        const updateOverlay = () => {
+            const isBottom = helpArticlePanel.classList.contains('pos-bottom');
+            const isActive = helpArticlePanel.classList.contains('active');
+            helpPanelOverlay.classList.toggle('visible', isBottom && isActive);
+        };
+
+        const savedPos = (() => { try { return localStorage.getItem(HELP_POS_KEY) || 'right'; } catch (_) { return 'right'; } })();
+        setPanelPosition(savedPos);
+
+        document.getElementById('helpPanelPos').addEventListener('click', (e) => {
+            const btn = e.target.closest('.help-panel-pos-btn');
+            if (btn) setPanelPosition(btn.dataset.pos);
+        });
+        helpPanelOverlay.addEventListener('click', () => {
+            if (helpArticlePanel.classList.contains('pos-bottom')) closeDrawer();
+        });
+
+        const resetArticleFeedback = () => {
+            artFbYes.style.display = ''; artFbNo.style.display = '';
+            artFbDone.classList.remove('visible');
+            artSupportBtn.classList.remove('visible');
+            artFbCommentToggle.classList.remove('visible');
+            artFbComment.classList.remove('visible');
+            artFbTextarea.value = '';
+            artFbTextarea.placeholder = 'Ваш комментарий';
+        };
+
+        const openArticle = (artId) => {
+            if (!artId || !articles[artId]) return;
+            helpArticleTitle.textContent = articles[artId].title;
+            helpArticleBody.innerHTML = articles[artId].body;
+            resetArticleFeedback();
+            helpArticlePanel.classList.add('active');
+            updateOverlay();
+        };
+
+        document.querySelectorAll('.help-q').forEach(q => {
+            q.addEventListener('click', () => openArticle(q.dataset.article));
+        });
+
+        const closeDrawer = () => {
+            helpArticlePanel.classList.remove('active');
+            resetArticleFeedback();
+            updateOverlay();
+        };
+        helpArticleBack.addEventListener('click', closeDrawer);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && helpArticlePanel.classList.contains('active')) closeDrawer();
+        });
+        artFbYes.addEventListener('click', function() {
+            this.style.display = 'none';
+            artFbNo.style.display = 'none';
+            artFbDone.classList.add('visible');
+            artFbCommentToggle.classList.add('visible');
+        });
+        artFbNo.addEventListener('click', function() {
+            this.style.display = 'none';
+            artFbYes.style.display = 'none';
+            artSupportBtn.classList.add('visible');
+            artFbComment.classList.add('visible');
+            artFbTextarea.placeholder = 'Что не так?';
+        });
+        artFbCommentToggle.addEventListener('click', () => {
+            artFbCommentToggle.classList.remove('visible');
+            artFbComment.classList.add('visible');
+        });
+        const sendArticleFb = () => {
+            const text = artFbTextarea.value.trim();
+            if (text) alert('Обратная связь отправлена: ' + text);
+            else alert('Обратная связь отправлена');
+        };
+        artFbSend.addEventListener('click', sendArticleFb);
+        artFbTextarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendArticleFb(); }
+        });
+        artSupportBtn.addEventListener('click', () => alert('Чат поддержки'));
+
+        function filterHelp() {
+            const cat = helpChips.querySelector('.help-chip.active').dataset.cat;
+            const q = helpSearch.value.toLowerCase().trim();
+            document.querySelectorAll('.help-q').forEach(item => {
+                const matchCat = cat === 'all' || item.dataset.cat === cat;
+                const matchSearch = !q || item.querySelector('.help-q-text').textContent.toLowerCase().includes(q);
+                item.classList.toggle('hidden', !(matchCat && matchSearch));
+            });
+        }
+
+        document.getElementById('helpSupport').addEventListener('click', (e) => { e.preventDefault(); alert('Чат поддержки'); });
+    </script>
+</body>
+</html>
