@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="56" viewBox="0 0 80 56">
+  <rect width="80" height="56" rx="6" fill="#F8FAFC" stroke="#E2E8F0" stroke-width="1"/>
+  <text x="12" y="14" font-family="system-ui,sans-serif" font-size="9" fill="#94A3B8">'0B</text>
+  <rect x="8" y="18" width="64" height="12" rx="4" fill="#FFF8E1" stroke="#FFD600" stroke-width="1"/>
+  <circle cx="18" cy="24" r="4" fill="#FFD600"/>
+  <text x="15" y="26" font-family="system-ui,sans-serif" font-size="6" fill="#333">?</text>
+  <text x="26" y="26" font-family="system-ui,sans-serif" font-size="8" fill="#333" font-weight="600">"-><>IL</text>
+  <rect x="8" y="34" width="64" height="8" rx="2" fill="#F1F5F9"/>
+  <rect x="8" y="44" width="48" height="6" rx="2" fill="#F1F5F9"/>
+</svg>

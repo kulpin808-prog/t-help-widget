@@ -6,7 +6,7 @@
     <title>Т-Бизнес — Счета и платежи</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F5F5F5; min-height: 100vh; color: #333; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 14px; background: #F5F5F5; min-height: 100vh; color: #333; }
 
         .app { display: flex; flex-direction: column; min-height: 100vh; }
 
@@ -175,7 +175,7 @@
             padding: 8px 12px 4px;
             background: white;
         }
-        .help-chip { padding: 4px 10px; font-size: 11px; border-radius: 12px; border: 1px solid #E0E0E0; background: white; cursor: pointer; }
+        .help-chip { padding: 4px 10px; font-size: 12px; border-radius: 12px; border: 1px solid #E0E0E0; background: white; cursor: pointer; }
         .help-chip.active { background: #FFD600; border-color: #FFD600; }
         .help-search { padding: 6px 12px; }
         .help-search input {
@@ -191,6 +191,9 @@
             overflow-y: auto;
             padding: 4px 12px 12px;
         }
+        .help-section { font-size: 12px; font-weight: 600; color: #1565C0; background: linear-gradient(90deg, rgba(25,118,210,0.1) 0%, transparent 100%); border-left: 3px solid #1976D2; padding: 6px 10px; margin: 14px 0 6px; border-radius: 0 6px 6px 0; letter-spacing: 0.3px; line-height: 1.3; }
+        .help-section:first-child { margin-top: 0; }
+        .help-section.hidden { display: none !important; }
         .help-q {
             padding: 8px 10px;
             border-radius: 6px;
@@ -211,7 +214,7 @@
         .help-q-answer-inner { padding: 8px 0 0; font-size: 13px; color: #555; line-height: 1.5; }
         .help-feedback { padding: 6px 0; }
         .help-fb-btns { display: flex; gap: 6px; margin-bottom: 8px; }
-        .help-fb-btn { padding: 4px 10px; font-size: 11px; border: 1px solid #E0E0E0; background: white; border-radius: 6px; cursor: pointer; }
+        .help-fb-btn { padding: 4px 10px; font-size: 12px; border: 1px solid #E0E0E0; background: white; border-radius: 6px; cursor: pointer; }
         .help-fb-done { display: none; font-size: 12px; color: #2E7D32; margin-top: 6px; }
         .help-fb-done.visible { display: block; }
         .help-fb-support-btn {
@@ -229,14 +232,14 @@
         }
         .help-fb-support-btn.visible { display: block; }
         .help-fb-support-btn:hover { background: #BBDEFB; }
-        .help-fb-comment-toggle { display: none; font-size: 11px; color: #666; margin-top: 6px; cursor: pointer; text-decoration: underline; }
+        .help-fb-comment-toggle { display: none; font-size: 12px; color: #666; margin-top: 6px; cursor: pointer; text-decoration: underline; }
         .help-fb-comment-toggle.visible { display: block; }
         .help-fb-comment { display: none; margin-top: 6px; }
         .help-fb-comment.visible { display: flex; gap: 6px; align-items: flex-end; }
         .help-fb-comment textarea { flex: 1; padding: 6px 10px; font-size: 12px; border: 1px solid #E0E0E0; border-radius: 6px; resize: none; min-height: 32px; }
         .help-fb-send { width: 32px; height: 32px; flex-shrink: 0; border: none; border-radius: 50%; background: #1976D2; color: white; cursor: pointer; font-size: 14px; }
         .help-footer { padding: 8px 12px; border-top: 1px solid #E8E8E8; }
-        .help-footer a { font-size: 11px; color: #1976D2; text-decoration: none; }
+        .help-footer a { font-size: 13px; color: #1976D2; text-decoration: none; }
         .help-footer a:hover { text-decoration: underline; }
 
         .help-article-view { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
@@ -253,7 +256,143 @@
         .help-article-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 10px 0; display: block; }
         .help-article-img-placeholder { background: #E8E8E8; border-radius: 6px; padding: 24px; text-align: center; font-size: 12px; color: #666; margin: 10px 0; min-height: 60px; }
         .help-article-fb { padding: 8px 12px; border-top: 1px solid #E8E8E8; flex-shrink: 0; }
-        .help-article-fb .help-fb-label { font-size: 10px; color: #999; margin-bottom: 4px; }
+        .help-article-fb .help-fb-label { font-size: 11px; color: #999; margin-bottom: 4px; }
+
+        .float-buttons { position: fixed; right: 24px; bottom: 24px; z-index: 900; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+        .float-btn { width: 52px; height: 52px; border-radius: 50%; background: #FFD600; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; color: #2c2c2c; }
+        .float-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(0,0,0,0.16), 0 2px 4px rgba(0,0,0,0.1); }
+        .float-btn:active { transform: scale(0.98); }
+        .float-btn svg { width: 22px; height: 22px; }
+        .float-btn.with-badge { position: relative; }
+        .float-btn .badge { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; background: #E53935; color: white; font-size: 11px; font-weight: 600; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid white; }
+
+        body.t-help-modal-open { overflow: hidden; }
+        .t-help-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .t-help-modal-overlay.visible { opacity: 1; pointer-events: auto; }
+        .t-help-modal-list, .t-help-modal-saved-list, .t-help-modal-article-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+        .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; }
+        .t-help-modal-overlay.visible .t-help-modal-wrapper { opacity: 1; transform: scale(1); }
+        .t-help-modal { background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); width: 420px; height: 686px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; transition: width 0.3s ease; }
+        .t-help-modal.wider { width: 531px; }
+        .t-help-modal-actions { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; padding-left: 8px; flex-shrink: 0; }
+        .t-help-modal-action-btn { width: 36px; height: 36px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #666; }
+        .t-help-modal-action-btn:hover { background: #E8E8E8; color: #333; }
+        .t-help-modal-action-btn svg { width: 18px; height: 18px; }
+        .t-help-modal-action-btn.saved { color: #FFD600; }
+        .t-help-modal-action-btn.saved svg { fill: currentColor; }
+        .t-help-modal-q-save { width: 28px; height: 28px; flex-shrink: 0; border: none; background: transparent; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5; }
+        .t-help-modal-q-save:hover { opacity: 1; }
+        .t-help-modal-q-save.saved { opacity: 1; color: #FFD600; }
+        .t-help-modal-q-save.saved svg { fill: currentColor; }
+        .t-help-modal-q-save svg { width: 16px; height: 16px; }
+        .t-help-modal-article-save { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .t-help-modal-article-save:hover { background: #E0E0E0; }
+        .t-help-modal-article-save.saved { color: #FFD600; background: #FFF8E1; }
+        .t-help-modal-article-save.saved svg { fill: currentColor; }
+        .t-help-modal-article-save svg { width: 18px; height: 18px; }
+        .t-help-modal-search-row { display: flex; align-items: center; gap: 8px; padding: 12px 16px; flex-shrink: 0; }
+        .t-help-modal-search { flex: 1; min-width: 0; }
+        .t-help-modal-search input { width: 100%; padding: 10px 12px 10px 36px; border: 1px solid #E0E0E0; border-radius: 8px; font-size: 14px; background: #FAFAFA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 10px center; }
+        .t-help-modal-search-save { width: 36px; height: 36px; flex-shrink: 0; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .t-help-modal-search-save:hover { background: #E8E8E8; }
+        .t-help-modal-search-save.saved { color: #FFD600; background: #FFF8E1; }
+        .t-help-modal-search-save.saved svg { fill: currentColor; }
+        .t-help-modal-search-save svg { width: 18px; height: 18px; }
+        .t-help-modal-chips { padding: 0 16px 12px; flex-shrink: 0; }
+        .t-help-modal-chips-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+        .t-help-modal-chip { padding: 8px 14px; font-size: 13px; border-radius: 20px; border: 1px solid #E0E0E0; background: white; cursor: pointer; }
+        .t-help-modal-chip.active { background: #FFD600; border-color: #FFD600; }
+        .t-help-modal-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 16px; }
+        .t-help-modal-q { padding: 14px 12px; border-radius: 10px; cursor: pointer; border-bottom: 1px solid #F0F0F0; display: flex; align-items: center; gap: 8px; }
+        .t-help-modal-q:hover { background: #F5F5F5; }
+        .t-help-modal-q-content { flex: 1; min-width: 0; }
+        .t-help-modal-q.hidden { display: none !important; }
+        .t-help-modal-q-text { font-size: 14px; font-weight: 500; line-height: 1.4; }
+        .t-help-modal-q-meta { font-size: 12px; color: #999; margin-top: 4px; }
+        .t-help-modal-q-save { margin-left: auto; }
+        .t-help-modal-section { font-size: 12px; font-weight: 600; color: #1565C0; background: linear-gradient(90deg, rgba(25,118,210,0.08) 0%, transparent 100%); border-left: 3px solid #1976D2; padding: 8px 12px; margin: 18px 0 8px; border-radius: 0 8px 8px 0; letter-spacing: 0.3px; text-transform: none; line-height: 1.35; }
+        .t-help-modal-section:first-child { margin-top: 0; }
+        .t-help-modal-footer { padding: 12px 16px; border-top: 1px solid #E8E8E8; flex-shrink: 0; }
+        .t-help-modal-footer a { font-size: 14px; color: #1976D2; text-decoration: none; }
+        .t-help-modal-footer a:hover { text-decoration: underline; }
+        .t-help-modal-article { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        .t-help-modal-article.visible { display: flex; }
+        .t-help-modal-list-wrap { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        .t-help-modal-list-wrap.hidden { display: none !important; }
+        .t-help-modal-saved-wrap { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        .t-help-modal-saved-wrap.visible { display: flex; }
+        .t-help-modal-saved-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #E8E8E8; flex-shrink: 0; }
+        .t-help-modal-saved-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .t-help-modal-saved-title { font-size: 15px; font-weight: 600; }
+        .t-help-modal-saved-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 16px; }
+        .t-help-modal-article-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #E8E8E8; flex-shrink: 0; }
+        .t-help-modal-article-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .t-help-modal-article-title { font-size: 15px; font-weight: 600; flex: 1; line-height: 1.4; }
+        .t-help-modal-article-body { flex: 1; overflow-y: auto; padding: 16px; font-size: 14px; line-height: 1.6; }
+        .t-help-modal-article-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 10px 0; display: block; }
+        .t-help-modal-article-body p, .t-help-modal-article-body li { margin-bottom: 8px; }
+        .t-help-modal-article-body .example { background: #F5F5F5; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; }
+        .t-help-modal-article-fb { padding: 12px 16px; border-top: 1px solid #E8E8E8; flex-shrink: 0; }
+        .t-help-modal-article-fb .help-fb-label { font-size: 11px; color: #999; margin-bottom: 6px; }
+        .t-help-modal-article-fb .help-fb-btns { display: flex; gap: 8px; }
+        .t-help-modal-article-fb .help-fb-btn { padding: 8px 14px; font-size: 14px; border: 1px solid #E0E0E0; background: white; border-radius: 8px; cursor: pointer; }
+        .tariff-calc { background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%); border-radius: 10px; padding: 10px 12px; margin: 10px 0; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .tariff-calc-title { font-weight: 700; font-size: 12px; color: #1E293B; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .tariff-calc-title::before { content: ''; width: 3px; height: 12px; background: linear-gradient(180deg, #1976D2, #42A5F5); border-radius: 2px; }
+        .tariff-calc-blocks { display: flex; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+        .tariff-calc-block { flex: 1; min-width: 120px; }
+        .tariff-calc-label { font-size: 11px; color: #64748B; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+        .tariff-calc-value { font-weight: 700; font-size: 11px; color: #1976D2; background: white; padding: 2px 6px; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .tariff-calc-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; background: #E2E8F0; border-radius: 3px; outline: none; }
+        .tariff-calc-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: linear-gradient(135deg, #1976D2, #42A5F5); border-radius: 50%; cursor: pointer; box-shadow: 0 1px 3px rgba(25,118,210,0.4); }
+        .tariff-calc-slider::-moz-range-thumb { width: 14px; height: 14px; background: linear-gradient(135deg, #1976D2, #42A5F5); border-radius: 50%; cursor: pointer; border: none; box-shadow: 0 1px 3px rgba(25,118,210,0.4); }
+        .tariff-calc-scale { display: flex; justify-content: space-between; margin-top: 1px; font-size: 9px; color: #94A3B8; }
+        .tariff-calc-scale span { text-align: center; }
+        .tariff-calc-results { margin-top: 8px; padding-top: 8px; border-top: 1px solid #E2E8F0; }
+        .tariff-calc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .tariff-calc-card { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px; background: white; border-radius: 6px; border: 1px solid #E2E8F0; }
+        .tariff-calc-card.best { border-color: #4CAF50; background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%); box-shadow: 0 1px 3px rgba(76,175,80,0.12); }
+        .tariff-calc-card-name { font-weight: 600; font-size: 11px; color: #334155; line-height: 1.2; }
+        .tariff-calc-badge { font-size: 8px; font-weight: 700; color: #2E7D32; background: #C8E6C9; padding: 1px 5px; border-radius: 6px; align-self: flex-start; }
+        .tariff-calc-card-costs { display: flex; gap: 8px; font-size: 11px; }
+        .tariff-calc-card-cost { display: flex; flex-direction: column; gap: 0; }
+        .tariff-calc-card-cost span:first-child { font-size: 9px; color: #94A3B8; }
+        .tariff-calc-card-cost strong { font-size: 11px; color: #1E293B; }
+        .tariff-calc-card-cost.best strong { color: #2E7D32; }
+        .tariff-calc-hint { font-size: 9px; color: #94A3B8; margin-top: 6px; line-height: 1.25; }
+        .help-article-recommendations, .t-help-modal-article-body .help-article-recommendations { margin-top: 24px; padding-top: 16px; border-top: 1px solid #E8E8E8; }
+        .help-article-recommendations-title { font-size: 13px; font-weight: 600; color: #666; margin-bottom: 10px; }
+        .help-article-recommendations-list { display: flex; flex-direction: column; gap: 6px; }
+        .help-article-recommendations-list a { font-size: 14px; color: #1976D2; text-decoration: none; }
+        .help-article-recommendations-list a:hover { text-decoration: underline; }
+        .chat-list-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1095; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .chat-list-overlay.visible { opacity: 1; pointer-events: auto; }
+        .chat-list-wrapper { position: fixed; z-index: 1096; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; }
+        .chat-list-overlay.visible .chat-list-wrapper { opacity: 1; transform: scale(1); }
+        .chat-list-modal { background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); width: 357px; height: 583px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+        .chat-list-actions { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; padding-left: 8px; flex-shrink: 0; }
+        .chat-list-action-btn { width: 36px; height: 36px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #666; }
+        .chat-list-action-btn:hover { background: #E8E8E8; color: #333; }
+        .chat-list-header { padding: 20px 20px 16px; font-size: 22px; font-weight: 700; color: #333; border-bottom: 1px solid #F0F0F0; flex-shrink: 0; }
+        .chat-list-body { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 0; }
+        .chat-list-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
+        .chat-list-item:hover { background: #F5F5F5; }
+        .chat-list-item:active { background: #EEEEEE; }
+        .chat-list-icon { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; color: #666; }
+        .chat-list-icon.t-help { background: #FFF8E1; color: #F9A825; }
+        .chat-list-icon.avto { background: #EFEBE9; color: #5D4037; }
+        .chat-list-icon.business { background: #F5F5DC; color: #8B7355; }
+        .chat-list-icon.vygoda { background: #FFE0B2; color: #E65100; }
+        .chat-list-icon.manager { background: #E0E0E0; color: #616161; }
+        .chat-list-icon.seller { background: #FFEBEE; color: #8D6E63; }
+        .chat-list-icon.app { background: #ECEFF1; color: #546E7A; }
+        .chat-list-content { flex: 1; min-width: 0; }
+        .chat-list-name { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 2px; }
+        .chat-list-preview { font-size: 14px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-list-meta { flex-shrink: 0; text-align: right; font-size: 13px; color: #999; }
+        .chat-list-badge { display: inline-block; min-width: 22px; height: 22px; padding: 0 6px; background: #E53935; color: white; font-size: 12px; font-weight: 600; border-radius: 11px; line-height: 22px; text-align: center; margin-left: 4px; }
+        .chat-list-badge.gray { background: #9E9E9E; }
+        .float-btn-wrapper { position: relative; }
     </style>
 </head>
 <body>
@@ -273,6 +412,7 @@
                 </nav>
                 <div class="header-right">
                     <a href="mobile.html" style="font-size: 13px; color: #1976D2; text-decoration: none;">📱 Мобильная</a>
+                    <a href="entry-points-catalog.html" style="font-size: 13px; color: #1976D2; text-decoration: none;">📋 Точки входа</a>
                     <span>🔍</span>
                     <span>ИП Христов А.</span>
                     <span>💼</span>
@@ -348,44 +488,7 @@
                                 <div class="help-search">
                                     <input type="text" placeholder="Терминал, возврат, ошибка 51..." id="helpSearch">
                                 </div>
-                                <div class="help-questions" id="helpQuestions">
-                                    <div class="help-q" data-cat="terminal" data-article="code51">
-                                        <div class="help-q-text">Транзакция отклонена, код 51 — что делать?</div>
-                                        <div class="help-q-meta">1 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="terminal" data-article="terminal_blocked">
-                                        <div class="help-q-text">Терминал заблокирован — как разблокировать?</div>
-                                        <div class="help-q-meta">1 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="setup" data-article="sbp_setup">
-                                        <div class="help-q-text">Как настроить СБП на терминале?</div>
-                                        <div class="help-q-meta">2 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="setup" data-article="close_shift">
-                                        <div class="help-q-text">Как закрыть смену?</div>
-                                        <div class="help-q-meta">2 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="refunds" data-article="refund">
-                                        <div class="help-q-text">Как сделать возврат на карту?</div>
-                                        <div class="help-q-meta">2 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="terminal" data-article="error02">
-                                        <div class="help-q-text">Ошибка 02 при оплате — что значит?</div>
-                                        <div class="help-q-meta">1 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="rates" data-article="rates">
-                                        <div class="help-q-text">Сколько стоят услуги эквайринга?</div>
-                                        <div class="help-q-meta">5 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="rates" data-article="change_tariff">
-                                        <div class="help-q-text">Как изменить схему оплаты и тариф?</div>
-                                        <div class="help-q-meta">8 мин</div>
-                                    </div>
-                                    <div class="help-q" data-cat="terminal" data-article="no_receipt">
-                                        <div class="help-q-text">Терминал не печатает чек</div>
-                                        <div class="help-q-meta">1 мин</div>
-                                    </div>
-                                </div>
+                                <div class="help-questions" id="helpQuestions"></div>
                                 <div class="help-footer">
                                     <a href="#" id="helpSupport">Не нашли ответ? Написать в поддержку</a>
                                 </div>
@@ -462,6 +565,123 @@
 
     <div class="help-panel-overlay" id="helpPanelOverlay"></div>
 
+    <div class="t-help-modal-overlay" id="tHelpModalOverlay">
+        <div class="t-help-modal-wrapper" id="tHelpModalWrapper">
+            <div class="t-help-modal" id="tHelpModal">
+            <div class="t-help-modal-search-row">
+                <div class="t-help-modal-search">
+                    <input type="text" id="tHelpModalSearch" placeholder="Поиск">
+                </div>
+                <button class="t-help-modal-search-save" id="tHelpModalSave" title="Сохранённые"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+            </div>
+            <div class="t-help-modal-chips">
+                <div class="t-help-modal-chips-wrap" id="tHelpModalChips">
+                    <button class="t-help-modal-chip active" data-cat="all">Все</button>
+                    <button class="t-help-modal-chip" data-cat="terminal">Терминалы</button>
+                    <button class="t-help-modal-chip" data-cat="refunds">Возвраты</button>
+                    <button class="t-help-modal-chip" data-cat="setup">Настройка</button>
+                    <button class="t-help-modal-chip" data-cat="rates">Тарифы</button>
+                </div>
+            </div>
+            <div class="t-help-modal-list-wrap visible" id="tHelpModalListWrap">
+                <div class="t-help-modal-list" id="tHelpModalList"></div>
+                <div class="t-help-modal-footer">
+                    <a href="#" id="tHelpModalSupport">Не нашли ответ? Написать в поддержку</a>
+                </div>
+            </div>
+            <div class="t-help-modal-saved-wrap" id="tHelpModalSavedWrap">
+                <div class="t-help-modal-saved-header">
+                    <button class="t-help-modal-saved-back" id="tHelpModalSavedBack">←</button>
+                    <span class="t-help-modal-saved-title">Сохранённые</span>
+                </div>
+                <div class="t-help-modal-saved-list" id="tHelpModalSavedList"></div>
+            </div>
+            <div class="t-help-modal-article" id="tHelpModalArticle">
+                <div class="t-help-modal-article-header">
+                    <button class="t-help-modal-article-back" id="tHelpModalArticleBack">←</button>
+                    <span class="t-help-modal-article-title" id="tHelpModalArticleTitle"></span>
+                    <button class="t-help-modal-article-save" id="tHelpModalArticleSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="t-help-modal-article-body" id="tHelpModalArticleBody"></div>
+                <div class="t-help-modal-article-fb">
+                    <div class="help-fb-label">Помогло?</div>
+                    <div class="help-fb-btns">
+                        <button class="help-fb-btn positive" id="tHelpModalFbYes">👍 Да</button>
+                        <button class="help-fb-btn negative" id="tHelpModalFbNo">👎 Нет</button>
+                    </div>
+                    <div class="help-fb-done" id="tHelpModalFbDone">✓ Спасибо!</div>
+                    <div class="help-fb-comment" id="tHelpModalFbComment">
+                        <textarea id="tHelpModalFbTextarea" placeholder="Ваш комментарий"></textarea>
+                        <button class="help-fb-send" id="tHelpModalFbSend" title="Отправить">➤</button>
+                    </div>
+                    <button class="help-fb-support-btn" id="tHelpModalSupportBtn">Написать в поддержку</button>
+                    <span class="help-fb-comment-toggle" id="tHelpModalFbCommentToggle">Добавить комментарий</span>
+                </div>
+            </div>
+            </div>
+            <div class="t-help-modal-actions">
+                <button class="t-help-modal-action-btn" id="tHelpModalClose" title="Закрыть это окно">✕</button>
+                <button class="t-help-modal-action-btn" id="tHelpModalWiden" title="Сделать шире"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="float-buttons">
+        <button class="float-btn" id="floatBtnHelp" title="Т-Помощь — найдите ответ сами"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></button>
+        <button class="float-btn" id="floatBtnNotify" title="Уведомления"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></button>
+        <div class="float-btn-wrapper">
+            <button class="float-btn with-badge" id="floatBtnChat" title="Чат поддержки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="badge" id="chatBadge">1</span></button>
+        </div>
+    </div>
+
+    <div class="chat-list-overlay" id="chatListOverlay">
+        <div class="chat-list-wrapper" id="chatListWrapper">
+            <div class="chat-list-modal" id="chatListModal">
+            <div class="chat-list-header">Чат</div>
+            <div class="chat-list-body" id="chatListBody">
+                <button class="chat-list-item" data-action="t-help">
+                    <div class="chat-list-icon t-help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                    <div class="chat-list-content"><div class="chat-list-name">Т-Помощь</div><div class="chat-list-preview">Найдите ответ в базе знаний</div></div>
+                    <div class="chat-list-meta"></div>
+                </button>
+                <button class="chat-list-item" data-action="avto">
+                    <div class="chat-list-icon avto">🚗</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Авто</div><div class="chat-list-preview">Индивидуальные условия на топливо для...</div></div>
+                    <div class="chat-list-meta"><span class="chat-list-badge gray">3</span> Чт</div>
+                </button>
+                <button class="chat-list-item" data-action="business">
+                    <div class="chat-list-icon business">Т</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Business</div><div class="chat-list-preview">Если срочно нужно принять платеж - Алексей</div></div>
+                    <div class="chat-list-meta">19.02</div>
+                </button>
+                <button class="chat-list-item" data-action="vygoda">
+                    <div class="chat-list-icon vygoda">★</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Выгода</div><div class="chat-list-preview">Ваша реклама почти готова Вы создали о</div></div>
+                    <div class="chat-list-meta"><span class="chat-list-badge">1</span> 17.10.2025</div>
+                </button>
+                <button class="chat-list-item" data-action="manager">
+                    <div class="chat-list-icon manager">YM</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Your manager</div><div class="chat-list-preview">Теперь вам доступен личный чат с персонал</div></div>
+                    <div class="chat-list-meta">24.09.2025</div>
+                </button>
+                <button class="chat-list-item" data-action="seller">
+                    <div class="chat-list-icon seller">🛒</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Т-Селлер</div><div class="chat-list-preview">Обновили автоответы от Селлера. Подключи</div></div>
+                    <div class="chat-list-meta">18.02.2025</div>
+                </button>
+                <button class="chat-list-item" data-action="app">
+                    <div class="chat-list-icon app">📱</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Обновления приложения</div><div class="chat-list-preview">Скачайте приложение Т-Бизнес, чтобы инстр</div></div>
+                    <div class="chat-list-meta">16.08.2024</div>
+                </button>
+            </div>
+            </div>
+            <div class="chat-list-actions">
+                <button class="chat-list-action-btn" id="chatListClose" title="Закрыть">✕</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const helpChips = document.getElementById('helpChips');
         const helpSearch = document.getElementById('helpSearch');
@@ -481,30 +701,42 @@
         const articles = {
             code51: {
                 title: 'Транзакция отклонена, код 51 — что делать?',
-                body: '<p>Недостаточно средств. Предложите другую карту, СБП или наличные.</p>'
+                body: '<p>Недостаточно средств. Предложите другую карту, СБП или наличные.</p>',
+                recommendations: ['error02', 'terminal_blocked', 'refund']
             },
             terminal_blocked: {
                 title: 'Терминал заблокирован — как разблокировать?',
-                body: '<p>Код из СМС или приложения. Сбросьте в ЛК, если не помните.</p>'
+                body: '<p>Код из СМС или приложения. Сбросьте в ЛК, если не помните.</p>',
+                recommendations: ['code51', 'no_receipt', 'sbp_setup']
             },
             sbp_setup: {
                 title: 'Как настроить СБП на терминале?',
-                body: '<p>Меню → Настройки → СБП. Привяжите к счёту в приложении банка.</p>'
+                body: '<p>Меню → Настройки → СБП. Привяжите к счёту в приложении банка.</p>',
+                recommendations: ['pay_receipt', 'close_shift', 'refund']
             },
             close_shift: {
                 title: 'Как закрыть смену?',
-                body: '<p>Меню → Отчёты → Закрытие смены. Z-отчёт распечатается.</p>'
+                body: '<p>Меню → Отчёты → Закрытие смены. Z-отчёт распечатается.</p>',
+                recommendations: ['pay_receipt', 'sbp_setup', 'refund']
+            },
+            pay_receipt: {
+                title: 'Как принимать оплату и выдавать чеки',
+                body: '<p>Проведите картой или приложите к терминалу. Чек печатается автоматически. Для СБП — отсканируйте QR в приложении банка.</p>',
+                recommendations: ['sbp_setup', 'close_shift', 'no_receipt']
             },
             refund: {
                 title: 'Как сделать возврат на карту?',
-                body: '<p>Меню → Возврат. Сумма + 4 цифры карты. Текущий день — сразу.</p>'
+                body: '<p>Меню → Возврат. Сумма + 4 цифры карты. Текущий день — сразу.</p>',
+                recommendations: ['code51', 'error02', 'pay_receipt']
             },
             error02: {
                 title: 'Ошибка 02 при оплате — что значит?',
-                body: '<p>Отказ банка-эмитента. Другая карта или связь с банком.</p>'
+                body: '<p>Отказ банка-эмитента. Другая карта или связь с банком.</p>',
+                recommendations: ['code51', 'terminal_blocked', 'refund']
             },
             rates: {
                 title: 'Сколько стоят услуги эквайринга?',
+                recommendations: ['change_tariff', 'pay_receipt', 'sbp_setup'],
                 body: `<p>Аренда терминала бесплатная. Стоимость зависит от тарифа счёта, схемы (пакетная/процентная) и способа приёма (карта/СБП).</p>
                 <ul><li>Тариф расчётного счёта</li><li>Схема оплаты эквайринга</li><li>Способ приёма (карта, СБП)</li></ul>
                 <p>При подключении считаем со дня доставки терминала.</p>
@@ -512,12 +744,33 @@
             },
             no_receipt: {
                 title: 'Терминал не печатает чек',
-                body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>'
+                body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>',
+                recommendations: ['terminal_blocked', 'pay_receipt', 'sbp_setup']
             },
             change_tariff: {
                 title: 'Как изменить схему оплаты и тариф?',
+                recommendations: ['rates', 'refund', 'pay_receipt'],
                 body: `<p>Напишите в чат поддержки Т‑Бизнеса или позвоните по телефону 8 800 700‑66‑66. Объясните, на какую схему оплаты хотите перейти, и назовите дату, с которой начнёт действовать новый тариф или схема оплаты эквайринга.</p>
-                <div class="help-article-img-placeholder">[Скриншот: жёлтая кнопка чата в ЛК]</div>
+                <img src="assets/tariff-change-illustration.png" alt="Схема оплаты и тариф — поддержка Т‑Бизнес">
+                <div class="tariff-calc" id="tariffCalc">
+                    <div class="tariff-calc-title">Калькулятор тарифов</div>
+                    <div class="tariff-calc-blocks">
+                        <div class="tariff-calc-block">
+                            <div class="tariff-calc-label">Оборот, ₽ <span class="tariff-calc-value" id="tariffCalcTurnoverVal">150 000</span></div>
+                            <input type="range" class="tariff-calc-slider" id="tariffCalcTurnover" min="50000" max="500000" value="150000" step="10000">
+                            <div class="tariff-calc-scale"><span>50к</span><span>250к</span><span>500к</span></div>
+                        </div>
+                        <div class="tariff-calc-block">
+                            <div class="tariff-calc-label">Терминалы <span class="tariff-calc-value" id="tariffCalcTerminalsVal">1</span></div>
+                            <input type="range" class="tariff-calc-slider" id="tariffCalcTerminals" min="1" max="10" value="1" step="1">
+                            <div class="tariff-calc-scale"><span>1</span><span>5</span><span>10</span></div>
+                        </div>
+                    </div>
+                    <div class="tariff-calc-results">
+                        <div class="tariff-calc-cards" id="tariffCalcResults"></div>
+                        <div class="tariff-calc-hint">Комиссии без НДС. Платежи по QR (СБП) не учитываются.</div>
+                    </div>
+                </div>
                 <p>Перейти в чат поддержки можно с любой страницы личного кабинета Т‑Бизнеса — нажмите на жёлтую кнопку чата.</p>
                 <p>Если у вас пакетная схема и вы переходите на новый тариф, текущий пакет обнулится, а новый подключится за полную стоимость.</p>
                 <div class="example">Например, вы перешли с тарифа «Простой» на «Продвинутый» до конца расчётного периода. На момент перехода вы получили платежей на 90 000 ₽ — то есть не успели использовать 10 000 ₽ оборота. Они сгорят, когда подключится новый пакет, — в дату, которую вы назовёте, но не ранее следующего дня после подачи заявки. В этот день спишется 2 690 ₽ — плата за пакет на тарифе «Продвинутый».</div>
@@ -530,6 +783,104 @@
                 <p>Схема оплаты изменится в назначенную дату, но не раньше чем на следующий день после подачи заявки через поддержку. День обращения мы посчитаем по старой схеме.</p>`
             }
         };
+
+        const TARIFFS = {
+            simple: { name: 'Простой', packLimit: 100000, packPrice: 1990, pctRate: 0.0269, minPay: 1990 },
+            advanced: { name: 'Продвинутый', packLimit: 150000, packPrice: 2690, pctRate: 0.0229, minPay: 2690 },
+            pro: { name: 'Профессиональный', packLimit: 250000, packPrice: 3990, pctRate: 0.0179, minPay: 3990 }
+        };
+        function calcTariffPackage(turnover, terminals, t) {
+            const packsNeeded = Math.ceil(turnover / t.packLimit);
+            return Math.round(packsNeeded * t.packPrice);
+        }
+        function calcTariffPercent(turnover, terminals, t) {
+            const commission = turnover * t.pctRate;
+            const minTotal = t.minPay * terminals;
+            return Math.round(Math.max(commission, minTotal));
+        }
+        function initTariffCalculator(container) {
+            if (!container) return;
+            const wrap = container.querySelector('#tariffCalc');
+            if (!wrap) return;
+            const inpTurnover = wrap.querySelector('#tariffCalcTurnover');
+            const inpTerminals = wrap.querySelector('#tariffCalcTerminals');
+            const valTurnover = wrap.querySelector('#tariffCalcTurnoverVal');
+            const valTerminals = wrap.querySelector('#tariffCalcTerminalsVal');
+            const resultsEl = wrap.querySelector('#tariffCalcResults');
+            const fmt = (n) => n.toLocaleString('ru-RU');
+            const update = () => {
+                const turnover = Math.max(50000, Math.min(500000, parseInt(inpTurnover?.value || 150000, 10) || 150000));
+                const terminals = Math.max(1, Math.min(10, parseInt(inpTerminals?.value || 1, 10) || 1));
+                if (valTurnover) valTurnover.textContent = fmt(turnover);
+                if (valTerminals) valTerminals.textContent = terminals;
+                const results = [];
+                let bestCost = Infinity;
+                Object.entries(TARIFFS).forEach(([key, t]) => {
+                    const packCost = calcTariffPackage(turnover, terminals, t);
+                    const pctCost = calcTariffPercent(turnover, terminals, t);
+                    bestCost = Math.min(bestCost, packCost, pctCost);
+                    results.push({ name: t.name, packCost, pctCost });
+                });
+                if (resultsEl) {
+                    resultsEl.innerHTML = results.map(r => {
+                        const packBest = r.packCost === bestCost;
+                        const pctBest = r.pctCost === bestCost;
+                        const isBest = packBest || pctBest;
+                        const shortName = r.name === 'Профессиональный' ? 'Проф.' : r.name;
+                        return `<div class="tariff-calc-card ${isBest ? 'best' : ''}" title="${r.name}">
+                            <div><span class="tariff-calc-card-name">${shortName}</span>${isBest ? ' <span class="tariff-calc-badge">✓</span>' : ''}</div>
+                            <div class="tariff-calc-card-costs">
+                                <div class="tariff-calc-card-cost ${packBest ? 'best' : ''}"><span>Пакет</span><strong>${fmt(r.packCost)} ₽</strong></div>
+                                <div class="tariff-calc-card-cost ${pctBest ? 'best' : ''}"><span>%</span><strong>${fmt(r.pctCost)} ₽</strong></div>
+                            </div>
+                        </div>`;
+                    }).join('');
+                }
+            };
+            [inpTurnover, inpTerminals].forEach(el => { if (el) { el.addEventListener('input', update); el.addEventListener('change', update); } });
+            update();
+        }
+
+        const helpSections = [
+            { id: 'about-tariffs', title: 'Торговый эквайринг: что это и как выбрать тариф', categoryId: 'rates' },
+            { id: 'terminal-use', title: 'Как пользоваться терминалом', categoryId: 'terminal' },
+            { id: 'tech-problems', title: 'Решить технические проблемы', categoryId: 'terminal' },
+            { id: 'refunds', title: 'Возвраты', categoryId: 'refunds' },
+            { id: 'setup', title: 'Настройка терминала', categoryId: 'setup' }
+        ];
+        const helpItems = [
+            { sectionId: 'about-tariffs', cat: 'rates', article: 'rates', text: 'Сколько стоит торговый эквайринг от Т‑Банка', meta: '5 мин' },
+            { sectionId: 'about-tariffs', cat: 'rates', article: 'change_tariff', text: 'Как изменить схему оплаты и тариф?', meta: '8 мин' },
+            { sectionId: 'terminal-use', cat: 'terminal', article: 'sbp_setup', text: 'Как принимать оплату по QR‑коду на терминале', meta: '2 мин' },
+            { sectionId: 'terminal-use', cat: 'terminal', article: 'pay_receipt', text: 'Как принимать оплату и выдавать чеки', meta: '2 мин' },
+            { sectionId: 'terminal-use', cat: 'terminal', article: 'close_shift', text: 'Как закрыть смену?', meta: '2 мин' },
+            { sectionId: 'tech-problems', cat: 'terminal', article: 'code51', text: 'Транзакция отклонена, код 51 — что делать?', meta: '1 мин' },
+            { sectionId: 'tech-problems', cat: 'terminal', article: 'terminal_blocked', text: 'Терминал заблокирован — как разблокировать?', meta: '1 мин' },
+            { sectionId: 'tech-problems', cat: 'terminal', article: 'error02', text: 'Ошибка 02 при оплате — что значит?', meta: '1 мин' },
+            { sectionId: 'tech-problems', cat: 'terminal', article: 'no_receipt', text: 'Терминал не печатает чек', meta: '1 мин' },
+            { sectionId: 'refunds', cat: 'refunds', article: 'refund', text: 'Как сделать возврат по торговому эквайрингу?', meta: '2 мин' },
+            { sectionId: 'setup', cat: 'setup', article: 'sbp_setup', text: 'Как настроить СБП на терминале?', meta: '2 мин' }
+        ];
+
+        const helpQuestions = document.getElementById('helpQuestions');
+        function renderHelpQuestions() {
+            const bySection = {};
+            helpItems.forEach(item => {
+                if (!bySection[item.sectionId]) bySection[item.sectionId] = [];
+                bySection[item.sectionId].push(item);
+            });
+            const sectionOrder = helpSections.map(s => s.id).filter(id => bySection[id]?.length);
+            helpQuestions.innerHTML = sectionOrder.map(sectionId => {
+                const section = helpSections.find(s => s.id === sectionId);
+                const items = bySection[sectionId];
+                const itemsHtml = items.map(item => `<div class="help-q" data-cat="${item.cat}" data-article="${item.article}"><div class="help-q-text">${item.text}</div><div class="help-q-meta">${item.meta}</div></div>`).join('');
+                return `<div class="help-section" data-section="${sectionId}">${section.title}</div>${itemsHtml}`;
+            }).join('');
+            helpQuestions.querySelectorAll('.help-q').forEach(q => {
+                q.addEventListener('click', () => openArticle(q.dataset.article));
+            });
+        }
+        renderHelpQuestions();
 
         helpChips.addEventListener('click', (e) => {
             if (!e.target.classList.contains('help-chip')) return;
@@ -582,18 +933,32 @@
             artFbTextarea.placeholder = 'Ваш комментарий';
         };
 
+        function renderArticleContent(artId, bodyEl, openArticleFn) {
+            const art = articles[artId];
+            if (!art) return;
+            bodyEl.innerHTML = art.body;
+            if (artId === 'change_tariff') initTariffCalculator(bodyEl);
+            const recs = art.recommendations;
+            if (recs && recs.length) {
+                const recDiv = document.createElement('div');
+                recDiv.className = 'help-article-recommendations';
+                recDiv.innerHTML = '<div class="help-article-recommendations-title">Рекомендации</div><div class="help-article-recommendations-list">' + recs.filter(id => articles[id]).map(id => '<a href="#" data-article="' + id + '">' + (articles[id].title || id) + '</a>').join('') + '</div>';
+                recDiv.querySelectorAll('a').forEach(a => {
+                    a.addEventListener('click', (e) => { e.preventDefault(); if (openArticleFn) openArticleFn(a.dataset.article); else openArticle(a.dataset.article); });
+                });
+                bodyEl.appendChild(recDiv);
+            }
+        }
+
         const openArticle = (artId) => {
             if (!artId || !articles[artId]) return;
             helpArticleTitle.textContent = articles[artId].title;
-            helpArticleBody.innerHTML = articles[artId].body;
+            renderArticleContent(artId, helpArticleBody, null);
             resetArticleFeedback();
             helpArticlePanel.classList.add('active');
             updateOverlay();
         };
 
-        document.querySelectorAll('.help-q').forEach(q => {
-            q.addEventListener('click', () => openArticle(q.dataset.article));
-        });
 
         const closeDrawer = () => {
             helpArticlePanel.classList.remove('active');
@@ -630,19 +995,320 @@
         artFbTextarea.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendArticleFb(); }
         });
-        artSupportBtn.addEventListener('click', () => alert('Чат поддержки'));
+        artSupportBtn.addEventListener('click', () => { closeDrawer(); openChatList(); });
 
         function filterHelp() {
             const cat = helpChips.querySelector('.help-chip.active').dataset.cat;
             const q = helpSearch.value.toLowerCase().trim();
-            document.querySelectorAll('.help-q').forEach(item => {
+            helpQuestions.querySelectorAll('.help-q').forEach(item => {
                 const matchCat = cat === 'all' || item.dataset.cat === cat;
                 const matchSearch = !q || item.querySelector('.help-q-text').textContent.toLowerCase().includes(q);
                 item.classList.toggle('hidden', !(matchCat && matchSearch));
             });
+            helpQuestions.querySelectorAll('.help-section').forEach(section => {
+                let next = section.nextElementSibling;
+                let anyVisible = false;
+                while (next && next.classList.contains('help-q')) {
+                    if (!next.classList.contains('hidden')) anyVisible = true;
+                    next = next.nextElementSibling;
+                }
+                section.classList.toggle('hidden', !anyVisible);
+            });
         }
 
-        document.getElementById('helpSupport').addEventListener('click', (e) => { e.preventDefault(); alert('Чат поддержки'); });
+        document.getElementById('helpSupport').addEventListener('click', (e) => { e.preventDefault(); openChatList(); });
+
+        const tHelpModalOverlay = document.getElementById('tHelpModalOverlay');
+        const tHelpModalClose = document.getElementById('tHelpModalClose');
+        const tHelpModalSearch = document.getElementById('tHelpModalSearch');
+        const tHelpModalChips = document.getElementById('tHelpModalChips');
+        const tHelpModalList = document.getElementById('tHelpModalList');
+        const tHelpModalListWrap = document.getElementById('tHelpModalListWrap');
+        const tHelpModalArticle = document.getElementById('tHelpModalArticle');
+        const tHelpModalArticleBack = document.getElementById('tHelpModalArticleBack');
+        const tHelpModalArticleTitle = document.getElementById('tHelpModalArticleTitle');
+        const tHelpModalArticleBody = document.getElementById('tHelpModalArticleBody');
+
+        const SAVED_HELP_KEY = 't-help-saved';
+        const getSavedArticles = () => { try { const j = localStorage.getItem(SAVED_HELP_KEY); return j ? new Set(JSON.parse(j)) : new Set(); } catch (_) { return new Set(); } };
+        const setSavedArticles = (set) => { try { localStorage.setItem(SAVED_HELP_KEY, JSON.stringify([...set])); } catch (_) {} };
+        let savedArticles = getSavedArticles();
+
+        const bookmarkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+
+        function toggleSaveArticle(articleId) {
+            if (savedArticles.has(articleId)) savedArticles.delete(articleId);
+            else savedArticles.add(articleId);
+            setSavedArticles(savedArticles);
+            updateSaveButtons(articleId);
+        }
+        function updateSaveButtons(articleId) {
+            const saved = articleId ? savedArticles.has(articleId) : false;
+            const btn = document.getElementById('tHelpModalSave');
+            const artBtn = document.getElementById('tHelpModalArticleSave');
+            if (btn) { btn.classList.toggle('saved', savedArticles.size > 0); btn.title = 'Сохранённые'; }
+            if (artBtn) { artBtn.classList.toggle('saved', saved); artBtn.title = saved ? 'Убрать из сохранённых' : 'Сохранить'; }
+            tHelpModalList.querySelectorAll('.t-help-modal-q').forEach(el => {
+                const id = el.dataset.article;
+                const saveBtn = el.querySelector('.t-help-modal-q-save');
+                if (saveBtn) saveBtn.classList.toggle('saved', savedArticles.has(id));
+            });
+        }
+
+        function renderTHelpModalList() {
+            const cat = tHelpModalChips.querySelector('.t-help-modal-chip.active')?.dataset.cat || 'all';
+            const q = tHelpModalSearch.value.toLowerCase().trim();
+            const filtered = helpItems.filter(item => {
+                const matchCat = cat === 'all' || item.cat === cat;
+                const matchSearch = !q || item.text.toLowerCase().includes(q);
+                return matchCat && matchSearch;
+            });
+            const bySection = {};
+            filtered.forEach(item => {
+                if (!bySection[item.sectionId]) bySection[item.sectionId] = [];
+                bySection[item.sectionId].push(item);
+            });
+            const sectionOrder = helpSections.map(s => s.id).filter(id => bySection[id]?.length);
+            tHelpModalList.innerHTML = sectionOrder.map(sectionId => {
+                const section = helpSections.find(s => s.id === sectionId);
+                const items = bySection[sectionId];
+                const itemsHtml = items.map(item => {
+                    const saved = savedArticles.has(item.article);
+                    return `<div class="t-help-modal-q" data-cat="${item.cat}" data-article="${item.article}"><div class="t-help-modal-q-content"><div class="t-help-modal-q-text">${item.text}</div><div class="t-help-modal-q-meta">${item.meta}</div></div><button class="t-help-modal-q-save ${saved ? 'saved' : ''}" data-article="${item.article}" title="${saved ? 'Убрать из сохранённых' : 'Сохранить'}">${bookmarkSvg}</button></div>`;
+                }).join('');
+                return `<div class="t-help-modal-section" data-section="${sectionId}">${section.title}</div>${itemsHtml}`;
+            }).join('');
+            tHelpModalList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); });
+            });
+        }
+        renderTHelpModalList();
+
+        function filterTHelpModal() {
+            renderTHelpModalList();
+        }
+
+        const tHelpModalSavedWrap = document.getElementById('tHelpModalSavedWrap');
+        const tHelpModalSavedList = document.getElementById('tHelpModalSavedList');
+        const tHelpModalSavedBack = document.getElementById('tHelpModalSavedBack');
+
+        function renderSavedList() {
+            savedArticles = getSavedArticles();
+            const seen = new Set();
+            const items = helpItems.filter(item => savedArticles.has(item.article) && !seen.has(item.article) && seen.add(item.article));
+            tHelpModalSavedList.innerHTML = items.length ? items.map(item => {
+                const saved = true;
+                return `<div class="t-help-modal-q" data-cat="${item.cat}" data-article="${item.article}"><div class="t-help-modal-q-content"><div class="t-help-modal-q-text">${item.text}</div><div class="t-help-modal-q-meta">${item.meta}</div></div><button class="t-help-modal-q-save saved" data-article="${item.article}" title="Убрать из сохранённых">${bookmarkSvg}</button></div>`;
+            }).join('') : '<div class="t-help-modal-saved-empty" style="padding: 24px; text-align: center; color: #999; font-size: 14px;">Нет сохранённых статей</div>';
+            tHelpModalSavedList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); renderSavedList(); });
+            });
+        }
+
+        function openSavedList() {
+            currentModalArticleId = null;
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+            tHelpModalListWrap.classList.remove('visible');
+            tHelpModalListWrap.classList.add('hidden');
+            tHelpModalArticle.classList.remove('visible');
+            tHelpModalSavedWrap.classList.add('visible');
+            renderSavedList();
+        }
+
+        let cameFromSavedList = false;
+        function showModalArticle(artId, fromSaved) {
+            const art = articles[artId];
+            if (!art) return;
+            if (fromSaved === undefined) cameFromSavedList = false;
+            else cameFromSavedList = fromSaved;
+            currentModalArticleId = artId;
+            tHelpModalArticleTitle.textContent = art.title;
+            renderArticleContent(artId, tHelpModalArticleBody, showModalArticle);
+            resetModalArticleFeedback();
+            tHelpModalListWrap.classList.remove('visible');
+            tHelpModalListWrap.classList.add('hidden');
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalArticle.classList.add('visible');
+            document.getElementById('tHelpModalWrapper').classList.add('in-article');
+            updateSaveButtons(artId);
+        }
+        tHelpModalSavedList.addEventListener('click', (e) => {
+            const q = e.target.closest('.t-help-modal-q');
+            if (!q || !q.dataset.article || e.target.closest('.t-help-modal-q-save')) return;
+            showModalArticle(q.dataset.article, true);
+        });
+
+        tHelpModalSavedBack.addEventListener('click', () => {
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalListWrap.classList.add('visible');
+            tHelpModalListWrap.classList.remove('hidden');
+        });
+
+        function openTHelpModal() {
+            document.body.classList.add('t-help-modal-open');
+            tHelpModalOverlay.classList.add('visible');
+            tHelpModalListWrap.classList.remove('hidden');
+            tHelpModalListWrap.classList.add('visible');
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalArticle.classList.remove('visible');
+            tHelpModalSearch.value = '';
+            tHelpModalChips.querySelectorAll('.t-help-modal-chip').forEach(c => c.classList.remove('active'));
+            tHelpModalChips.querySelector('.t-help-modal-chip[data-cat="all"]').classList.add('active');
+            filterTHelpModal();
+            updateSaveButtons(null);
+            const btn = document.getElementById('floatBtnHelp');
+            const rect = btn.getBoundingClientRect();
+            const wrapper = document.getElementById('tHelpModalWrapper');
+            const modalH = 686;
+            const pad = 24;
+            const gapFromBtn = 4;
+            wrapper.style.right = (window.innerWidth - rect.left + gapFromBtn) + 'px';
+            let top = rect.top;
+            if (top + modalH > window.innerHeight - pad) top = window.innerHeight - modalH - pad;
+            if (top < pad) top = pad;
+            wrapper.style.top = top + 'px';
+            wrapper.style.bottom = 'auto';
+        }
+
+        function closeTHelpModal() {
+            document.body.classList.remove('t-help-modal-open');
+            tHelpModalOverlay.classList.remove('visible');
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+            tHelpModalSavedWrap.classList.remove('visible');
+        }
+
+        tHelpModalClose.addEventListener('click', closeTHelpModal);
+        tHelpModalOverlay.addEventListener('click', (e) => { if (e.target === tHelpModalOverlay) closeTHelpModal(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && tHelpModalOverlay.classList.contains('visible')) closeTHelpModal(); });
+
+        tHelpModalSearch.addEventListener('input', filterTHelpModal);
+        tHelpModalChips.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('t-help-modal-chip')) return;
+            tHelpModalChips.querySelectorAll('.t-help-modal-chip').forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+            currentModalArticleId = null;
+            cameFromSavedList = false;
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+            tHelpModalArticle.classList.remove('visible');
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalListWrap.classList.add('visible');
+            tHelpModalListWrap.classList.remove('hidden');
+            filterTHelpModal();
+        });
+
+        const tHelpModalFbYes = document.getElementById('tHelpModalFbYes');
+        const tHelpModalFbNo = document.getElementById('tHelpModalFbNo');
+        const tHelpModalFbDone = document.getElementById('tHelpModalFbDone');
+        const tHelpModalFbComment = document.getElementById('tHelpModalFbComment');
+        const tHelpModalFbCommentToggle = document.getElementById('tHelpModalFbCommentToggle');
+        const tHelpModalFbTextarea = document.getElementById('tHelpModalFbTextarea');
+        const tHelpModalFbSend = document.getElementById('tHelpModalFbSend');
+        const tHelpModalSupportBtn = document.getElementById('tHelpModalSupportBtn');
+
+        const resetModalArticleFeedback = () => {
+            tHelpModalFbYes.style.display = '';
+            tHelpModalFbNo.style.display = '';
+            tHelpModalFbDone.classList.remove('visible');
+            tHelpModalFbCommentToggle.classList.remove('visible');
+            tHelpModalFbComment.classList.remove('visible');
+            tHelpModalSupportBtn.classList.remove('visible');
+            tHelpModalFbTextarea.value = '';
+            tHelpModalFbTextarea.placeholder = 'Ваш комментарий';
+        };
+
+        let currentModalArticleId = null;
+        tHelpModalList.addEventListener('click', (e) => {
+            const q = e.target.closest('.t-help-modal-q');
+            if (!q || !q.dataset.article) return;
+            showModalArticle(q.dataset.article);
+        });
+
+        tHelpModalFbYes.addEventListener('click', function() {
+            this.style.display = 'none';
+            tHelpModalFbNo.style.display = 'none';
+            tHelpModalFbDone.classList.add('visible');
+            tHelpModalFbCommentToggle.classList.add('visible');
+        });
+        tHelpModalFbNo.addEventListener('click', function() {
+            this.style.display = 'none';
+            tHelpModalFbYes.style.display = 'none';
+            tHelpModalSupportBtn.classList.add('visible');
+            tHelpModalFbComment.classList.add('visible');
+            tHelpModalFbTextarea.placeholder = 'Что не так?';
+        });
+        tHelpModalFbCommentToggle.addEventListener('click', () => {
+            tHelpModalFbCommentToggle.classList.remove('visible');
+            tHelpModalFbComment.classList.add('visible');
+        });
+        const sendModalArticleFb = () => {
+            const text = tHelpModalFbTextarea.value.trim();
+            if (text) alert('Обратная связь отправлена: ' + text);
+            else alert('Обратная связь отправлена');
+        };
+        tHelpModalFbSend.addEventListener('click', sendModalArticleFb);
+        tHelpModalFbTextarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendModalArticleFb(); }
+        });
+        tHelpModalSupportBtn.addEventListener('click', () => { closeTHelpModal(); openChatList(); });
+
+        tHelpModalArticleBack.addEventListener('click', () => {
+            currentModalArticleId = null;
+            tHelpModalArticle.classList.remove('visible');
+            if (cameFromSavedList) {
+                cameFromSavedList = false;
+                tHelpModalSavedWrap.classList.add('visible');
+                renderSavedList();
+            } else {
+                tHelpModalListWrap.classList.add('visible');
+                tHelpModalListWrap.classList.remove('hidden');
+            }
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+        });
+
+        document.getElementById('tHelpModalSupport').addEventListener('click', (e) => { e.preventDefault(); closeTHelpModal(); openChatList(); });
+        document.getElementById('tHelpModalWiden').addEventListener('click', () => {
+            document.getElementById('tHelpModal').classList.toggle('wider');
+        });
+        document.getElementById('tHelpModalSave').addEventListener('click', openSavedList);
+        document.getElementById('tHelpModalArticleSave').addEventListener('click', () => {
+            if (currentModalArticleId) toggleSaveArticle(currentModalArticleId);
+        });
+
+        document.getElementById('floatBtnHelp').addEventListener('click', openTHelpModal);
+        document.getElementById('floatBtnNotify').addEventListener('click', () => alert('Уведомления'));
+
+        const chatListOverlay = document.getElementById('chatListOverlay');
+        const floatBtnChat = document.getElementById('floatBtnChat');
+        function openChatList() {
+            const rect = floatBtnChat.getBoundingClientRect();
+            const wrapper = document.getElementById('chatListWrapper');
+            const modalH = 583;
+            const pad = 24;
+            const gapFromBtn = 4;
+            wrapper.style.right = (window.innerWidth - rect.left + gapFromBtn) + 'px';
+            let top = rect.top;
+            if (top + modalH > window.innerHeight - pad) top = window.innerHeight - modalH - pad;
+            if (top < pad) top = pad;
+            wrapper.style.top = top + 'px';
+            wrapper.style.bottom = 'auto';
+            chatListOverlay.classList.add('visible');
+            document.body.classList.add('t-help-modal-open');
+        }
+        function closeChatList() {
+            chatListOverlay.classList.remove('visible');
+            document.body.classList.remove('t-help-modal-open');
+        }
+        floatBtnChat.addEventListener('click', openChatList);
+        document.getElementById('chatListClose').addEventListener('click', closeChatList);
+        chatListOverlay.addEventListener('click', (e) => { if (e.target === chatListOverlay) closeChatList(); });
+        document.getElementById('chatListBody').addEventListener('click', (e) => {
+            const item = e.target.closest('.chat-list-item');
+            if (!item || !item.dataset.action) return;
+            closeChatList();
+            if (item.dataset.action === 't-help') openTHelpModal();
+            else alert('Чат: ' + (item.querySelector('.chat-list-name')?.textContent || item.dataset.action));
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && chatListOverlay.classList.contains('visible')) closeChatList(); });
     </script>
 </body>
 </html>

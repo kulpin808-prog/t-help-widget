@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог точек входа Т-Помощь</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #F1F5F9; color: #334155; line-height: 1.5; }
+        .page { max-width: 1000px; margin: 0 auto; padding: 40px 24px; }
+        .header { margin-bottom: 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .title { font-size: 22px; font-weight: 700; color: #0F172A; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-links a { font-size: 14px; color: #1976D2; text-decoration: none; font-weight: 500; }
+        .nav-links a:hover { color: #1565C0; text-decoration: underline; }
+        .catalog { background: white; border-radius: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.06); border: 1px solid #E2E8F0; }
+        .catalog-table { width: 100%; border-collapse: collapse; }
+        .catalog-table thead th { background: #F8FAFC; }
+        .catalog-table th { text-align: left; padding: 16px 24px; font-size: 11px; font-weight: 600; color: #64748B; text-transform: uppercase; letter-spacing: 0.6px; border-bottom: 1px solid #E2E8F0; }
+        .catalog-table td { padding: 20px 24px; border-bottom: 1px solid #F1F5F9; vertical-align: middle; }
+        .catalog-table tr:last-child td { border-bottom: none; }
+        .catalog-table tr:hover td { background: #FAFBFC; }
+        .catalog-visual { width: 160px; min-width: 160px; }
+        .catalog-visual-cell { background: #FAFBFC; }
+        .catalog-visual-inner { min-height: 72px; display: flex; align-items: center; justify-content: center; }
+        .catalog-name { font-size: 15px; font-weight: 600; color: #1E293B; }
+        .catalog-desc p { font-size: 13px; color: #64748B; line-height: 1.5; }
+        .catalog-link { white-space: nowrap; text-align: right; }
+        .catalog-link a { display: inline-flex; align-items: center; gap: 6px; padding: 10px 18px; font-size: 13px; font-weight: 500; color: #1976D2; background: #E3F2FD; border-radius: 10px; text-decoration: none; transition: background 0.15s; }
+        .catalog-link a:hover { background: #BBDEFB; }
+        .source-note { margin-top: 28px; padding: 18px 20px; background: #F8FAFC; border-radius: 12px; font-size: 13px; color: #64748B; border: 1px solid #E2E8F0; }
+        .source-note strong { color: #475569; }
+
+        .ep-prototype { cursor: pointer; }
+        .ep-prototype[data-open], .ep-prototype [data-open] { cursor: pointer; }
+        .ep-prototype [data-open]:hover { opacity: 0.9; }
+        .ep-prototype a[data-open]:not(.ep-hyperlink) { text-decoration: none; color: inherit; }
+        .ep-link .ep-block { padding: 10px 12px; background: white; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 11px; }
+        .ep-link .ep-block-text { color: #64748B; margin-bottom: 8px; }
+        .ep-link .ep-hyperlink { color: #1976D2; text-decoration: underline; font-size: 12px; }
+        .ep-link .ep-hyperlink:hover { color: #1565C0; }
+        .ep-widget .ep-widget-box { position: relative; padding: 10px 32px 10px 12px; background: white; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 11px; }
+        .ep-widget .ep-widget-header { font-weight: 600; margin-bottom: 4px; }
+        .ep-widget .ep-info-btn { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border: none; border-radius: 50%; background: #FFD600; color: #333; font-weight: 700; font-size: 12px; cursor: pointer; }
+        .ep-collapsed .ep-collapsed-bar { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #FFF8E1; border: 1px solid #FFD600; border-radius: 8px; font-size: 12px; font-weight: 600; }
+        .ep-collapsed .ep-collapsed-icon { width: 22px; height: 22px; border-radius: 50%; background: #FFD600; color: #333; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+        .ep-embed .ep-embed-widget { width: 150px; background: white; border-radius: 12px; overflow: hidden; border: 1px solid #E2E8F0; font-size: 10px; }
+        .ep-embed .ep-embed-header { padding: 10px 12px; }
+        .ep-embed .ep-embed-title { font-size: 12px; font-weight: 600; }
+        .ep-embed .ep-embed-chips { padding: 6px 12px 10px; display: flex; flex-wrap: wrap; gap: 4px; }
+        .ep-embed .ep-embed-chip { padding: 4px 8px; font-size: 10px; border-radius: 12px; border: 1px solid #E0E0E0; background: white; }
+        .ep-embed .ep-embed-chip-active { background: #FFD600; border-color: #FFD600; }
+        .ep-embed .ep-embed-search { padding: 4px 12px 10px; }
+        .ep-embed .ep-embed-search input { width: 100%; padding: 6px 8px 6px 24px; font-size: 10px; border: 1px solid #E0E0E0; border-radius: 6px; background: #FAFAFA; }
+        .ep-embed .ep-embed-footer { padding: 8px 12px; border-top: 1px solid #E8E8E8; }
+        .ep-embed .ep-embed-footer a { color: #1976D2; font-size: 10px; text-decoration: none; }
+        .ep-buttons { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .ep-float-btn { width: 44px; height: 44px; border-radius: 50%; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.12); color: #2c2c2c; background: #FFD600; }
+        .ep-float-btn svg { width: 20px; height: 20px; }
+        .ep-chat { padding: 8px; background: white; border: 1px solid #E2E8F0; border-radius: 8px; font-size: 11px; }
+        .ep-chat .ep-chat-title { font-weight: 600; margin-bottom: 8px; }
+        .ep-chat .ep-chat-item { padding: 8px 10px; border-radius: 6px; display: flex; align-items: center; gap: 8px; }
+        .ep-chat .ep-chat-item:hover { background: #F1F5F9; }
+        .ep-chat .ep-chat-first { background: #FFF8E1; }
+        .ep-chat .ep-chat-icon { width: 18px; height: 18px; border-radius: 50%; background: #FFD600; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+        .ep-form .ep-form-label { font-size: 10px; color: #64748B; display: block; margin-bottom: 6px; }
+        .ep-form .ep-form-row { display: flex; gap: 8px; align-items: center; }
+        .ep-form .ep-form-input { flex: 1; padding: 8px 10px; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11px; }
+        .ep-form .ep-form-info { width: 26px; height: 26px; border: none; border-radius: 50%; background: #FFD600; color: #333; font-weight: 700; font-size: 13px; cursor: pointer; }
+        .ep-keyboard { display: flex; flex-direction: column; gap: 8px; }
+        .ep-keyboard .ep-keyboard-row { display: flex; gap: 4px; align-items: center; }
+        .ep-keyboard .ep-keyboard-keys { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+        .ep-keyboard .ep-key { padding: 4px 8px; background: #E2E8F0; border-radius: 6px; font-size: 10px; }
+        .ep-keyboard .ep-key-highlight { background: #FFD600; font-weight: 700; }
+        .ep-keyboard .ep-keyboard-label { font-size: 9px; color: #64748B; font-weight: 500; }
+        .ep-placeholder { padding: 24px; text-align: center; color: #94A3B8; font-size: 12px; }
+
+        .help-panel-wrap { position: fixed; top: 0; right: 0; bottom: 0; width: 462px; z-index: 1000; background: white; border-left: 1px solid #E2E8F0; box-shadow: -4px 0 24px rgba(0,0,0,0.08); transform: translateX(100%); transition: transform 0.3s ease; display: flex; flex-direction: column; }
+        .help-panel-wrap.active { transform: translateX(0); }
+        .help-panel-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+        .help-panel-overlay.visible { opacity: 1; pointer-events: auto; }
+        .help-panel-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #E8E8E8; background: white; flex-shrink: 0; }
+        .help-panel-back { width: 32px; height: 32px; border: none; background: #E8E8E8; border-radius: 8px; cursor: pointer; font-size: 14px; }
+        .help-panel-title { font-size: 14px; font-weight: 600; flex: 1; line-height: 1.4; }
+        .help-panel-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px; font-size: 14px; line-height: 1.6; -webkit-overflow-scrolling: touch; }
+        .help-panel-body p, .help-panel-body li { margin-bottom: 8px; }
+        .help-panel-body ul { padding-left: 16px; }
+        .help-panel-body .example { background: #F5F5F5; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; line-height: 1.5; }
+        .help-panel-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 10px 0; display: block; }
+        .tariff-calc { background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%); border-radius: 10px; padding: 10px 12px; margin: 10px 0; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .tariff-calc-title { font-weight: 700; font-size: 12px; color: #1E293B; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .tariff-calc-title::before { content: ''; width: 3px; height: 12px; background: linear-gradient(180deg, #1976D2, #42A5F5); border-radius: 2px; }
+        .tariff-calc-blocks { display: flex; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+        .tariff-calc-block { flex: 1; min-width: 120px; }
+        .tariff-calc-label { font-size: 11px; color: #64748B; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+        .tariff-calc-value { font-weight: 700; font-size: 11px; color: #1976D2; background: white; padding: 2px 6px; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .tariff-calc-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; background: #E2E8F0; border-radius: 3px; outline: none; }
+        .tariff-calc-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: linear-gradient(135deg, #1976D2, #42A5F5); border-radius: 50%; cursor: pointer; box-shadow: 0 1px 3px rgba(25,118,210,0.4); }
+        .tariff-calc-slider::-moz-range-thumb { width: 14px; height: 14px; background: linear-gradient(135deg, #1976D2, #42A5F5); border-radius: 50%; cursor: pointer; border: none; box-shadow: 0 1px 3px rgba(25,118,210,0.4); }
+        .tariff-calc-scale { display: flex; justify-content: space-between; margin-top: 1px; font-size: 9px; color: #94A3B8; }
+        .tariff-calc-results { margin-top: 8px; padding-top: 8px; border-top: 1px solid #E2E8F0; }
+        .tariff-calc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .tariff-calc-card { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px; background: white; border-radius: 6px; border: 1px solid #E2E8F0; }
+        .tariff-calc-card.best { border-color: #4CAF50; background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%); box-shadow: 0 1px 3px rgba(76,175,80,0.12); }
+        .tariff-calc-card-name { font-weight: 600; font-size: 11px; color: #334155; line-height: 1.2; }
+        .tariff-calc-badge { font-size: 8px; font-weight: 700; color: #2E7D32; background: #C8E6C9; padding: 1px 5px; border-radius: 6px; align-self: flex-start; }
+        .tariff-calc-card-costs { display: flex; gap: 8px; font-size: 11px; }
+        .tariff-calc-card-cost span:first-child { font-size: 9px; color: #94A3B8; }
+        .tariff-calc-card-cost strong { font-size: 11px; color: #1E293B; }
+        .tariff-calc-card-cost.best strong { color: #2E7D32; }
+        .tariff-calc-hint { font-size: 9px; color: #94A3B8; margin-top: 6px; line-height: 1.25; }
+        .help-article-recommendations { margin-top: 24px; padding-top: 16px; border-top: 1px solid #E8E8E8; }
+        .help-article-recommendations-title { font-size: 13px; font-weight: 600; color: #666; margin-bottom: 10px; }
+        .help-article-recommendations-list { display: flex; flex-direction: column; gap: 6px; }
+        .help-article-recommendations-list a { font-size: 14px; color: #1976D2; text-decoration: none; }
+        .help-article-recommendations-list a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <header class="header">
+            <h1 class="title">Каталог точек входа Т-Помощь</h1>
+            <nav class="nav-links">
+                <a href="prototype.html">Desktop</a>
+                <a href="mobile.html">Мобильная</a>
+            </nav>
+        </header>
+
+        <main class="catalog" id="catalog">
+            <table class="catalog-table" id="catalogTable">
+                <thead>
+                    <tr>
+                        <th class="catalog-visual catalog-visual-cell">Визуал</th>
+                        <th>Название</th>
+                        <th>Когда лучше использовать</th>
+                    </tr>
+                </thead>
+                <tbody id="catalogBody"></tbody>
+            </table>
+        </main>
+
+        <p class="source-note"><strong>Единый источник:</strong> entry-points-data.js — при редактировании точки входа здесь она обновляется везде.</p>
+    </div>
+
+    <div class="help-panel-overlay" id="helpPanelOverlay"></div>
+    <div class="help-panel-wrap" id="helpPanelWrap">
+        <div class="help-panel-header">
+            <button class="help-panel-back" id="helpPanelBack">✕</button>
+            <span class="help-panel-title" id="helpPanelTitle">Как изменить схему оплаты и тариф?</span>
+        </div>
+        <div class="help-panel-body" id="helpPanelBody"></div>
+    </div>
+
+    <script src="entry-points-data.js"></script>
+    <script src="entry-points-prototypes.js"></script>
+    <script>
+        const TARIFF_ARTICLE = {
+            title: 'Как изменить схему оплаты и тариф?',
+            body: `<p>Напишите в чат поддержки Т‑Бизнеса или позвоните по телефону 8 800 700‑66‑66. Объясните, на какую схему оплаты хотите перейти, и назовите дату, с которой начнёт действовать новый тариф или схема оплаты эквайринга.</p>
+                <img src="assets/tariff-change-illustration.png" alt="Схема оплаты и тариф — поддержка Т‑Бизнес">
+                <p>Рассчитайте стоимость по разным тарифам — выберите оборот и количество терминалов.</p>
+                <div class="tariff-calc" id="tariffCalc">
+                    <div class="tariff-calc-title">Калькулятор тарифов</div>
+                    <div class="tariff-calc-blocks">
+                        <div class="tariff-calc-block">
+                            <div class="tariff-calc-label">Оборот, ₽ <span class="tariff-calc-value" id="tariffCalcTurnoverVal">150 000</span></div>
+                            <input type="range" class="tariff-calc-slider" id="tariffCalcTurnover" min="50000" max="500000" value="150000" step="10000">
+                            <div class="tariff-calc-scale"><span>50к</span><span>250к</span><span>500к</span></div>
+                        </div>
+                        <div class="tariff-calc-block">
+                            <div class="tariff-calc-label">Терминалы <span class="tariff-calc-value" id="tariffCalcTerminalsVal">1</span></div>
+                            <input type="range" class="tariff-calc-slider" id="tariffCalcTerminals" min="1" max="10" value="1" step="1">
+                            <div class="tariff-calc-scale"><span>1</span><span>5</span><span>10</span></div>
+                        </div>
+                    </div>
+                    <div class="tariff-calc-results">
+                        <div class="tariff-calc-cards" id="tariffCalcResults"></div>
+                        <div class="tariff-calc-hint">Комиссии без НДС. Платежи по QR (СБП) не учитываются.</div>
+                    </div>
+                </div>
+                <p>Перейти в чат поддержки можно с любой страницы личного кабинета Т‑Бизнеса — нажмите на жёлтую кнопку чата.</p>
+                <p>Если у вас пакетная схема и вы переходите на новый тариф, текущий пакет обнулится, а новый подключится за полную стоимость.</p>
+                <div class="example">Например, вы перешли с тарифа «Простой» на «Продвинутый» до конца расчётного периода. На момент перехода вы получили платежей на 90 000 ₽ — то есть не успели использовать 10 000 ₽ оборота. Они сгорят, когда подключится новый пакет.</div>
+                <div class="help-article-recommendations">
+                    <div class="help-article-recommendations-title">Рекомендации</div>
+                    <div class="help-article-recommendations-list">
+                        <a href="prototype.html" target="_blank">Сколько стоят услуги эквайринга?</a>
+                        <a href="prototype.html" target="_blank">Как сделать возврат на карту?</a>
+                        <a href="prototype.html" target="_blank">Как принимать оплату и выдавать чеки</a>
+                    </div>
+                </div>`
+        };
+        const TARIFFS = {
+            simple: { name: 'Простой', packLimit: 100000, packPrice: 1990, pctRate: 0.0269, minPay: 1990 },
+            advanced: { name: 'Продвинутый', packLimit: 150000, packPrice: 2690, pctRate: 0.0229, minPay: 2690 },
+            pro: { name: 'Профессиональный', packLimit: 250000, packPrice: 3990, pctRate: 0.0179, minPay: 3990 }
+        };
+        function calcTariffPackage(turnover, terminals, t) {
+            const packsNeeded = Math.ceil(turnover / t.packLimit);
+            return Math.round(packsNeeded * t.packPrice);
+        }
+        function calcTariffPercent(turnover, terminals, t) {
+            const commission = turnover * t.pctRate;
+            const minTotal = t.minPay * terminals;
+            return Math.round(Math.max(commission, minTotal));
+        }
+        function initTariffCalculator(container) {
+            if (!container) return;
+            const wrap = container.querySelector('#tariffCalc');
+            if (!wrap) return;
+            const inpTurnover = wrap.querySelector('#tariffCalcTurnover');
+            const inpTerminals = wrap.querySelector('#tariffCalcTerminals');
+            const valTurnover = wrap.querySelector('#tariffCalcTurnoverVal');
+            const valTerminals = wrap.querySelector('#tariffCalcTerminalsVal');
+            const resultsEl = wrap.querySelector('#tariffCalcResults');
+            const fmt = (n) => n.toLocaleString('ru-RU');
+            const update = () => {
+                const turnover = Math.max(50000, Math.min(500000, parseInt(inpTurnover?.value || 150000, 10) || 150000));
+                const terminals = Math.max(1, Math.min(10, parseInt(inpTerminals?.value || 1, 10) || 1));
+                if (valTurnover) valTurnover.textContent = fmt(turnover);
+                if (valTerminals) valTerminals.textContent = terminals;
+                const results = [];
+                let bestCost = Infinity;
+                Object.entries(TARIFFS).forEach(([key, t]) => {
+                    const packCost = calcTariffPackage(turnover, terminals, t);
+                    const pctCost = calcTariffPercent(turnover, terminals, t);
+                    bestCost = Math.min(bestCost, packCost, pctCost);
+                    results.push({ name: t.name, packCost, pctCost });
+                });
+                if (resultsEl) {
+                    resultsEl.innerHTML = results.map(r => {
+                        const packBest = r.packCost === bestCost;
+                        const pctBest = r.pctCost === bestCost;
+                        const isBest = packBest || pctBest;
+                        const shortName = r.name === 'Профессиональный' ? 'Проф.' : r.name;
+                        return '<div class="tariff-calc-card ' + (isBest ? 'best' : '') + '" title="' + r.name + '"><div><span class="tariff-calc-card-name">' + shortName + '</span>' + (isBest ? ' <span class="tariff-calc-badge">✓</span>' : '') + '</div><div class="tariff-calc-card-costs"><div class="tariff-calc-card-cost ' + (packBest ? 'best' : '') + '"><span>Пакет</span><strong>' + fmt(r.packCost) + ' ₽</strong></div><div class="tariff-calc-card-cost ' + (pctBest ? 'best' : '') + '"><span>%</span><strong>' + fmt(r.pctCost) + ' ₽</strong></div></div></div>';
+                    }).join('');
+                }
+            };
+            [inpTurnover, inpTerminals].forEach(el => { if (el) { el.addEventListener('input', update); el.addEventListener('change', update); } });
+            update();
+        }
+        const helpPanelWrap = document.getElementById('helpPanelWrap');
+        const helpPanelOverlay = document.getElementById('helpPanelOverlay');
+        const helpPanelTitle = document.getElementById('helpPanelTitle');
+        const helpPanelBody = document.getElementById('helpPanelBody');
+        const helpPanelBack = document.getElementById('helpPanelBack');
+        function openHelpPanel() {
+            helpPanelTitle.textContent = TARIFF_ARTICLE.title;
+            helpPanelBody.innerHTML = TARIFF_ARTICLE.body;
+            initTariffCalculator(helpPanelBody);
+            helpPanelWrap.classList.add('active');
+            helpPanelOverlay.classList.add('visible');
+        }
+        function closeHelpPanel() {
+            helpPanelWrap.classList.remove('active');
+            helpPanelOverlay.classList.remove('visible');
+        }
+        helpPanelBack.addEventListener('click', closeHelpPanel);
+        helpPanelOverlay.addEventListener('click', closeHelpPanel);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && helpPanelWrap.classList.contains('active')) { closeHelpPanel(); return; }
+            const mod = e.ctrlKey || e.metaKey;
+            const slashWithShift = e.code === 'Slash' && e.shiftKey;
+            const keyIsQuestion = e.key === '?' || e.key === '¿';
+            if (mod && (slashWithShift || keyIsQuestion)) {
+                e.preventDefault();
+                e.stopPropagation();
+                openHelpPanel();
+            }
+        }, true);
+
+        const tbody = document.getElementById('catalogBody');
+        if (typeof T_HELP_ENTRY_POINTS !== 'undefined' && typeof getEntryPointPrototype === 'function') {
+            tbody.innerHTML = T_HELP_ENTRY_POINTS.map(ep => `
+                <tr data-id="${ep.id}">
+                    <td class="catalog-visual catalog-visual-cell">
+                        <div class="catalog-visual-inner">
+                            <div class="ep-prototype-wrap" data-ep-id="${ep.id}" data-ep-url="${ep.exampleUrl || 'prototype.html'}">
+                                ${getEntryPointPrototype(ep.id, ep.exampleUrl)}
+                            </div>
+                        </div>
+                    </td>
+                    <td><div class="catalog-name">${ep.name}</div></td>
+                    <td><div class="catalog-desc"><p>${ep.whenToUse}</p></div></td>
+                </tr>
+            `).join('');
+
+            document.getElementById('catalog').addEventListener('click', (e) => {
+                const target = e.target.closest('[data-open]');
+                if (!target) return;
+                e.preventDefault();
+                e.stopPropagation();
+                openHelpPanel();
+            });
+        } else {
+            tbody.innerHTML = '<tr><td colspan="3">Не удалось загрузить данные.</td></tr>';
+        }
+    </script>
+</body>
+</html>
