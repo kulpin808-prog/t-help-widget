@@ -52,11 +52,11 @@ function getEntryPointPrototype(id, exampleUrl) {
             </div>`,
         'chat-first-item': () => `
             <div class="ep-prototype ep-chat" data-open>
-                <div class="ep-chat-title">Чат поддержки</div>
-                <div class="ep-chat-item ep-chat-first" data-open>
+                <div class="ep-chat-thelp" data-open>
                     <span class="ep-chat-icon">?</span>
                     <span>Т-Помощь</span>
                 </div>
+                <div class="ep-chat-section">Чаты</div>
                 <div class="ep-chat-item"><span>Авто</span></div>
                 <div class="ep-chat-item"><span>Business</span></div>
             </div>`,
