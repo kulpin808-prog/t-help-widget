@@ -5,8 +5,13 @@
 cd "$(dirname "$0")"
 TOKEN="${1:-$TOKEN}"
 
+if [ -z "$TOKEN" ] && [ -f "github-token.local" ]; then
+  TOKEN=$(tr -d '\r' < "github-token.local" | head -n1 | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+fi
+
 if [ -z "$TOKEN" ]; then
   echo "Использование: ./push.sh ВАШ_ТОКЕН"
+  echo "Или положи токен в github-token.local (одна строка, см. .gitignore)"
   echo ""
   echo "Токен создаётся здесь: https://github.com/settings/tokens/new"
   echo "Нужна галочка: repo"
