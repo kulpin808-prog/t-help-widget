@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-4';
+            var appVersion = '2026-04-08-5';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -658,7 +658,7 @@
         .float-btn.with-badge { position: relative; }
         .float-btn .badge { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; background: #E53935; color: white; font-size: 11px; font-weight: 600; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid white; }
 
-        .t-help-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .t-help-modal-overlay { position: fixed; inset: 0; background: transparent; z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
         .t-help-modal-overlay.visible { opacity: 1; pointer-events: none; }
         .t-help-modal-list, .t-help-modal-saved-list, .t-help-modal-article-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
         .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: auto; }
