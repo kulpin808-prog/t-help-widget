@@ -376,6 +376,10 @@
         .help-questions {
             padding: 8px 18px 14px;
         }
+        .help-widget .help-questions {
+            box-sizing: border-box;
+            min-height: calc(3 * (28px + 1.4 * var(--type-body-sm) + 24px));
+        }
         .help-section { display: none !important; }
         .help-q {
             display: flex;
@@ -647,6 +651,9 @@
         .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; }
         .t-help-modal-overlay.visible .t-help-modal-wrapper { opacity: 1; transform: scale(1); }
         .t-help-modal { position: relative; background: #FAFAFA; border-radius: var(--help-radius-xl); box-shadow: 0 12px 48px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06); width: 462px; height: 720px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; transition: width 0.3s ease; border: 1px solid var(--help-line); }
+        @media (min-width: 601px) {
+            .t-help-modal { height: 792px; }
+        }
         .t-help-modal.wider { width: 584px; }
         .t-help-modal-actions { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; padding-left: 8px; flex-shrink: 0; }
         .t-help-modal-action-btn { width: 36px; height: 36px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #666; }
@@ -654,11 +661,25 @@
         .t-help-modal-action-btn svg { width: 18px; height: 18px; }
         .t-help-modal-action-btn.saved { color: var(--help-accent); }
         .t-help-modal-action-btn.saved svg { fill: currentColor; }
+        .t-help-modal-q-actions { display: flex; align-items: flex-start; gap: 2px; flex-shrink: 0; }
+        .t-help-modal-q-open-tab {
+            width: 28px; height: 28px; flex-shrink: 0; border: none; background: transparent; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.45; color: #666;
+        }
+        .t-help-modal-q-open-tab:hover { opacity: 1; color: var(--help-accent); }
+        .t-help-modal-q-open-tab svg { width: 15px; height: 15px; }
         .t-help-modal-q-save { width: 28px; height: 28px; flex-shrink: 0; border: none; background: transparent; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5; }
         .t-help-modal-q-save:hover { opacity: 1; }
         .t-help-modal-q-save.saved { opacity: 1; color: var(--help-accent); }
         .t-help-modal-q-save.saved svg { fill: currentColor; }
         .t-help-modal-q-save svg { width: 16px; height: 16px; }
+        .t-help-modal-article-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .t-help-modal-article-open-tab {
+            width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #555;
+        }
+        .t-help-modal-article-open-tab:hover { background: #E0E0E0; color: var(--help-accent); }
+        .t-help-modal-article-open-tab svg { width: 16px; height: 16px; }
         .t-help-modal-article-save { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
         .t-help-modal-article-save:hover { background: #E0E0E0; }
         .t-help-modal-article-save.saved { color: var(--help-accent); background: var(--help-accent-soft); }
@@ -673,14 +694,21 @@
             flex-shrink: 0;
             background: #FAFAFA;
         }
+        .t-help-modal-topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 0;
+        }
         .t-help-modal-topbar-title {
             font-size: var(--type-section);
             font-weight: var(--weight-title);
             color: var(--help-text);
             letter-spacing: -0.02em;
         }
-        .t-help-modal-search-row { display: flex; align-items: center; gap: 8px; padding: 10px 16px 10px; flex-shrink: 0; background: #FAFAFA; border-bottom: none; }
-        .t-help-modal-search { flex: 1; min-width: 0; }
+        .t-help-modal-search-row { display: flex; align-items: flex-start; gap: 8px; padding: 10px 16px 10px; flex-shrink: 0; background: #FAFAFA; border-bottom: none; }
+        .t-help-modal-search { flex: 1; min-width: 0; position: relative; }
         .t-help-modal-search .help-search-field { width: 100%; }
         .t-help-modal-search .help-search-field input {
             width: 100%; padding: 9px 11px 9px 34px; border: 1px solid var(--help-line); border-radius: 10px;
@@ -693,6 +721,285 @@
         .t-help-modal-search-save.saved { color: var(--help-accent); background: var(--help-accent-soft); }
         .t-help-modal-search-save.saved svg { fill: currentColor; }
         .t-help-modal-search-save svg { width: 18px; height: 18px; }
+        .t-help-search-suggest {
+            display: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: calc(100% + 4px);
+            z-index: 40;
+            background: #FFFFFF;
+            border: 1px solid var(--help-line);
+            border-radius: 10px;
+            box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+            max-height: 220px;
+            overflow-y: auto;
+            padding: 4px 0;
+        }
+        .t-help-search-suggest.is-open { display: block; }
+        .t-help-search-suggest-item {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            font-size: 13px;
+            color: var(--help-text);
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .t-help-search-suggest-item:hover, .t-help-search-suggest-item:focus-visible { background: #F3F6FA; outline: none; }
+        .t-help-search-suggest-item mark { background: rgba(91, 143, 240, 0.2); color: inherit; padding: 0 1px; border-radius: 2px; }
+        .t-help-modal-home-btn {
+            display: none;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px;
+            margin-right: 4px;
+            font-size: 13px;
+            font-weight: var(--weight-em);
+            color: var(--help-accent);
+            background: transparent;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .t-help-modal-home-btn:hover { background: var(--help-accent-soft); }
+        .t-help-modal--search-results .t-help-modal-home-btn { display: inline-flex; }
+        .t-help-modal--search-results .t-help-modal-chips { display: none; }
+        @media (max-width: 600px) {
+            .t-help-desktop-only { display: none !important; }
+        }
+        .t-help-rag {
+            display: none;
+            padding: 0 16px 12px;
+            flex-shrink: 0;
+            background: #FAFAFA;
+        }
+        @media (min-width: 601px) {
+            .t-help-rag.is-visible {
+                display: block;
+                animation: tHelpRagBlockIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+            }
+        }
+        @keyframes tHelpRagBlockIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .t-help-rag-card {
+            border: 1px solid rgba(91, 143, 240, 0.45);
+            border-radius: 14px;
+            background: #FFFFFF;
+            padding: 16px 18px 14px;
+            box-shadow: 0 1px 3px rgba(37, 99, 235, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+        .t-help-rag-card.is-loading { min-height: 132px; }
+        .t-help-rag-card.is-loading .t-help-rag-inner { opacity: 0; pointer-events: none; }
+        .t-help-rag-card.is-loading .t-help-rag-loading { opacity: 1; }
+        .t-help-rag-loading {
+            position: absolute;
+            left: 18px;
+            right: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .t-help-rag-loading-spinner {
+            width: 22px;
+            height: 22px;
+            border: 2.5px solid rgba(91, 143, 240, 0.25);
+            border-top-color: var(--help-accent);
+            border-radius: 50%;
+            animation: tHelpRagSpin 0.75s linear infinite;
+        }
+        @keyframes tHelpRagSpin { to { transform: rotate(360deg); } }
+        .t-help-rag-loading-text { font-size: 13px; color: var(--help-muted); }
+        .t-help-rag-inner {
+            transition: opacity 0.35s ease;
+        }
+        .t-help-rag-card--typing .t-help-rag-footer { visibility: hidden; }
+        .t-help-rag-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .t-help-rag-icon {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+            color: #0D9488;
+        }
+        .t-help-rag-title {
+            font-size: var(--type-body-sm);
+            font-weight: var(--weight-title);
+            color: var(--help-text);
+            letter-spacing: -0.02em;
+        }
+        .t-help-rag-body {
+            font-size: 13px;
+            line-height: 1.55;
+            color: #1D1D1F;
+            white-space: pre-wrap;
+        }
+        .t-help-rag-body p { margin: 0 0 10px; white-space: normal; }
+        .t-help-rag-body p:last-child { margin-bottom: 0; }
+        .t-help-rag-body ul { margin: 6px 0 0; padding-left: 18px; }
+        .t-help-rag-body li { margin-bottom: 6px; }
+        .t-help-rag-body a.t-help-rag-crumb {
+            color: var(--help-accent);
+            text-decoration: none;
+            font-weight: var(--weight-em);
+        }
+        .t-help-rag-body a.t-help-rag-crumb:hover { text-decoration: underline; }
+        .t-help-rag-mark {
+            background: rgba(91, 143, 240, 0.18);
+            color: inherit;
+            padding: 0 2px;
+            border-radius: 3px;
+        }
+        .t-help-rag-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 14px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(0,0,0,0.06);
+            flex-wrap: wrap;
+        }
+        .t-help-rag-pills { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .t-help-rag-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 10px 6px 12px;
+            font-size: 12px;
+            color: #3A3A3C;
+            background: #F3F4F6;
+            border: none;
+            border-radius: 999px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: background 0.15s ease;
+        }
+        .t-help-rag-pill:hover { background: #E8EAED; }
+        .t-help-rag-pill .t-help-rag-pill-chev { font-size: 11px; color: #9CA3AF; }
+        .t-help-rag-vote { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+        .t-help-rag-vote-btn {
+            width: 34px;
+            height: 34px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: #9CA3AF;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+        .t-help-rag-vote-btn:hover { background: #F3F4F6; color: #6B7280; }
+        .t-help-rag-vote-btn.is-active { background: var(--help-accent-soft); color: var(--help-accent); }
+        .t-help-rag-vote-btn svg { width: 18px; height: 18px; }
+        .t-help-rag-drawer {
+            position: absolute;
+            inset: 0;
+            z-index: 210;
+            display: none;
+            border-radius: inherit;
+            overflow: hidden;
+        }
+        .t-help-rag-drawer.is-open { display: block; }
+        .t-help-rag-drawer-backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.28);
+        }
+        .t-help-rag-drawer-panel {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: auto;
+            height: 50%;
+            min-height: 200px;
+            max-height: 50%;
+            width: 100%;
+            background: #FAFAFA;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 -8px 32px rgba(0,0,0,0.12);
+            border-radius: 16px 16px 0 0;
+            animation: tHelpRagDrawerUp 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        @keyframes tHelpRagDrawerUp {
+            from { transform: translateY(100%); opacity: 0.96; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .t-help-rag-drawer-head {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 12px 10px;
+            border-bottom: 1px solid var(--help-line);
+            flex-shrink: 0;
+        }
+        .t-help-rag-drawer-back {
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 50%;
+            background: #E8E8E8;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 1;
+        }
+        .t-help-rag-drawer-back:hover { background: #E0E0E0; }
+        .t-help-rag-drawer-title {
+            font-size: var(--type-body-sm);
+            font-weight: var(--weight-title);
+            flex: 1;
+            min-width: 0;
+        }
+        .t-help-rag-drawer-body {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 12px 16px 20px;
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--help-text);
+        }
+        .t-help-rag-src-list { list-style: none; padding: 0; margin: 0; }
+        .t-help-rag-src-list li { margin-bottom: 10px; }
+        .t-help-rag-src-link {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0;
+            border: none;
+            background: none;
+            font-size: 13px;
+            color: var(--help-accent);
+            cursor: pointer;
+            font-family: inherit;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+        .t-help-rag-src-link:hover { color: #3B7AE0; }
+        .t-help-rag-legal-block p { margin: 0 0 10px; }
+        .t-help-rag-legal-block ul { margin: 8px 0 0; padding-left: 18px; }
+        .t-help-rag-legal-block li { margin-bottom: 6px; }
         .t-help-modal-chips { padding: 4px 16px 10px; flex-shrink: 0; }
         .t-help-modal-chips-wrap {
             display: flex;
@@ -749,8 +1056,8 @@
         .t-help-modal-saved-title { font-size: var(--type-body); font-weight: var(--weight-title); }
         .t-help-modal-saved-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 16px; }
         .t-help-modal-article-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--help-line); flex-shrink: 0; background: #FAFAFA; }
-        .t-help-modal-article-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
-        .t-help-modal-article-title { font-size: var(--type-body); font-weight: var(--weight-title); flex: 1; line-height: 1.35; letter-spacing: -0.02em; }
+        .t-help-modal-article-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; flex-shrink: 0; }
+        .t-help-modal-article-title { font-size: var(--type-body); font-weight: var(--weight-title); flex: 1; min-width: 0; line-height: 1.35; letter-spacing: -0.02em; }
         .t-help-modal-article-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 16px 32px; font-size: var(--type-body-sm); line-height: 1.55; display: flex; flex-direction: column; scroll-padding-bottom: 32px; }
         .t-help-modal-article-body .help-article-body-inner { flex: 0 0 auto; }
         .t-help-modal-article-body .help-article-stats { margin-bottom: 14px; }
@@ -933,7 +1240,10 @@
         <div class="t-help-modal-wrapper" id="tHelpModalWrapper">
             <div class="t-help-modal" id="tHelpModal">
             <div class="t-help-modal-topbar">
-                <span class="t-help-modal-topbar-title">Помощь</span>
+                <div class="t-help-modal-topbar-left">
+                    <button type="button" class="t-help-modal-home-btn" id="tHelpModalHomeBtn">← На главную</button>
+                    <span class="t-help-modal-topbar-title">Помощь</span>
+                </div>
                 <button type="button" class="help-ai-widget-btn" id="tHelpModalAiOpen" title="Спросить AI">
                     <span class="help-ai-icon-btn help-ai-icon-btn--sm" aria-hidden="true">
                         <span class="help-ai-icon-btn__glow"></span>
@@ -948,8 +1258,38 @@
                         <input type="search" id="tHelpModalSearch" placeholder=" " autocomplete="off" title="По всей базе при вводе текста">
                         <span class="help-search-typewriter" id="tHelpModalSearchTypewriter" aria-hidden="true"></span>
                     </div>
+                    <div class="t-help-search-suggest t-help-desktop-only" id="tHelpModalSearchSuggest" role="listbox" aria-label="Подсказки" hidden></div>
                 </div>
                 <button type="button" class="t-help-modal-search-save" id="tHelpModalSave" title="Сохранённые"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+            </div>
+            <div class="t-help-rag t-help-desktop-only" id="tHelpModalRag" aria-live="polite" aria-hidden="true">
+                <div class="t-help-rag-card" id="tHelpModalRagCard">
+                    <div class="t-help-rag-loading" id="tHelpModalRagLoading" aria-hidden="true">
+                        <div class="t-help-rag-loading-spinner"></div>
+                        <span class="t-help-rag-loading-text">Ищем в базе и готовим ответ…</span>
+                    </div>
+                    <div class="t-help-rag-inner" id="tHelpModalRagInner">
+                    <div class="t-help-rag-head">
+                        <svg class="t-help-rag-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l1.09 3.26L16 6l-3.09 1.09L12 10.5 9.09 7.09 6 6l2.91-1.74L12 2z" fill="currentColor"/><path d="M19 12l.82 2.45L22 15l-2.18.78L19 18.5l-1.09-2.27L16 15l2.18-.55L19 12z" fill="currentColor" opacity="0.85"/></svg>
+                        <span class="t-help-rag-title">Ответ нейросети</span>
+                    </div>
+                    <div class="t-help-rag-body" id="tHelpModalRagBody"></div>
+                    <div class="t-help-rag-footer" id="tHelpModalRagFooter">
+                        <div class="t-help-rag-pills">
+                            <button type="button" class="t-help-rag-pill" id="tHelpModalRagSourcesBtn"><span id="tHelpModalRagSourcesLabel">3 источника</span><span class="t-help-rag-pill-chev" aria-hidden="true">›</span></button>
+                            <button type="button" class="t-help-rag-pill" id="tHelpModalRagLegalBtn">Ограничения<span class="t-help-rag-pill-chev" aria-hidden="true">›</span></button>
+                        </div>
+                        <div class="t-help-rag-vote">
+                            <button type="button" class="t-help-rag-vote-btn" id="tHelpModalRagVoteUp" data-rag-vote="up" title="Полезно" aria-label="Полезно">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>
+                            </button>
+                            <button type="button" class="t-help-rag-vote-btn" id="tHelpModalRagVoteDown" data-rag-vote="down" title="Не полезно" aria-label="Не полезно">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
             </div>
             <div class="t-help-modal-chips">
                 <div class="t-help-modal-chips-wrap" id="tHelpModalChips">
@@ -972,7 +1312,12 @@
                 <div class="t-help-modal-article-header">
                     <button class="t-help-modal-article-back" id="tHelpModalArticleBack">←</button>
                     <span class="t-help-modal-article-title" id="tHelpModalArticleTitle"></span>
-                    <button class="t-help-modal-article-save" id="tHelpModalArticleSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                    <div class="t-help-modal-article-actions">
+                        <button type="button" class="t-help-modal-article-open-tab" id="tHelpModalArticleOpenTab" title="Открыть в новой вкладке" aria-label="Открыть в новой вкладке">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </button>
+                        <button class="t-help-modal-article-save" id="tHelpModalArticleSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                    </div>
                 </div>
                 <div class="t-help-modal-article-body" id="tHelpModalArticleBody">
                     <div class="help-article-body-inner" id="tHelpModalArticleBodyInner"></div>
@@ -1021,6 +1366,16 @@
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                         </button>
                     </div>
+                </div>
+            </div>
+            <div class="t-help-rag-drawer t-help-desktop-only" id="tHelpModalRagDrawer" aria-hidden="true">
+                <div class="t-help-rag-drawer-backdrop" id="tHelpModalRagDrawerBackdrop"></div>
+                <div class="t-help-rag-drawer-panel">
+                    <div class="t-help-rag-drawer-head">
+                        <button type="button" class="t-help-rag-drawer-back" id="tHelpModalRagDrawerBack" aria-label="Назад">←</button>
+                        <span class="t-help-rag-drawer-title" id="tHelpModalRagDrawerTitle"></span>
+                    </div>
+                    <div class="t-help-rag-drawer-body" id="tHelpModalRagDrawerBody"></div>
                 </div>
             </div>
             </div>
@@ -1283,6 +1638,137 @@
             { cat: 'refunds', article: 'refund', text: 'Как сделать возврат по торговому эквайрингу?', meta: '2 мин' }
         ];
 
+        const tHelpModalRag = document.getElementById('tHelpModalRag');
+        const tHelpModalRagCard = document.getElementById('tHelpModalRagCard');
+        const tHelpModalRagBody = document.getElementById('tHelpModalRagBody');
+        const tHelpModalRagSourcesLabel = document.getElementById('tHelpModalRagSourcesLabel');
+        const tHelpModalRagDrawer = document.getElementById('tHelpModalRagDrawer');
+        const tHelpModalRagDrawerBody = document.getElementById('tHelpModalRagDrawerBody');
+        const tHelpModalRagDrawerTitle = document.getElementById('tHelpModalRagDrawerTitle');
+        let ragVoteChoice = null;
+        let ragSourcesForDrawer = [];
+        let ragAnimTimer = null;
+        let ragTypewriterTimer = null;
+        function cancelRagAnim() {
+            if (ragAnimTimer) { clearTimeout(ragAnimTimer); ragAnimTimer = null; }
+            if (ragTypewriterTimer) { clearTimeout(ragTypewriterTimer); ragTypewriterTimer = null; }
+        }
+
+        function ragSourcesLabelRu(n) {
+            const mod10 = n % 10;
+            const mod100 = n % 100;
+            if (mod10 === 1 && mod100 !== 11) return n + ' источник';
+            if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return n + ' источника';
+            return n + ' источников';
+        }
+        function pickRagSources(q) {
+            const qLower = q.toLowerCase().trim();
+            const matched = qLower ? helpItems.filter(i => i.text.toLowerCase().includes(qLower)) : [];
+            const out = [];
+            const seen = new Set();
+            for (let i = 0; i < matched.length && out.length < 3; i++) {
+                const item = matched[i];
+                if (!seen.has(item.article)) { seen.add(item.article); out.push(item); }
+            }
+            for (let i = 0; i < helpItems.length && out.length < 3; i++) {
+                const item = helpItems[i];
+                if (!seen.has(item.article)) { seen.add(item.article); out.push(item); }
+            }
+            return out.slice(0, 3);
+        }
+        function buildRagAnswerHtml(query) {
+            const qEsc = escapeHtml(query);
+            return '<p>По запросу «<mark class="t-help-rag-mark">' + qEsc + '</mark>» кратко: в разделе <a href="#" class="t-help-rag-crumb">Настройки → Сотрудники</a> можно управлять ролями. <strong>Управляющий</strong> и <strong>Администратор</strong> имеют разные права; пригласить сотрудника можно через <strong>Пригласить сотрудника</strong>.</p>' +
+                '<p><strong>Что проверить:</strong></p><ul><li><strong>Смена:</strong> открыта ли смена перед оплатой.</li><li><strong>Чек:</strong> лента и настройки печати.</li></ul>';
+        }
+        function buildRagAnswerPlain(query) {
+            const q = String(query);
+            return 'По запросу «' + q + '» кратко: в разделе Настройки → Сотрудники можно управлять ролями. Управляющий и Администратор имеют разные права; пригласить сотрудника можно через Пригласить сотрудника.\n\n' +
+                'Что проверить:\n• Смена: открыта ли смена перед оплатой.\n• Чек: лента и настройки печати.';
+        }
+        function resetRagVoteUi() {
+            ragVoteChoice = null;
+            const up = document.getElementById('tHelpModalRagVoteUp');
+            const down = document.getElementById('tHelpModalRagVoteDown');
+            if (up) up.classList.remove('is-active');
+            if (down) down.classList.remove('is-active');
+        }
+        function closeRagDrawer() {
+            if (!tHelpModalRagDrawer) return;
+            tHelpModalRagDrawer.classList.remove('is-open');
+            tHelpModalRagDrawer.setAttribute('aria-hidden', 'true');
+        }
+        function hideRagBlock() {
+            cancelRagAnim();
+            if (tHelpModalRagCard) {
+                tHelpModalRagCard.classList.remove('is-loading', 't-help-rag-card--typing');
+            }
+            if (tHelpModalRagBody) tHelpModalRagBody.innerHTML = '';
+            if (!tHelpModalRag) return;
+            tHelpModalRag.classList.remove('is-visible');
+            tHelpModalRag.setAttribute('aria-hidden', 'true');
+            closeRagDrawer();
+            resetRagVoteUi();
+        }
+        function showRagBlock(query) {
+            if (!tHelpModalRag || !tHelpModalRagBody || window.innerWidth <= 600) return;
+            cancelRagAnim();
+            ragSourcesForDrawer = pickRagSources(query);
+            const n = ragSourcesForDrawer.length;
+            if (tHelpModalRagSourcesLabel) tHelpModalRagSourcesLabel.textContent = ragSourcesLabelRu(n);
+            const fullHtml = buildRagAnswerHtml(query);
+            const plain = buildRagAnswerPlain(query);
+            resetRagVoteUi();
+            tHelpModalRagBody.textContent = '';
+            if (tHelpModalRagCard) {
+                tHelpModalRagCard.classList.add('is-loading');
+                tHelpModalRagCard.classList.add('t-help-rag-card--typing');
+            }
+            tHelpModalRag.classList.remove('is-visible');
+            if (tHelpModalRag.offsetWidth) void tHelpModalRag.offsetWidth;
+            tHelpModalRag.classList.add('is-visible');
+            tHelpModalRag.setAttribute('aria-hidden', 'false');
+            ragAnimTimer = setTimeout(() => {
+                if (tHelpModalRagCard) tHelpModalRagCard.classList.remove('is-loading');
+                let i = 0;
+                function tick() {
+                    if (i <= plain.length) {
+                        tHelpModalRagBody.textContent = plain.slice(0, i);
+                        i++;
+                        ragTypewriterTimer = setTimeout(tick, 11);
+                    } else {
+                        tHelpModalRagBody.innerHTML = fullHtml;
+                        if (tHelpModalRagCard) tHelpModalRagCard.classList.remove('t-help-rag-card--typing');
+                    }
+                }
+                tick();
+            }, 720);
+        }
+        function openRagSourcesDrawer() {
+            if (!tHelpModalRagDrawer || !tHelpModalRagDrawerBody || !tHelpModalRagDrawerTitle) return;
+            tHelpModalRagDrawerTitle.textContent = 'Источники';
+            tHelpModalRagDrawerBody.innerHTML = '<ul class="t-help-rag-src-list">' + ragSourcesForDrawer.map(item =>
+                '<li><button type="button" class="t-help-rag-src-link" data-article="' + escapeHtml(item.article) + '">' + escapeHtml(item.text) + '</button></li>'
+            ).join('') + '</ul>';
+            tHelpModalRagDrawer.classList.add('is-open');
+            tHelpModalRagDrawer.setAttribute('aria-hidden', 'false');
+        }
+        function openRagLegalDrawer() {
+            if (!tHelpModalRagDrawer || !tHelpModalRagDrawerBody || !tHelpModalRagDrawerTitle) return;
+            tHelpModalRagDrawerTitle.textContent = 'Ограничения';
+            tHelpModalRagDrawerBody.innerHTML = '<div class="t-help-rag-legal-block"><p>Ответ сформирован нейросетью по материалам базы знаний и может содержать неточности.</p>' +
+                '<ul><li>Не является юридической или финансовой консультацией.</li><li>Перед решениями сверяйтесь с официальными документами и поддержкой.</li><li>В прототипе персональные данные в модель не передаются.</li></ul></div>';
+            tHelpModalRagDrawer.classList.add('is-open');
+            tHelpModalRagDrawer.setAttribute('aria-hidden', 'false');
+        }
+        function setRagVote(v) {
+            ragVoteChoice = ragVoteChoice === v ? null : v;
+            const up = document.getElementById('tHelpModalRagVoteUp');
+            const down = document.getElementById('tHelpModalRagVoteDown');
+            if (up) up.classList.toggle('is-active', ragVoteChoice === 'up');
+            if (down) down.classList.toggle('is-active', ragVoteChoice === 'down');
+        }
+
         const helpQuestions = document.getElementById('helpQuestions');
         function renderHelpQuestions() {
             helpQuestions.innerHTML = helpItems.map(item =>
@@ -1484,6 +1970,7 @@
         let savedArticles = getSavedArticles();
 
         const bookmarkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+        const newTabSvgSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
 
         function toggleSaveArticle(articleId) {
             if (savedArticles.has(articleId)) savedArticles.delete(articleId);
@@ -1504,23 +1991,112 @@
             });
         }
 
-        function renderTHelpModalList() {
-            const cat = tHelpModalChips.querySelector('.t-help-modal-chip.active')?.dataset.cat || 'terminal';
-            const q = tHelpModalSearch.value.toLowerCase().trim();
-            const filtered = helpItems.filter(item => {
-                const matchCat = item.cat === cat;
-                const matchSearch = !q || item.text.toLowerCase().includes(q);
-                return q ? matchSearch : (matchCat && matchSearch);
+        let tHelpSearchMode = 'home';
+        function setHelpSearchMode(mode) {
+            tHelpSearchMode = mode;
+            const modal = document.getElementById('tHelpModal');
+            if (!modal) return;
+            modal.classList.toggle('t-help-modal--search-results', mode === 'results');
+        }
+        function goToHelpHome() {
+            setHelpSearchMode('home');
+            tHelpModalSearch.value = '';
+            syncModalSearchField();
+            hideRagBlock();
+            hideModalSearchSuggest();
+            tHelpModalChips.querySelectorAll('.t-help-modal-chip').forEach(c => c.classList.remove('active'));
+            const term = tHelpModalChips.querySelector('.t-help-modal-chip[data-cat="terminal"]');
+            if (term) term.classList.add('active');
+            filterTHelpModal();
+        }
+        function openHelpInNewTab(articleId) {
+            try {
+                const u = new URL(window.location.href);
+                u.hash = articleId ? 't-help-article=' + encodeURIComponent(articleId) : 't-help';
+                window.open(u.toString(), '_blank', 'noopener,noreferrer');
+            } catch (_) {
+                const base = window.location.href.split('#')[0];
+                window.open(base + (articleId ? '#t-help-article=' + encodeURIComponent(articleId) : '#t-help'), '_blank', 'noopener,noreferrer');
+            }
+        }
+        function highlightSuggestLabel(text, q) {
+            if (!q) return escapeHtml(text);
+            const tl = text.toLowerCase();
+            const ql = q.toLowerCase();
+            const idx = tl.indexOf(ql);
+            if (idx < 0) return escapeHtml(text);
+            return escapeHtml(text.slice(0, idx)) + '<mark>' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' + escapeHtml(text.slice(idx + q.length));
+        }
+        let modalSuggestBlurTimer = null;
+        function hideModalSearchSuggest() {
+            const el = document.getElementById('tHelpModalSearchSuggest');
+            if (!el) return;
+            el.classList.remove('is-open');
+            el.hidden = true;
+            el.innerHTML = '';
+        }
+        function updateModalSearchSuggest() {
+            if (window.innerWidth <= 600) { hideModalSearchSuggest(); return; }
+            const q = tHelpModalSearch.value.trim();
+            const el = document.getElementById('tHelpModalSearchSuggest');
+            if (!el || !q) { hideModalSearchSuggest(); return; }
+            const items = helpItems.filter(i => i.text.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
+            if (!items.length) { hideModalSearchSuggest(); return; }
+            el.innerHTML = items.map((it, idx) =>
+                '<button type="button" class="t-help-search-suggest-item" role="option" data-article="' + escapeHtml(it.article) + '" id="tHelpSuggestOpt-' + idx + '">' + highlightSuggestLabel(it.text, q) + '</button>'
+            ).join('');
+            el.classList.add('is-open');
+            el.hidden = false;
+            el.querySelectorAll('.t-help-search-suggest-item').forEach(btn => {
+                btn.addEventListener('mousedown', (e) => { e.preventDefault(); });
+                btn.addEventListener('click', () => {
+                    const it0 = helpItems.find(x => x.article === btn.dataset.article);
+                    if (it0) tHelpModalSearch.value = it0.text;
+                    syncModalSearchField();
+                    hideModalSearchSuggest();
+                    const q = tHelpModalSearch.value.trim();
+                    if (window.innerWidth <= 600) {
+                        filterTHelpModal();
+                        return;
+                    }
+                    if (!q) return;
+                    setHelpSearchMode('results');
+                    showRagBlock(q);
+                    filterTHelpModal();
+                });
             });
+        }
+
+        function renderTHelpModalList() {
+            const qRaw = tHelpModalSearch.value.trim();
+            const q = qRaw.toLowerCase();
+            const inResults = (typeof tHelpSearchMode !== 'undefined' && tHelpSearchMode === 'results' && q);
+            let filtered;
+            if (inResults) {
+                filtered = helpItems.filter(item => item.text.toLowerCase().includes(q));
+            } else {
+                const cat = tHelpModalChips.querySelector('.t-help-modal-chip.active')?.dataset.cat || 'terminal';
+                filtered = helpItems.filter(item => {
+                    const matchCat = item.cat === cat;
+                    const matchSearch = !q || item.text.toLowerCase().includes(q);
+                    return q ? matchSearch : (matchCat && matchSearch);
+                });
+            }
             tHelpModalList.innerHTML = filtered.map(item => {
                 const saved = savedArticles.has(item.article);
                 return '<div class="t-help-modal-q" data-cat="' + item.cat + '" data-article="' + item.article + '">' +
                     '<div class="t-help-modal-q-content"><div class="t-help-modal-q-text">' + item.text + '</div><div class="t-help-modal-q-meta">' + item.meta + '</div></div>' +
+                    '<div class="t-help-modal-q-actions">' +
+                    '<button type="button" class="t-help-modal-q-open-tab" data-article="' + item.article + '" title="Открыть в новой вкладке">' + newTabSvgSmall + '</button>' +
                     '<button type="button" class="t-help-modal-q-save ' + (saved ? 'saved' : '') + '" data-article="' + item.article + '" title="' + (saved ? 'Убрать из сохранённых' : 'Сохранить') + '">' + bookmarkSvg + '</button>' +
+                    '</div>' +
                     '<span class="t-help-modal-q-chevron" aria-hidden="true">›</span></div>';
             }).join('');
             tHelpModalList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
                 btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); });
+            });
+            tHelpModalList.querySelectorAll('.t-help-modal-q-open-tab').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); openHelpInNewTab(btn.dataset.article); });
             });
         }
         renderTHelpModalList();
@@ -1591,15 +2167,21 @@
             const items = helpItems.filter(item => savedArticles.has(item.article) && !seen.has(item.article) && seen.add(item.article));
             tHelpModalSavedList.innerHTML = items.length ? items.map(item => {
                 const saved = true;
-                return `<div class="t-help-modal-q" data-cat="${item.cat}" data-article="${item.article}"><div class="t-help-modal-q-content"><div class="t-help-modal-q-text">${item.text}</div><div class="t-help-modal-q-meta">${item.meta}</div></div><button class="t-help-modal-q-save saved" data-article="${item.article}" title="Убрать из сохранённых">${bookmarkSvg}</button></div>`;
+                return `<div class="t-help-modal-q" data-cat="${item.cat}" data-article="${item.article}"><div class="t-help-modal-q-content"><div class="t-help-modal-q-text">${item.text}</div><div class="t-help-modal-q-meta">${item.meta}</div></div><div class="t-help-modal-q-actions"><button type="button" class="t-help-modal-q-open-tab" data-article="${item.article}" title="Открыть в новой вкладке">${newTabSvgSmall}</button><button class="t-help-modal-q-save saved" data-article="${item.article}" title="Убрать из сохранённых">${bookmarkSvg}</button></div></div>`;
             }).join('') : '<div class="t-help-modal-saved-empty" style="padding: 24px; text-align: center; color: #999; font-size: 14px;">Нет сохранённых статей</div>';
             tHelpModalSavedList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
                 btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); renderSavedList(); });
+            });
+            tHelpModalSavedList.querySelectorAll('.t-help-modal-q-open-tab').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); openHelpInNewTab(btn.dataset.article); });
             });
         }
 
         function openSavedList() {
             currentModalArticleId = null;
+            setHelpSearchMode('home');
+            hideRagBlock();
+            hideModalSearchSuggest();
             document.getElementById('tHelpModalWrapper').classList.remove('in-article');
             tHelpModalListWrap.classList.remove('visible');
             tHelpModalListWrap.classList.add('hidden');
@@ -1610,12 +2192,15 @@
 
         let cameFromSavedList = false;
         function showModalArticle(artId, fromSaved) {
+            hideModalSearchSuggest();
             const art = articles[artId];
             if (!art) return;
             if (fromSaved === undefined) cameFromSavedList = false;
             else cameFromSavedList = fromSaved;
             currentModalArticleId = artId;
             tHelpModalArticleTitle.textContent = art.title;
+            const artOpenTab = document.getElementById('tHelpModalArticleOpenTab');
+            if (artOpenTab) artOpenTab.dataset.article = artId;
             renderArticleContent(artId, tHelpModalArticleBodyInner, showModalArticle);
             resetModalArticleFeedback();
             tHelpModalListWrap.classList.remove('visible');
@@ -1626,6 +2211,7 @@
             updateSaveButtons(artId);
         }
         tHelpModalSavedList.addEventListener('click', (e) => {
+            if (e.target.closest('.t-help-modal-q-open-tab')) return;
             const q = e.target.closest('.t-help-modal-q');
             if (!q || !q.dataset.article || e.target.closest('.t-help-modal-q-save')) return;
             showModalArticle(q.dataset.article, true);
@@ -1715,6 +2301,8 @@
             tHelpModalArticle.classList.remove('visible');
             tHelpModalSearch.value = '';
             syncModalSearchField();
+            setHelpSearchMode('home');
+            hideModalSearchSuggest();
             tHelpModalChips.querySelectorAll('.t-help-modal-chip').forEach(c => c.classList.remove('active'));
             tHelpModalChips.querySelector('.t-help-modal-chip[data-cat="terminal"]').classList.add('active');
             filterTHelpModal();
@@ -1722,19 +2310,25 @@
             const btn = document.getElementById('floatBtnHelp');
             const rect = btn.getBoundingClientRect();
             const wrapper = document.getElementById('tHelpModalWrapper');
-            const modalH = 720;
+            const isDesktopHelp = window.innerWidth > 600;
+            const modalH = isDesktopHelp ? 792 : 720;
             const pad = 24;
             const gapFromBtn = 4;
-            wrapper.style.right = (window.innerWidth - rect.left + gapFromBtn) + 'px';
+            let rightPx = window.innerWidth - rect.left + gapFromBtn;
+            if (isDesktopHelp) rightPx -= 0.03 * window.innerWidth;
+            wrapper.style.right = Math.max(0, rightPx) + 'px';
             let top = rect.top;
             if (top + modalH > window.innerHeight - pad) top = window.innerHeight - modalH - pad;
             if (top < pad) top = pad;
             wrapper.style.top = top + 'px';
             wrapper.style.bottom = 'auto';
+            hideRagBlock();
         }
 
         function closeTHelpModal() {
             minimizeHelpAiSheet();
+            hideRagBlock();
+            hideModalSearchSuggest();
             document.body.classList.remove('t-help-modal-open');
             tHelpModalOverlay.classList.remove('visible');
             document.getElementById('tHelpModalWrapper').classList.remove('in-article');
@@ -1743,9 +2337,77 @@
 
         tHelpModalClose.addEventListener('click', closeTHelpModal);
         tHelpModalOverlay.addEventListener('click', (e) => { if (e.target === tHelpModalOverlay) closeTHelpModal(); });
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && tHelpModalOverlay.classList.contains('visible')) closeTHelpModal(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (tHelpModalRagDrawer && tHelpModalRagDrawer.classList.contains('is-open')) {
+                closeRagDrawer();
+                e.preventDefault();
+                return;
+            }
+            if (tHelpModalOverlay.classList.contains('visible')) closeTHelpModal();
+        });
 
-        tHelpModalSearch.addEventListener('input', () => { syncModalSearchField(); filterTHelpModal(); });
+        tHelpModalSearch.addEventListener('input', () => {
+            syncModalSearchField();
+            filterTHelpModal();
+            updateModalSearchSuggest();
+            if (!tHelpModalSearch.value.trim()) {
+                hideRagBlock();
+                setHelpSearchMode('home');
+            }
+        });
+        tHelpModalSearch.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter') return;
+            if (window.innerWidth <= 600) return;
+            const q = tHelpModalSearch.value.trim();
+            if (!q) {
+                hideRagBlock();
+                setHelpSearchMode('home');
+                return;
+            }
+            e.preventDefault();
+            hideModalSearchSuggest();
+            setHelpSearchMode('results');
+            showRagBlock(q);
+            filterTHelpModal();
+        });
+        tHelpModalSearch.addEventListener('focus', () => {
+            clearTimeout(modalSuggestBlurTimer);
+            updateModalSearchSuggest();
+        });
+        tHelpModalSearch.addEventListener('blur', () => {
+            modalSuggestBlurTimer = setTimeout(hideModalSearchSuggest, 200);
+        });
+        const tHelpModalHomeBtn = document.getElementById('tHelpModalHomeBtn');
+        if (tHelpModalHomeBtn) tHelpModalHomeBtn.addEventListener('click', goToHelpHome);
+        if (tHelpModalRagBody) {
+            tHelpModalRagBody.addEventListener('click', (e) => {
+                const a = e.target.closest('.t-help-rag-crumb');
+                if (!a) return;
+                e.preventDefault();
+            });
+        }
+        const tHelpModalRagSourcesBtn = document.getElementById('tHelpModalRagSourcesBtn');
+        const tHelpModalRagLegalBtn = document.getElementById('tHelpModalRagLegalBtn');
+        const tHelpModalRagDrawerBack = document.getElementById('tHelpModalRagDrawerBack');
+        const tHelpModalRagDrawerBackdrop = document.getElementById('tHelpModalRagDrawerBackdrop');
+        if (tHelpModalRagSourcesBtn) tHelpModalRagSourcesBtn.addEventListener('click', openRagSourcesDrawer);
+        if (tHelpModalRagLegalBtn) tHelpModalRagLegalBtn.addEventListener('click', openRagLegalDrawer);
+        if (tHelpModalRagDrawerBack) tHelpModalRagDrawerBack.addEventListener('click', closeRagDrawer);
+        if (tHelpModalRagDrawerBackdrop) tHelpModalRagDrawerBackdrop.addEventListener('click', closeRagDrawer);
+        if (tHelpModalRagDrawerBody) {
+            tHelpModalRagDrawerBody.addEventListener('click', (e) => {
+                const btn = e.target.closest('.t-help-rag-src-link');
+                if (!btn || !btn.dataset.article) return;
+                e.preventDefault();
+                closeRagDrawer();
+                showModalArticle(btn.dataset.article);
+            });
+        }
+        const tHelpModalRagVoteUp = document.getElementById('tHelpModalRagVoteUp');
+        const tHelpModalRagVoteDown = document.getElementById('tHelpModalRagVoteDown');
+        if (tHelpModalRagVoteUp) tHelpModalRagVoteUp.addEventListener('click', () => setRagVote('up'));
+        if (tHelpModalRagVoteDown) tHelpModalRagVoteDown.addEventListener('click', () => setRagVote('down'));
         tHelpModalChips.addEventListener('click', (e) => {
             if (!e.target.classList.contains('t-help-modal-chip')) return;
             tHelpModalChips.querySelectorAll('.t-help-modal-chip').forEach(c => c.classList.remove('active'));
@@ -1757,6 +2419,11 @@
             tHelpModalSavedWrap.classList.remove('visible');
             tHelpModalListWrap.classList.add('visible');
             tHelpModalListWrap.classList.remove('hidden');
+            tHelpModalSearch.value = '';
+            syncModalSearchField();
+            setHelpSearchMode('home');
+            hideRagBlock();
+            hideModalSearchSuggest();
             filterTHelpModal();
         });
 
@@ -1781,7 +2448,15 @@
         };
 
         let currentModalArticleId = null;
+        const tHelpModalArticleOpenTabEl = document.getElementById('tHelpModalArticleOpenTab');
+        if (tHelpModalArticleOpenTabEl) {
+            tHelpModalArticleOpenTabEl.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.article;
+                if (id) openHelpInNewTab(id);
+            });
+        }
         tHelpModalList.addEventListener('click', (e) => {
+            if (e.target.closest('.t-help-modal-q-open-tab')) return;
             const q = e.target.closest('.t-help-modal-q');
             if (!q || !q.dataset.article) return;
             showModalArticle(q.dataset.article);
@@ -1906,6 +2581,21 @@
             else alert('Чат: ' + (item.querySelector('.chat-list-name')?.textContent || item.dataset.action));
         });
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && chatListOverlay.classList.contains('visible')) closeChatList(); });
+
+        function applyHelpHashFromLocation() {
+            const h = window.location.hash;
+            if (h === '#t-help') {
+                requestAnimationFrame(() => { openTHelpModal(); });
+            } else if (h.startsWith('#t-help-article=')) {
+                const id = decodeURIComponent(h.slice('#t-help-article='.length));
+                requestAnimationFrame(() => {
+                    openTHelpModal();
+                    if (articles[id]) showModalArticle(id);
+                });
+            }
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHelpHashFromLocation);
+        else applyHelpHashFromLocation();
     </script>
 </body>
 </html>

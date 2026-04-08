@@ -6,20 +6,1060 @@
     <title>Т-Бизнес — Мобильная версия</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #E0E0E0; min-height: 100vh; color: #333; }
-        .mobile-viewport { width: 100%; max-width: 390px; margin: 0 auto; min-height: 100vh; background: #F5F5F5; position: relative; padding-bottom: env(safe-area-inset-bottom); overflow-x: hidden; }
+        :root {
+            --help-accent: #5B8FF0;
+            --help-accent-soft: rgba(91, 143, 240, 0.12);
+            --help-accent-press: #4A7FE8;
+            --help-text: #1D1D1F;
+            --help-muted: #86868B;
+            --help-line: rgba(0, 0, 0, 0.06);
+            --help-surface-elevated: #FFFFFF;
+            --help-radius-lg: 16px;
+            --help-radius-xl: 24px;
+            --help-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.06);
+            --type-page-title: 22px;
+            --type-section: 17px;
+            --type-body: 15px;
+            --type-body-sm: 14px;
+            --type-caption: 12px;
+            --type-micro: 11px;
+            --weight-title: 600;
+            --weight-body: 400;
+            --weight-em: 500;
+        }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif; font-size: 14px; background: #F5F5F7; min-height: 100vh; color: var(--help-text); -webkit-font-smoothing: antialiased; }
 
-        .mobile-header {
+        .app { display: flex; flex-direction: column; min-height: 100vh; }
+
+        .top-header {
             background: white;
-            padding: 14px 16px;
+            border-bottom: 1px solid #E8E8E8;
+            padding: 10px 24px;
+        }
+        .top-header-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid #E0E0E0;
+            gap: 24px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
+        .logo { display: flex; align-items: center; gap: 8px; }
+        .logo-text { font-size: var(--type-section); font-weight: var(--weight-title); color: var(--help-text); letter-spacing: -0.02em; }
+        .nav-tabs {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            flex-wrap: nowrap;
+        }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .nav-tab {
+            padding: 6px 12px;
+            font-size: var(--type-caption);
+            color: #5C5C5C;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .nav-tab:hover { background: #F5F5F5; color: #222; }
+        .nav-tab.active { color: #1565C0; font-weight: var(--weight-title); background: #F3F8FD; }
+        .header-right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .header-right a { font-size: var(--type-caption); color: #1565C0; text-decoration: none; font-weight: var(--weight-em); }
+        .header-right a:hover { text-decoration: underline; }
+        .header-right .header-user { font-size: var(--type-caption); color: var(--help-muted); }
+        .header-search { font-size: var(--type-caption); color: #888; cursor: default; padding: 4px 8px; border-radius: 6px; }
+        .header-search:hover { background: #F5F5F5; color: #333; }
+
+        .sub-nav {
+            background: #FAFAFA;
+            padding: 0 24px;
+            border-bottom: 1px solid #E8E8E8;
+        }
+        .sub-nav-inner { max-width: 1400px; margin: 0 auto; }
+        .sub-tabs {
+            display: flex;
+            gap: 4px;
+            flex-wrap: nowrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 4px 0;
+        }
+        .sub-tabs::-webkit-scrollbar { display: none; }
+        .sub-tab {
+            padding: 8px 10px;
+            font-size: var(--type-caption);
+            color: #666;
+            background: none;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .sub-tab:hover { color: #222; background: rgba(0,0,0,0.04); }
+        .sub-tab.active { color: #1565C0; font-weight: var(--weight-title); background: white; box-shadow: 0 0 0 1px #E0E0E0; }
+
+        .main-layout { display: flex; flex: 1; min-height: 0; max-width: 1400px; margin: 0 auto; width: 100%; overflow: hidden; }
+
+        .left-sidebar {
+            width: 320px;
+            flex-shrink: 0;
+            min-height: 0;
+            overflow-y: auto;
+            background: #E8E8E8;
+            border-right: 1px solid #E0E0E0;
+        }
+        .sidebar-widget-block {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .sidebar-title { font-size: var(--type-section); font-weight: var(--weight-title); color: var(--help-text); margin-bottom: 16px; letter-spacing: -0.02em; }
+        .credit-card {
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        .credit-card p { font-size: 13px; color: #2E7D32; margin-bottom: 4px; }
+        .credit-card .sum { font-size: 20px; font-weight: 700; color: #333; }
+        .accounts-card .account-item:first-child { padding-top: 0; }
+        .account-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 0;
+            border-bottom: 1px solid #F0F0F0;
+        }
+        .account-icon { width: 40px; height: 40px; background: #E0E0E0; border-radius: 10px; }
+        .account-balance { font-size: 15px; font-weight: 600; }
+        .account-num { font-size: 12px; color: #999; }
+        .sidebar-link { font-size: 14px; color: #1976D2; margin: 12px 0; cursor: pointer; }
+        .add-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: #F5F5F5;
+            border: 1px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #666;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .right-content { flex: 1; padding: 24px; overflow-y: auto; }
+        .content-title { font-size: var(--type-page-title); font-weight: var(--weight-title); margin-bottom: 16px; color: var(--help-text); letter-spacing: -0.02em; }
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+        .action-btn {
+            background: #FAFAFA;
+            border: 1px solid #E8E8E8;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .action-btn span { display: block; font-size: 13px; color: #333; margin-top: 8px; }
+        .ops-search {
+            width: 100%;
+            padding: 10px 14px 10px 40px;
+            border: 1px solid #E0E0E0;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 12px;
+            background: #FAFAFA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 12px center;
+        }
+        .ops-chips { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+        .ops-chip { padding: 6px 12px; border-radius: 20px; font-size: 13px; border: 1px solid #E0E0E0; background: white; cursor: pointer; }
+        .ops-chip.active { color: #1565C0; font-weight: var(--weight-title); background: #F3F8FD; border-color: #BBDEFB; }
+        .txn-list { background: white; border-radius: 12px; border: 1px solid #E8E8E8; }
+        .txn-date { font-size: 12px; color: #999; padding: 12px 16px; border-bottom: 1px solid #F0F0F0; }
+        .txn-item { display: flex; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid #F5F5F5; }
+        .txn-item:last-child { border-bottom: none; }
+        .txn-desc { font-size: 14px; }
+        .txn-amount { font-size: 14px; font-weight: 500; }
+        .txn-amount.neg { color: #C62828; }
+
+        .help-widget.sidebar-card {
+            background: transparent;
+            box-shadow: none;
+            padding: 0;
+        }
+        .help-widget-inner {
+            background: #F5F4F2;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+        }
+        .help-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 18px 18px 0;
+            background: transparent;
+        }
+        .help-title { font-size: var(--type-section); font-weight: var(--weight-title); color: var(--help-text); letter-spacing: -0.02em; line-height: 1.25; }
+        .help-ai-widget-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            padding: 4px 10px 4px 4px;
+            border-radius: 999px;
+            border: 1px solid var(--help-line);
+            background: rgba(255,255,255,0.65);
+            cursor: pointer;
+            font-family: inherit;
+            appearance: none;
+            transition: background 0.18s ease, box-shadow 0.18s ease;
+        }
+        .help-ai-sheet-header-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+            min-width: 0;
+            padding: 4px 10px 4px 4px;
+            border-radius: 999px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: #FFFFFF;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            pointer-events: none;
+        }
+        .help-ai-sheet-header-pill .help-ai-icon-btn { flex-shrink: 0; }
+        .help-ai-widget-btn:hover { background: rgba(255,255,255,0.95); box-shadow: 0 2px 12px rgba(91,143,240,0.15); }
+        .help-ai-widget-btn .help-ai-icon-btn { flex-shrink: 0; }
+        .help-ai-widget-label { font-size: var(--type-caption); font-weight: var(--weight-em); color: var(--help-text); white-space: nowrap; }
+        .help-ai-icon-btn {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            border-radius: 50%;
+            background: transparent;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .help-ai-icon-btn--sm { width: 32px; height: 32px; }
+        .help-ai-icon-btn__glow {
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            pointer-events: none;
+            background: radial-gradient(circle at 50% 115%, rgba(37, 99, 235, 0.55) 0%, rgba(56, 189, 248, 0.4) 42%, rgba(224, 242, 254, 0.55) 72%, rgba(255, 255, 255, 0.65) 100%);
+            background-size: 150% 150%;
+            animation: help-ai-orb-aura 4.5s ease-in-out infinite;
+            filter: blur(0.6px);
+        }
+        .help-ai-icon-btn--sm .help-ai-icon-btn__glow { inset: -2px; }
+        .help-ai-icon-btn__inner {
+            position: absolute;
+            inset: 2px;
+            border-radius: 50%;
+            overflow: hidden;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 95% 72% at 50% 10%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.38) 30%, transparent 52%),
+                radial-gradient(ellipse 85% 65% at 78% 88%, rgba(14, 165, 233, 0.92) 0%, rgba(59, 130, 246, 0.82) 48%, transparent 74%),
+                radial-gradient(ellipse 88% 68% at 22% 90%, rgba(30, 64, 175, 0.95) 0%, rgba(37, 99, 235, 0.72) 52%, transparent 78%),
+                linear-gradient(180deg, #f0f9ff 0%, #bae6fd 40%, #38bdf8 68%, #1d4ed8 100%);
+            background-size: 100% 100%, 190% 190%, 185% 185%, 100% 100%;
+            background-position: 0 0, 0% 0%, 100% 100%, 0 0;
+            animation: help-ai-orb-liquid 6.8s ease-in-out infinite;
+            box-shadow:
+                inset 0 2px 10px rgba(255, 255, 255, 0.7),
+                inset 0 -8px 18px rgba(14, 116, 144, 0.38);
+        }
+        .help-ai-icon-btn--sm .help-ai-icon-btn__inner { inset: 2px; }
+        @keyframes help-ai-orb-aura {
+            0%, 100% { background-position: 50% 100%; transform: scale(1); opacity: 0.95; }
+            50% { background-position: 42% 0%; transform: scale(1.05); opacity: 1; }
+        }
+        @keyframes help-ai-orb-liquid {
+            0%, 100% { background-position: 0 0, 0% 0%, 100% 100%, 0 0; }
+            33% { background-position: 0 0, 100% 25%, 0% 75%, 0 0; }
+            66% { background-position: 0 0, 45% 100%, 55% 0%, 0 0; }
+        }
+        .help-widget .help-q.help-q-widget-limit { display: none !important; }
+        .help-chips {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 6px;
+            row-gap: 6px;
+            padding: 10px 18px 4px;
+            background: transparent;
+            overflow: visible;
+            max-height: 76px;
+        }
+        @media (max-width: 600px) {
+            .help-chips { max-height: none; }
+        }
+        .help-chip {
+            padding: 6px 12px;
+            font-size: var(--type-caption);
+            font-weight: var(--weight-em);
+            border-radius: 999px;
+            border: none;
+            background: #E8E8E8;
+            color: #3A3A3C;
+            cursor: pointer;
+            transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+        }
+        .help-chip:hover { background: #E0E0E0; }
+        .help-chip:active { transform: scale(0.98); }
+        .help-chip.active {
+            background: var(--help-accent);
+            color: #FFFFFF;
+            box-shadow: var(--help-shadow-sm);
+        }
+        .help-body { padding-top: 4px; }
+        .help-search { padding: 14px 18px 4px; }
+        .help-search-field { position: relative; width: 100%; }
+        .help-search-field input {
+            width: 100%;
+            padding: 9px 11px 9px 34px;
+            font-size: var(--type-body-sm);
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.9) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 11px center;
+            caret-color: #1D1D1F;
+            position: relative;
+            z-index: 1;
+        }
+        .help-search-field:not(.has-value) input:not(:focus) { color: transparent; }
+        .help-search-field input:focus { color: var(--help-text); }
+        .help-search-field input::placeholder { color: transparent; }
+        .help-search-typewriter {
+            position: absolute;
+            left: 34px;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: var(--type-body-sm);
+            color: #9CA3AF;
+            pointer-events: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            z-index: 2;
+            line-height: 1.35;
+            transition: opacity 0.15s ease;
+        }
+        .help-search-field.has-value .help-search-typewriter,
+        .help-search-field input:focus ~ .help-search-typewriter { opacity: 0; visibility: hidden; }
+        .help-questions {
+            padding: 8px 18px 14px;
+        }
+        .help-section { display: none !important; }
+        .help-q {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 14px 0;
+            margin: 0;
+            border-radius: 0;
+            cursor: pointer;
+            border-bottom: none;
+        }
+        .help-q:hover { background: transparent; opacity: 0.92; }
+        .help-q-main { flex: 1; min-width: 0; }
+        .help-q-chevron {
+            flex-shrink: 0;
+            color: #C4C4C4;
+            font-size: 20px;
+            font-weight: 300;
+            line-height: 1;
+            margin-top: 2px;
+        }
+        .help-q.expanded { background: transparent; }
+        .help-q.hidden { display: none !important; }
+        .help-q-text { font-size: var(--type-body-sm); font-weight: var(--weight-em); line-height: 1.4; color: var(--help-text); }
+        .help-q-meta { display: none; }
+        .help-q-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s;
+        }
+        .help-q.expanded .help-q-answer { max-height: 240px; overflow-y: auto; }
+        .help-q-answer-inner { padding: 8px 0 0; font-size: 13px; color: #555; line-height: 1.5; }
+        .help-feedback { padding: 6px 0; }
+        .help-fb-done { display: none; }
+        .help-fb-done.visible { display: block; }
+        .help-fb-support-btn { display: none; width: 100%; }
+        .help-fb-support-btn.visible { display: block; }
+        .help-fb-comment-toggle { display: none; font-size: 12px; color: var(--help-muted); margin-top: 8px; cursor: pointer; }
+        .help-fb-comment-toggle.visible { display: block; }
+        .help-fb-comment { display: none; margin-top: 8px; }
+        .help-fb-comment.visible { display: flex; gap: 8px; align-items: flex-end; }
+        .help-fb-comment textarea { flex: 1; padding: 10px 12px; font-size: 13px; border: 1px solid var(--help-line); border-radius: 10px; resize: none; min-height: 40px; background: #FAFAFA; }
+        .help-fb-send { width: 40px; height: 40px; flex-shrink: 0; border: none; border-radius: 10px; background: var(--help-accent); color: white; cursor: pointer; font-size: 16px; transition: opacity 0.15s; }
+        .help-fb-send:hover { opacity: 0.92; }
+        .help-article-body-inner { flex: 0 0 auto; min-height: 0; }
+        .help-article-stats {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+            font-size: var(--type-caption);
+            line-height: 1.45;
+            color: #636366;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            background: #F5F5F7;
+            border-radius: 12px;
+            border: 1px solid var(--help-line);
+        }
+        .help-stat-item {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            flex: 1 1 0;
+            min-width: 0;
+        }
+        .help-stat-icon { width: 16px; height: 16px; flex-shrink: 0; color: #636366; opacity: 0.9; }
+        .help-stat-sep { color: #C7C7CC; font-weight: 400; user-select: none; flex: 0 0 auto; opacity: 0.85; }
+        .t-help-modal-article-body h3 { font-size: 14px; margin: 12px 0 6px; font-weight: 600; }
+        .t-help-modal-article-body h3:first-child { margin-top: 0; }
+        .t-help-modal-article-body p, .t-help-modal-article-body li { margin-bottom: 8px; }
+        .t-help-modal-article-body ul { padding-left: 16px; }
+        .t-help-modal-article-body a { color: var(--help-accent); text-underline-offset: 2px; }
+        .t-help-modal-article-body .example { background: #F5F5F5; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; line-height: 1.5; }
+        .help-article-img-placeholder { background: #E8E8E8; border-radius: 6px; padding: 24px; text-align: center; font-size: 12px; color: #666; margin: 10px 0; min-height: 60px; }
+        .help-feedback-card {
+            padding: 14px 14px 12px;
+            background: var(--help-surface-elevated);
+            border-radius: var(--help-radius-lg);
+            border: 1px solid var(--help-line);
+            box-shadow: var(--help-shadow-sm);
+        }
+        .help-feedback-card-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+        .help-fb-btns {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .help-fb-btn {
+            flex: 1;
+            padding: 10px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            border: 1px solid var(--help-line);
+            background: #FAFAFA;
+            border-radius: 10px;
+            cursor: pointer;
+            color: #374151;
+            transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .help-fb-btn:hover { background: #F3F4F6; border-color: rgba(0,0,0,0.1); }
+        .help-fb-btn:active { transform: scale(0.99); }
+        .help-feedback-card .help-fb-done {
+            font-size: 13px;
+            color: #6B7280;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .help-article-secondary-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-top: 8px;
+        }
+        .help-article-secondary-actions button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            border: none;
+            background: transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--help-accent);
+            transition: background 0.15s ease;
+        }
+        .help-article-secondary-actions button:hover { background: var(--help-accent-soft); }
+        .help-fb-support-btn {
+            margin-top: 12px;
+            border-radius: 10px !important;
+            background: #F3F4F6 !important;
+            border: 1px solid var(--help-line) !important;
+            color: #374151 !important;
+            scroll-margin-bottom: 24px;
+        }
+        .help-fb-support-btn:hover { background: #E5E7EB !important; }
+
+        .help-ai-sheet {
+            position: absolute; inset: 0; z-index: 200; pointer-events: none;
+            border-radius: inherit;
+            isolation: isolate;
+        }
+        .help-ai-sheet-backdrop {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.22); border-radius: inherit;
+            opacity: 0; transition: opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .help-ai-sheet.visible { pointer-events: auto; }
+        .help-ai-sheet.visible .help-ai-sheet-backdrop { opacity: 1; }
+        .help-ai-sheet-panel {
+            position: absolute; left: 0; right: 0; bottom: 0;
+            height: min(93.6%, 504px);
+            max-height: min(96%, 510px);
+            background: #FFFFFF;
+            border: 1px solid #E5E7EB;
+            border-bottom: none;
+            border-radius: 16px 16px 0 0;
+            box-shadow: 0 -12px 40px rgba(0,0,0,0.14);
+            display: flex; flex-direction: column;
+            transform: translate3d(0, 115%, 0);
+            opacity: 0.96;
+            transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease, box-shadow 0.35s ease;
+            will-change: transform;
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            box-sizing: border-box;
+        }
+        .help-ai-sheet.visible .help-ai-sheet-panel {
+            transform: translate3d(0, 0, 0);
+            opacity: 1;
+            box-shadow: 0 -16px 48px rgba(0,0,0,0.18);
+        }
+        .help-ai-sheet-header {
+            display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            padding: 12px 14px;
+            border-bottom: 1px solid #E5E7EB;
+            flex-shrink: 0;
+            background: #FFFFFF;
+            border-radius: 16px 16px 0 0;
+        }
+        .help-ai-sheet-title { font-size: 14px; font-weight: 800; color: #111827; letter-spacing: -0.02em; }
+        .help-ai-sheet-minimize {
+            border: none; background: #F3F4F6; color: #111827; width: 34px; height: 34px; border-radius: 10px;
+            cursor: pointer; font-size: 16px; line-height: 1; flex-shrink: 0;
+        }
+        .help-ai-sheet-minimize:hover { background: #E5E7EB; }
+        .help-ai-sheet-messages {
+            flex: 1; min-height: 80px; overflow-y: auto;
+            padding: 12px 14px 8px; display: flex; flex-direction: column; gap: 10px;
+            -webkit-overflow-scrolling: touch;
+            background: #F9FAFB;
+        }
+        .help-ai-msg { max-width: 92%; padding: 10px 12px; border-radius: 14px; font-size: 13px; line-height: 1.45; white-space: pre-wrap; word-break: break-word; border: 1px solid #E5E7EB; }
+        .help-ai-msg--user { align-self: flex-end; background: #DBEAFE; border-color: #BFDBFE; color: #111827; border-bottom-right-radius: 4px; }
+        .help-ai-msg--assistant { align-self: flex-start; background: #FFFFFF; color: #111827; border-bottom-left-radius: 4px; }
+        .help-ai-sheet-input-row {
+            display: flex; gap: 10px; align-items: center; padding: 12px 14px 10px; flex-shrink: 0;
+            background: #FFFFFF; border-top: 1px solid #E5E7EB;
+        }
+        .help-ai-input-field { position: relative; flex: 1; min-width: 0; align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
+        .help-ai-input-field textarea {
+            width: 100%; box-sizing: border-box;
+            min-height: 44px; height: 44px; max-height: 120px;
+            padding: 0 12px; line-height: 42px;
+            font-size: 13px; border: 1px solid #E5E7EB; border-radius: 12px;
+            resize: none; font-family: inherit; outline: none;
+            position: relative; z-index: 1; background: #FFFFFF;
+            caret-color: #1D1D1F;
+            vertical-align: middle;
+        }
+        .help-ai-input-field textarea:not(:placeholder-shown) { line-height: 1.45; padding: 10px 12px; height: auto; min-height: 44px; }
+        .help-ai-input-field:not(.has-value) textarea:not(:focus) { color: transparent; }
+        .help-ai-input-field textarea:focus { color: var(--help-text); border-color: #93C5FD; box-shadow: 0 0 0 3px rgba(59,130,246,0.12); }
+        .help-ai-input-field textarea::placeholder { color: transparent; }
+        .help-ai-input-typewriter {
+            position: absolute;
+            left: 13px;
+            right: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 13px;
+            color: #9CA3AF;
+            pointer-events: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            z-index: 2;
+            line-height: 1.45;
+            transition: opacity 0.15s ease;
+        }
+        .help-ai-input-field.has-value .help-ai-input-typewriter,
+        .help-ai-input-field textarea:focus ~ .help-ai-input-typewriter { opacity: 0; visibility: hidden; }
+        .help-ai-send {
+            flex-shrink: 0; width: 44px; height: 44px; padding: 0;
+            color: #fff; background: #2563EB; border: none; border-radius: 12px; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            align-self: center;
+            transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+        }
+        .help-ai-send svg { width: 20px; height: 20px; display: block; }
+        .help-ai-send:hover { filter: brightness(1.05); box-shadow: 0 4px 14px rgba(37,99,235,0.45); transform: scale(1.04); }
+        .help-ai-send:active { transform: scale(0.96); }
+
+        .float-buttons { position: fixed; right: 24px; bottom: 24px; z-index: 900; display: flex; flex-direction: column; gap: 14px; align-items: center; }
+        .float-btn { width: 52px; height: 52px; border-radius: 50%; background: #FFD600; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08); transition: transform 0.2s, box-shadow 0.2s; color: #2c2c2c; }
+        .float-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(0,0,0,0.16), 0 2px 4px rgba(0,0,0,0.1); }
+        .float-btn:active { transform: scale(0.98); }
+        .float-btn svg { width: 22px; height: 22px; }
+        .float-btn.with-badge { position: relative; }
+        .float-btn .badge { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; background: #E53935; color: white; font-size: 11px; font-weight: 600; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid white; }
+
+        body.t-help-modal-open { overflow: hidden; }
+        .t-help-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .t-help-modal-overlay.visible { opacity: 1; pointer-events: auto; }
+        .t-help-modal-list, .t-help-modal-saved-list, .t-help-modal-article-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+        .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; }
+        .t-help-modal-overlay.visible .t-help-modal-wrapper { opacity: 1; transform: scale(1); }
+        .t-help-modal { position: relative; background: #FAFAFA; border-radius: var(--help-radius-xl); box-shadow: 0 12px 48px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06); width: 462px; height: 720px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; transition: width 0.3s ease; border: 1px solid var(--help-line); }
+        .t-help-modal.wider { width: 584px; }
+        .t-help-modal-actions { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; padding-left: 8px; flex-shrink: 0; }
+        .t-help-modal-action-btn { width: 36px; height: 36px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #666; }
+        .t-help-modal-action-btn:hover { background: #E8E8E8; color: #333; }
+        .t-help-modal-action-btn svg { width: 18px; height: 18px; }
+        .t-help-modal-action-btn.saved { color: var(--help-accent); }
+        .t-help-modal-action-btn.saved svg { fill: currentColor; }
+        .t-help-modal-q-save { width: 28px; height: 28px; flex-shrink: 0; border: none; background: transparent; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5; }
+        .t-help-modal-q-save:hover { opacity: 1; }
+        .t-help-modal-q-save.saved { opacity: 1; color: var(--help-accent); }
+        .t-help-modal-q-save.saved svg { fill: currentColor; }
+        .t-help-modal-q-save svg { width: 16px; height: 16px; }
+        .t-help-modal-article-save { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .t-help-modal-article-save:hover { background: #E0E0E0; }
+        .t-help-modal-article-save.saved { color: var(--help-accent); background: var(--help-accent-soft); }
+        .t-help-modal-article-save.saved svg { fill: currentColor; }
+        .t-help-modal-article-save svg { width: 18px; height: 18px; }
+        .t-help-modal-topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 16px 16px 8px;
+            flex-shrink: 0;
+            background: #FAFAFA;
+        }
+        .t-help-modal-topbar-title {
+            font-size: var(--type-section);
+            font-weight: var(--weight-title);
+            color: var(--help-text);
+            letter-spacing: -0.02em;
+        }
+        .t-help-modal-search-row { display: flex; align-items: center; gap: 8px; padding: 10px 16px 10px; flex-shrink: 0; background: #FAFAFA; border-bottom: none; }
+        .t-help-modal-search { flex: 1; min-width: 0; }
+        .t-help-modal-search .help-search-field { width: 100%; }
+        .t-help-modal-search .help-search-field input {
+            width: 100%; padding: 9px 11px 9px 34px; border: 1px solid var(--help-line); border-radius: 10px;
+            font-size: var(--type-body-sm);
+            background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 10px center;
+        }
+        .t-help-modal-search .help-search-typewriter { left: 34px; }
+        .t-help-modal-search-save { width: 36px; height: 36px; flex-shrink: 0; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+        .t-help-modal-search-save:hover { background: #E8E8E8; }
+        .t-help-modal-search-save.saved { color: var(--help-accent); background: var(--help-accent-soft); }
+        .t-help-modal-search-save.saved svg { fill: currentColor; }
+        .t-help-modal-search-save svg { width: 18px; height: 18px; }
+        .t-help-modal-chips { padding: 4px 16px 10px; flex-shrink: 0; }
+        .t-help-modal-chips-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 6px;
+            row-gap: 6px;
+            overflow: visible;
+            max-height: 76px;
+        }
+        @media (max-width: 600px) {
+            .t-help-modal-chips-wrap { max-height: none; }
+        }
+        .t-help-modal-chip {
+            padding: 6px 12px;
+            font-size: var(--type-caption);
+            font-weight: var(--weight-em);
+            border-radius: 999px;
+            border: none;
+            background: #E8E8E8;
+            color: #3A3A3C;
+            cursor: pointer;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+        .t-help-modal-chip:hover { background: #E0E0E0; }
+        .t-help-modal-chip.active { background: var(--help-accent); color: #fff; box-shadow: var(--help-shadow-sm); }
+        .t-help-modal-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 20px; }
+        .t-help-modal-q {
+            padding: 14px 4px 14px 0;
+            border-radius: 0;
+            cursor: pointer;
+            border-bottom: none;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .t-help-modal-q:hover { background: transparent; opacity: 0.9; }
+        .t-help-modal-q-content { flex: 1; min-width: 0; }
+        .t-help-modal-q-chevron { flex-shrink: 0; color: #C4C4C4; font-size: 20px; font-weight: 300; line-height: 1; }
+        .t-help-modal-q.hidden { display: none !important; }
+        .t-help-modal-q-text { font-size: var(--type-body-sm); font-weight: var(--weight-em); line-height: 1.4; color: var(--help-text); }
+        .t-help-modal-q-meta { display: none; }
+        .t-help-modal-q-save { flex-shrink: 0; opacity: 0.45; }
+        .t-help-modal-q-save:hover { opacity: 0.9; }
+        .t-help-modal-section { display: none !important; }
+        .t-help-modal-article { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        .t-help-modal-article.visible { display: flex; }
+        .t-help-modal-main-stack { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+        .t-help-modal-list-wrap { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        .t-help-modal-list-wrap.hidden { display: none !important; }
+        .t-help-modal-saved-wrap {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            overflow: hidden;
+            background: #FAFAFA;
+            z-index: 2;
+            transform: translateX(104%);
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.32s ease;
+            will-change: transform;
+        }
+        .t-help-modal-saved-wrap.visible {
+            transform: translateX(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .t-help-modal-main-stack:has(.t-help-modal-saved-wrap.visible) .t-help-modal-list-wrap {
+            pointer-events: none;
+            user-select: none;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .t-help-modal-saved-wrap { transition-duration: 0.01ms; }
+        }
+        .t-help-modal-saved-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #E8E8E8; flex-shrink: 0; }
+        .t-help-modal-saved-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .t-help-modal-saved-title { font-size: var(--type-body); font-weight: var(--weight-title); }
+        .t-help-modal-saved-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 16px; }
+        .t-help-modal-article-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--help-line); flex-shrink: 0; background: #FAFAFA; }
+        .t-help-modal-article-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
+        .t-help-modal-article-title { font-size: var(--type-body); font-weight: var(--weight-title); flex: 1; line-height: 1.35; letter-spacing: -0.02em; }
+        .t-help-modal-article-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 16px 32px; font-size: var(--type-body-sm); line-height: 1.55; display: flex; flex-direction: column; scroll-padding-bottom: 32px; }
+        .t-help-modal-article-body .help-article-body-inner { flex: 0 0 auto; }
+        .t-help-modal-article-body .help-article-stats { margin-bottom: 14px; }
+        .t-help-modal-article-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 10px 0; display: block; }
+        .t-help-modal-article-fb { margin-top: 20px; padding: 16px 0 0; border-top: 1px solid var(--help-line); flex-shrink: 0; background: transparent; }
+        .t-help-modal-article-fb .help-fb-label { display: none; }
+        .tariff-calc { background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%); border-radius: 10px; padding: 10px 12px; margin: 10px 0; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .tariff-calc-title { font-weight: 700; font-size: 12px; color: #1E293B; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .tariff-calc-title::before { content: ''; width: 3px; height: 12px; background: linear-gradient(180deg, #1976D2, #42A5F5); border-radius: 2px; }
+        .tariff-calc-blocks { display: flex; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+        .tariff-calc-block { flex: 1; min-width: 120px; }
+        .tariff-calc-label { font-size: 11px; color: #64748B; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+        .tariff-calc-value { font-weight: 700; font-size: 11px; color: #1976D2; background: white; padding: 2px 6px; border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); flex-shrink: 0; }
+        .tariff-calc-slider { -webkit-appearance: none; appearance: none; width: 100%; height: 5px; background: #E2E8F0; border-radius: 3px; outline: none; }
+        .tariff-calc-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: linear-gradient(135deg, #1976D2, #42A5F5); border-radius: 50%; cursor: pointer; box-shadow: 0 1px 3px rgba(25,118,210,0.4); }
+        .tariff-calc-slider::-moz-range-thumb { width: 14px; height: 14px; background: linear-gradient(135deg, #1976D2, #42A5F5); border-radius: 50%; cursor: pointer; border: none; box-shadow: 0 1px 3px rgba(25,118,210,0.4); }
+        .tariff-calc-scale { display: flex; justify-content: space-between; margin-top: 1px; font-size: 9px; color: #94A3B8; }
+        .tariff-calc-scale span { text-align: center; }
+        .tariff-calc-results { margin-top: 8px; padding-top: 8px; border-top: 1px solid #E2E8F0; }
+        .tariff-calc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .tariff-calc-card { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px; background: white; border-radius: 6px; border: 1px solid #E2E8F0; }
+        .tariff-calc-card.best { border-color: #4CAF50; background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%); box-shadow: 0 1px 3px rgba(76,175,80,0.12); }
+        .tariff-calc-card-name { font-weight: 600; font-size: 11px; color: #334155; line-height: 1.2; }
+        .tariff-calc-badge { font-size: 8px; font-weight: 700; color: #2E7D32; background: #C8E6C9; padding: 1px 5px; border-radius: 6px; align-self: flex-start; }
+        .tariff-calc-card-costs { display: flex; gap: 8px; font-size: 11px; }
+        .tariff-calc-card-cost { display: flex; flex-direction: column; gap: 0; }
+        .tariff-calc-card-cost span:first-child { font-size: 9px; color: #94A3B8; }
+        .tariff-calc-card-cost strong { font-size: 11px; color: #1E293B; }
+        .tariff-calc-card-cost.best strong { color: #2E7D32; }
+        .tariff-calc-hint { font-size: 9px; color: #94A3B8; margin-top: 6px; line-height: 1.25; }
+        .help-article-recommendations, .t-help-modal-article-body .help-article-recommendations { margin-top: 24px; padding-top: 16px; border-top: 1px solid #E8E8E8; }
+        .help-article-recommendations-title { font-size: 13px; font-weight: 600; color: #666; margin-bottom: 10px; }
+        .help-article-recommendations-list { display: flex; flex-direction: column; gap: 6px; }
+        .help-article-recommendations-list a { font-size: 14px; color: #1976D2; text-decoration: none; }
+        .help-article-recommendations-list a:hover { text-decoration: underline; }
+        .chat-list-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1095; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
+        .chat-list-overlay.visible { opacity: 1; pointer-events: auto; }
+        .chat-list-wrapper { position: fixed; z-index: 1096; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; }
+        .chat-list-overlay.visible .chat-list-wrapper { opacity: 1; transform: scale(1); }
+        .chat-list-modal { background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); width: 357px; height: 583px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
+        .chat-list-actions { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; padding-left: 8px; flex-shrink: 0; }
+        .chat-list-action-btn { width: 36px; height: 36px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #666; }
+        .chat-list-action-btn:hover { background: #E8E8E8; color: #333; }
+        .chat-list-header { padding: 20px 20px 16px; font-size: 22px; font-weight: 700; color: #333; border-bottom: 1px solid #F0F0F0; flex-shrink: 0; }
+        .chat-list-t-help-block { padding: 16px 20px; border-bottom: 1px solid #E8E8E8; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; gap: 14px; background: #FFFBF0; }
+        .chat-list-t-help-block:hover { background: #FFF8E1; }
+        .chat-list-section { padding: 12px 20px 8px; font-size: 12px; font-weight: 600; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
+        .chat-list-body { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 0; }
+        .chat-list-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
+        .chat-list-item:hover { background: #F5F5F5; }
+        .chat-list-item:active { background: #EEEEEE; }
+        .chat-list-icon { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; color: #666; }
+        .chat-list-icon.t-help { background: #FFF8E1; color: #F9A825; }
+        .chat-list-icon.avto { background: #EFEBE9; color: #5D4037; }
+        .chat-list-icon.business { background: #F5F5DC; color: #8B7355; }
+        .chat-list-icon.vygoda { background: #FFE0B2; color: #E65100; }
+        .chat-list-icon.manager { background: #E0E0E0; color: #616161; }
+        .chat-list-icon.seller { background: #FFEBEE; color: #8D6E63; }
+        .chat-list-icon.app { background: #ECEFF1; color: #546E7A; }
+        .chat-list-content { flex: 1; min-width: 0; }
+        .chat-list-name { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 2px; }
+        .chat-list-preview { font-size: 14px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-list-meta { flex-shrink: 0; text-align: right; font-size: 13px; color: #999; }
+        .chat-list-badge { display: inline-block; min-width: 22px; height: 22px; padding: 0 6px; background: #E53935; color: white; font-size: 12px; font-weight: 600; border-radius: 11px; line-height: 22px; text-align: center; margin-left: 4px; }
+        .chat-list-badge.gray { background: #9E9E9E; }
+        .float-btn-wrapper { position: relative; }
+        body.mobile-app {
+            background: linear-gradient(165deg, #d8d8dc 0%, #b8b8c0 45%, #9a9aa2 100%);
+            min-height: 100vh;
+            margin: 0;
+        }
+        .iphone-mockup-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            box-sizing: border-box;
+        }
+        .mobile-page-header {
+            flex-shrink: 0;
+            width: 100%;
+            background: #fff;
+            border-bottom: 1px solid #E0E0E0;
+            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+        }
+        .mobile-page-header .mobile-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 12px 20px 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .mobile-page-header .mobile-header-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 20px 14px;
+            max-width: 1400px;
+            margin: 0 auto;
+            border-top: 1px solid #F0F0F0;
+        }
+        .mobile-page-header .mobile-header-nav a {
+            font-size: var(--type-caption);
+            color: #1565C0;
+            text-decoration: none;
+            font-weight: var(--weight-em);
+            white-space: nowrap;
+        }
+        .mobile-page-header .mobile-header-nav a:hover { text-decoration: underline; }
+        .iphone-mockup-stage {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px 40px;
+            min-height: 0;
+        }
+        .iphone-mockup-device {
+            flex-shrink: 0;
+        }
+        .iphone-mockup-bezel {
+            position: relative;
+            padding: 11px;
+            background: linear-gradient(145deg, #2c2c2e 0%, #0d0d0f 55%, #1a1a1c 100%);
+            border-radius: 54px;
+            box-shadow:
+                0 32px 64px rgba(0, 0, 0, 0.45),
+                0 8px 24px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12);
+        }
+        .iphone-mockup-inner {
+            position: relative;
+            width: 393px;
+            height: 852px;
+            max-width: calc(100vw - 48px);
+            max-height: calc(100vh - 120px);
+            border-radius: 44px;
+            overflow: hidden;
+            background: #000;
+            transform: translateZ(0);
+            isolation: isolate;
+        }
+        @media (max-height: 900px) {
+            .iphone-mockup-inner {
+                height: min(852px, calc(100vh - 100px));
+                width: min(393px, calc((100vh - 100px) * 393 / 852));
+            }
+        }
+        .iphone-mockup-island {
+            position: absolute;
+            top: 11px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 126px;
+            height: 36px;
+            background: #0a0a0a;
+            border-radius: 20px;
+            z-index: 40;
+            pointer-events: none;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+        body.mobile-app .iphone-mockup-inner .t-help-modal-overlay,
+        body.mobile-app .iphone-mockup-inner .chat-list-overlay {
+            position: absolute !important;
+            inset: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            max-height: 100% !important;
+            box-sizing: border-box !important;
+            overflow: hidden !important;
+        }
+        body.mobile-app .iphone-mockup-inner .chat-list-wrapper {
+            position: absolute !important;
+            inset: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            top: 0 !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+        }
+        body.mobile-app .iphone-mockup-inner .help-ai-sheet {
+            position: absolute !important;
+            inset: 0 !important;
+        }
+        body.mobile-app .t-help-modal-overlay {
+            display: flex !important;
+            align-items: flex-end !important;
+            justify-content: center !important;
+            background: rgba(0, 0, 0, 0.45) !important;
+            padding-bottom: env(safe-area-inset-bottom, 0px) !important;
+        }
+        body.mobile-app .t-help-modal-wrapper {
+            position: relative !important;
+            inset: auto !important;
+            left: auto !important;
+            right: auto !important;
+            top: auto !important;
+            bottom: 0 !important;
+            width: 100% !important;
+            max-width: 390px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: stretch !important;
+            height: min(100%, 897px) !important;
+            max-height: min(100%, 897px) !important;
+            margin: 0 auto !important;
+            flex-shrink: 1 !important;
+            min-height: 0 !important;
+            opacity: 1 !important;
+            transform: translate3d(0, 105%, 0) !important;
+            transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1) !important;
+        }
+        body.mobile-app .t-help-modal-overlay.visible .t-help-modal-wrapper {
+            transform: translate3d(0, 0, 0) !important;
+            opacity: 1 !important;
+        }
+        body.mobile-app .iphone-mockup-inner .t-help-modal-wrapper {
+            height: min(100%, 897px) !important;
+            max-height: min(100%, 897px) !important;
+            max-width: 100% !important;
+        }
+        body.mobile-app .mobile-help-sheet-handle {
+            width: 36px;
+            height: 5px;
+            background: #D1D5DB;
+            border-radius: 3px;
+            margin: 10px auto 6px;
+            flex-shrink: 0;
+        }
+        body.mobile-app .mobile-help-topbar-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            margin: 0 4px 0 0;
+            border: none;
+            background: #F3F4F6;
+            border-radius: 12px;
+            font-size: 18px;
+            color: #374151;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        body.mobile-app .t-help-modal-topbar {
+            padding-top: 8px !important;
+            display: flex !important;
+            align-items: center !important;
+            gap: 8px !important;
+        }
+        body.mobile-app .t-help-modal-topbar-title {
+            flex: 1 !important;
+            min-width: 0 !important;
+        }
+        body.mobile-app .t-help-modal-actions {
+            display: none !important;
+        }
+        body.mobile-app .chat-list-wrapper {
+            position: fixed !important;
+            inset: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            max-width: 390px !important;
+            height: 100% !important;
+            margin: 0 auto !important;
+            align-items: stretch !important;
+            flex-direction: column !important;
+        }
+        body.mobile-app .chat-list-overlay.visible .chat-list-wrapper {
+            transform: none !important;
+            opacity: 1 !important;
+        }
+        .mobile-viewport { width: 100%; max-width: 390px; margin: 0 auto; min-height: 100vh; background: #F5F5F5; position: relative; padding-bottom: env(safe-area-inset-bottom); overflow-x: hidden; }
         .mobile-logo { font-size: 17px; font-weight: 700; }
         .mobile-user { font-size: 14px; color: #666; }
-
         .mobile-content { padding: 16px; }
         .mobile-section { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
         .mobile-section-title { font-size: 15px; font-weight: 600; margin-bottom: 12px; }
@@ -28,67 +1068,173 @@
         .mobile-account-icon { width: 44px; height: 44px; background: #E0E0E0; border-radius: 10px; flex-shrink: 0; }
         .mobile-account-balance { font-size: 16px; font-weight: 600; }
         .mobile-account-num { font-size: 13px; color: #999; }
-
-        .help-widget-inner { background: white; border-radius: 12px; overflow: hidden; }
-        .help-header { display: flex; align-items: center; padding: 14px 16px; background: white; }
-        .help-title { font-size: 16px; font-weight: 600; }
-        .help-chips-wrap { overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; padding: 12px 16px 8px; background: white; }
-        .help-chips-wrap::-webkit-scrollbar { display: none; }
-        .help-chips { display: flex; gap: 8px; padding: 0; flex-wrap: nowrap; width: max-content; }
-        .help-chip { padding: 10px 16px; font-size: 14px; border-radius: 20px; border: 1px solid #E0E0E0; background: white; cursor: pointer; flex-shrink: 0; min-height: 44px; display: flex; align-items: center; }
-        .help-chip.active { background: #FFD600; border-color: #FFD600; }
-        .help-search { padding: 8px 16px 12px; }
-        .help-search input { width: 100%; padding: 12px 14px 12px 40px; font-size: 16px; border: 1px solid #E0E0E0; border-radius: 10px; background: #FAFAFA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 14px center; min-height: 48px; }
-        .help-questions { max-height: 240px; overflow-y: auto; padding: 8px 16px 16px; -webkit-overflow-scrolling: touch; }
-        .help-q { padding: 14px 12px; border-radius: 10px; cursor: pointer; margin-bottom: 4px; min-height: 56px; display: flex; flex-direction: column; justify-content: center; }
-        .help-q:active { background: #F0F0F0; }
-        .help-q.hidden { display: none !important; }
-        .help-q-text { font-size: 15px; font-weight: 500; line-height: 1.4; }
-        .help-q-meta { font-size: 13px; color: #999; margin-top: 4px; }
-        .help-footer { padding: 14px 16px; border-top: 1px solid #E8E8E8; }
-        .help-footer a { font-size: 14px; color: #1976D2; text-decoration: none; padding: 4px 0; min-height: 44px; display: flex; align-items: center; }
-
-        .help-drawer-wrapper { position: absolute; inset: 0; z-index: 1000; pointer-events: none; overflow: hidden; }
-        .help-drawer-wrapper.active { pointer-events: auto; }
-        .help-drawer-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.25s ease; }
-        .help-drawer-wrapper.active .help-drawer-overlay { opacity: 1; }
-        .help-drawer { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 88%; max-height: 700px; background: white; transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1); display: flex; flex-direction: column; pointer-events: auto; box-shadow: 0 -4px 24px rgba(0,0,0,0.2); border-radius: 16px 16px 0 0; }
-        .help-drawer-wrapper.active .help-drawer { transform: translateY(0); }
-        .help-drawer-handle { width: 36px; height: 4px; background: #D0D0D0; border-radius: 2px; margin: 10px auto 6px; flex-shrink: 0; }
-        .help-article-view { display: flex; flex-direction: column; flex: 1; min-height: 0; }
-        .help-article-header { display: flex; align-items: center; gap: 12px; padding: 16px 16px; padding-top: calc(16px + env(safe-area-inset-top)); border-bottom: 1px solid #E8E8E8; background: white; flex-shrink: 0; }
-        .help-article-back { width: 44px; height: 44px; border: none; background: #E8E8E8; border-radius: 10px; cursor: pointer; font-size: 18px; flex-shrink: 0; }
-        .help-article-title { font-size: 16px; font-weight: 600; flex: 1; line-height: 1.4; }
-        .help-article-body { flex: 1; overflow-y: auto; padding: 20px 16px; font-size: 16px; line-height: 1.6; -webkit-overflow-scrolling: touch; }
-        .help-article-body p, .help-article-body li { margin-bottom: 12px; }
-        .help-article-body ul { padding-left: 20px; }
-        .help-article-body .example { background: #F5F5F5; padding: 14px; border-radius: 10px; margin: 14px 0; font-size: 14px; }
-        .help-article-img-placeholder { background: #E8E8E8; border-radius: 10px; padding: 40px 20px; text-align: center; font-size: 14px; color: #666; margin: 14px 0; }
-        .help-article-fb { padding: 16px; padding-bottom: calc(16px + env(safe-area-inset-bottom)); border-top: 1px solid #E8E8E8; }
-        .help-article-fb .help-fb-label { font-size: 12px; color: #999; margin-bottom: 10px; }
-        .help-fb-btns { display: flex; gap: 10px; margin-bottom: 10px; }
-        .help-fb-btn { padding: 14px 20px; font-size: 15px; border: 1px solid #E0E0E0; background: white; border-radius: 10px; cursor: pointer; min-height: 48px; }
-        .help-fb-done { display: none; font-size: 14px; color: #2E7D32; margin-top: 8px; }
-        .help-fb-done.visible { display: block; }
-        .help-fb-support-btn { display: none; width: 100%; padding: 14px 20px; font-size: 15px; font-weight: 500; color: #1976D2; background: #E3F2FD; border: 1px solid #BBDEFB; border-radius: 10px; cursor: pointer; margin-top: 12px; min-height: 48px; }
-        .help-fb-support-btn.visible { display: block; }
-        .help-fb-comment-toggle { display: none; font-size: 14px; color: #666; margin-top: 10px; cursor: pointer; text-decoration: underline; padding: 8px 0; min-height: 44px; align-items: center; }
-        .help-fb-comment-toggle.visible { display: flex; }
-        .help-fb-comment { display: none; margin-top: 10px; }
-        .help-fb-comment.visible { display: flex; gap: 10px; align-items: flex-end; }
-        .help-fb-comment textarea { flex: 1; padding: 12px 14px; font-size: 16px; border: 1px solid #E0E0E0; border-radius: 10px; resize: none; min-height: 48px; }
-        .help-fb-send { width: 48px; height: 48px; flex-shrink: 0; border: none; border-radius: 50%; background: #1976D2; color: white; cursor: pointer; font-size: 18px; }
-
-        .mobile-link { display: block; text-align: center; padding: 12px; font-size: 13px; color: #1976D2; text-decoration: none; }
+        .mobile-help-entry {
+            background: transparent;
+            padding: 0;
+            border: none;
+            box-shadow: none;
+            margin-bottom: 12px;
+        }
+        .mobile-help-entry-inner {
+            background: #F5F4F2;
+            border-radius: 28px;
+            overflow: hidden;
+            border: 1px solid var(--help-line);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+            padding: 18px 18px 16px;
+        }
+        .mobile-help-entry-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; }
+        .mobile-help-entry-title { font-size: var(--type-section); font-weight: var(--weight-title); color: var(--help-text); letter-spacing: -0.02em; }
+        .mobile-help-entry .help-search { padding: 0 0 10px; }
+        .mobile-help-entry .help-search-field input {
+            cursor: pointer;
+            caret-color: transparent;
+        }
+        .mobile-help-entry .help-chips {
+            padding: 0 0 4px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .mobile-help-entry .help-questions--entry {
+            padding: 0 4px 8px;
+            max-height: none;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            height: calc(3 * 56px);
+            min-height: calc(3 * 56px);
+            max-height: calc(3 * 56px);
+        }
+        .mobile-help-entry .help-questions--entry .help-q {
+            flex: 0 0 56px;
+            box-sizing: border-box;
+            padding: 0 0 0 0;
+            margin: 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            min-height: 0;
+            max-height: 56px;
+            display: flex;
+            align-items: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mobile-help-entry .help-questions--entry .help-q-main {
+            min-width: 0;
+        }
+        .mobile-help-entry .help-questions--entry .help-q-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.35;
+        }
+        .mobile-help-entry .help-questions--entry .help-q--pad {
+            pointer-events: none;
+            color: transparent;
+        }
+        .mobile-help-entry .help-questions--entry .help-q--pad .help-q-chevron {
+            opacity: 0;
+        }
+        .mobile-help-entry .help-questions--entry .help-q--pad:active {
+            opacity: 1;
+        }
+        .mobile-help-entry .help-questions--entry .help-q:last-child {
+            border-bottom: none;
+        }
+        .mobile-help-entry .help-questions--entry .help-q:active {
+            opacity: 0.85;
+        }
+        body.mobile-app .t-help-modal {
+            width: 100% !important;
+            flex: 1 1 0% !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            height: auto !important;
+            display: flex !important;
+            flex-direction: column !important;
+            overflow: hidden !important;
+            border-radius: 20px 20px 0 0 !important;
+            flex-shrink: 1 !important;
+            box-shadow: 0 -8px 40px rgba(0,0,0,0.18) !important;
+        }
+        body.mobile-app .t-help-modal-main-stack {
+            flex: 1 1 0% !important;
+            min-height: 0 !important;
+            overflow: hidden !important;
+        }
+        body.mobile-app .t-help-modal-list-wrap:not(.hidden) {
+            flex: 1 1 0% !important;
+            min-height: 0 !important;
+            overflow: hidden !important;
+        }
+        body.mobile-app .t-help-modal-list {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+        body.mobile-app #tHelpModalWrapper.in-article .t-help-modal-main-stack {
+            flex: 0 0 0 !important;
+            min-height: 0 !important;
+            overflow: hidden !important;
+        }
+        body.mobile-app #tHelpModalWrapper.in-article .t-help-modal-article.visible {
+            flex: 1 1 0% !important;
+            min-height: 0 !important;
+        }
+        body.mobile-app .t-help-modal.wider { width: 100% !important; }
+        body.mobile-app #tHelpModalWiden { display: none !important; }
+        body.mobile-app .help-ai-sheet {
+            position: fixed !important;
+            inset: 0 !important;
+            z-index: 1200 !important;
+            border-radius: 0 !important;
+            pointer-events: none !important;
+        }
+        body.mobile-app .help-ai-sheet.visible {
+            pointer-events: auto !important;
+        }
+        body.mobile-app .help-ai-sheet-backdrop {
+            background: rgba(0, 0, 0, 0.4) !important;
+            border-radius: 0 !important;
+        }
+        body.mobile-app .help-ai-sheet-panel {
+            max-height: min(72%, 560px) !important;
+            padding-bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+        }
+        body.mobile-app .chat-list-modal { width: 100% !important; height: 100% !important; max-height: none !important; border-radius: 0 !important; flex: 1 !important; min-height: 0 !important; }
+        body.mobile-app .iphone-mockup-inner .mobile-viewport {
+            min-height: 100%;
+            height: 100%;
+            max-height: 100%;
+            max-width: none;
+            margin: 0;
+            padding-top: 44px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
     </style>
 </head>
-<body>
-    <div class="mobile-viewport">
-    <header class="mobile-header">
-        <span class="mobile-logo">Т БИЗНЕС</span>
-        <span class="mobile-user">ИП Христов А.</span>
+<body class="mobile-app">
+    <div class="iphone-mockup-page">
+    <header class="mobile-page-header">
+        <div class="mobile-header-row">
+            <span class="mobile-logo">Т БИЗНЕС</span>
+            <span class="mobile-user">ИП Христов А.</span>
+        </div>
+        <nav class="mobile-header-nav" aria-label="Прототипы">
+            <a href="prototype.html">Desktop версия</a>
+            <a href="entry-points-catalog.html">Точки входа</a>
+            <a href="help-ai.html">Справка с AI</a>
+        </nav>
     </header>
-
+    <div class="iphone-mockup-stage">
+    <div class="iphone-mockup-device">
+    <div class="iphone-mockup-bezel">
+    <div class="iphone-mockup-inner" id="iphoneMockupRoot">
+    <div class="iphone-mockup-island" aria-hidden="true"></div>
+    <div class="mobile-viewport">
     <main class="mobile-content">
         <div class="mobile-section">
             <div class="mobile-section-title">Счета</div>
@@ -108,185 +1254,1003 @@
             </div>
         </div>
 
-        <div class="help-widget-inner">
-            <div class="help-header"><span class="help-title">Помощь</span></div>
-            <div class="help-chips-wrap">
-            <div class="help-chips" id="helpChips">
-                <button class="help-chip active" data-cat="all">Все</button>
-                <button class="help-chip" data-cat="terminal">Терминалы</button>
-                <button class="help-chip" data-cat="refunds">Возвраты</button>
-                <button class="help-chip" data-cat="setup">Настройка</button>
-                <button class="help-chip" data-cat="rates">Тарифы</button>
-            </div>
-            </div>
-            <div class="help-search">
-                <input type="text" placeholder="Терминал, возврат, ошибка 51..." id="helpSearch">
-            </div>
-            <div class="help-questions" id="helpQuestions">
-                <div class="help-q" data-cat="terminal" data-article="code51">
-                    <div class="help-q-text">Транзакция отклонена, код 51 — что делать?</div>
-                    <div class="help-q-meta">1 мин</div>
+        <div class="mobile-help-entry">
+            <div class="mobile-help-entry-inner">
+                <div class="mobile-help-entry-head">
+                    <span class="mobile-help-entry-title">Помощь</span>
+                    <button type="button" class="help-ai-widget-btn" id="mobileOpenHelpAi" title="Спросить AI">
+                        <span class="help-ai-icon-btn help-ai-icon-btn--sm" aria-hidden="true">
+                            <span class="help-ai-icon-btn__glow"></span>
+                            <span class="help-ai-icon-btn__inner"></span>
+                        </span>
+                        <span class="help-ai-widget-label">Спросить AI</span>
+                    </button>
                 </div>
-                <div class="help-q" data-cat="terminal" data-article="terminal_blocked">
-                    <div class="help-q-text">Терминал заблокирован — как разблокировать?</div>
-                    <div class="help-q-meta">1 мин</div>
+                <div class="help-body">
+                    <div class="help-search">
+                        <div class="help-search-field" id="mobileEntrySearchField">
+                            <input type="search" id="mobileEntrySearch" placeholder=" " readonly tabindex="0" title="Открыть помощь">
+                            <span class="help-search-typewriter" id="mobileEntrySearchTw" aria-hidden="true"></span>
+                        </div>
+                    </div>
+                    <div class="help-chips" id="mobileEntryChips">
+                        <button type="button" class="help-chip active" data-cat="terminal">Устройства</button>
+                        <button type="button" class="help-chip" data-cat="refunds">Возвраты</button>
+                        <button type="button" class="help-chip" data-cat="rates">Тарифы</button>
+                    </div>
+                    <div class="help-questions help-questions--entry" id="mobileEntryQuestions"></div>
                 </div>
-                <div class="help-q" data-cat="setup" data-article="sbp_setup">
-                    <div class="help-q-text">Как настроить СБП на терминале?</div>
-                    <div class="help-q-meta">2 мин</div>
-                </div>
-                <div class="help-q" data-cat="setup" data-article="close_shift">
-                    <div class="help-q-text">Как закрыть смену?</div>
-                    <div class="help-q-meta">2 мин</div>
-                </div>
-                <div class="help-q" data-cat="refunds" data-article="refund">
-                    <div class="help-q-text">Как сделать возврат на карту?</div>
-                    <div class="help-q-meta">2 мин</div>
-                </div>
-                <div class="help-q" data-cat="terminal" data-article="error02">
-                    <div class="help-q-text">Ошибка 02 при оплате — что значит?</div>
-                    <div class="help-q-meta">1 мин</div>
-                </div>
-                <div class="help-q" data-cat="rates" data-article="rates">
-                    <div class="help-q-text">Сколько стоят услуги эквайринга?</div>
-                    <div class="help-q-meta">5 мин</div>
-                </div>
-                <div class="help-q" data-cat="rates" data-article="change_tariff">
-                    <div class="help-q-text">Как изменить схему оплаты и тариф?</div>
-                    <div class="help-q-meta">8 мин</div>
-                </div>
-                <div class="help-q" data-cat="terminal" data-article="no_receipt">
-                    <div class="help-q-text">Терминал не печатает чек</div>
-                    <div class="help-q-meta">1 мин</div>
-                </div>
-            </div>
-            <div class="help-footer">
-                <a href="#" id="helpSupport">Не нашли ответ? Написать в поддержку</a>
             </div>
         </div>
 
-        <a href="prototype.html" class="mobile-link">← Desktop версия</a>
-        <a href="entry-points-catalog.html" class="mobile-link">📋 Каталог точек входа</a>
-        <a href="help-ai.html" class="mobile-link" style="color: #0F766E; font-weight: 700;">Хелп с AI</a>
     </main>
+    </div>
 
-    <div class="help-drawer-wrapper" id="helpDrawerWrapper">
-        <div class="help-drawer-overlay" id="helpDrawerOverlay"></div>
-        <div class="help-drawer">
-            <div class="help-drawer-handle" aria-hidden="true"></div>
-            <div class="help-article-view" id="helpArticleView">
-                <div class="help-article-header">
-                    <button class="help-article-back" id="helpArticleBack">←</button>
-                    <span class="help-article-title" id="helpArticleTitle"></span>
+    <div class="t-help-modal-overlay" id="tHelpModalOverlay">
+        <div class="t-help-modal-wrapper" id="tHelpModalWrapper">
+            <div class="mobile-help-sheet-handle" aria-hidden="true"></div>
+            <div class="t-help-modal" id="tHelpModal">
+            <div class="t-help-modal-topbar">
+                <button type="button" class="mobile-help-topbar-close" id="tHelpModalClose" title="Закрыть">✕</button>
+                <span class="t-help-modal-topbar-title">Помощь</span>
+                <button type="button" class="help-ai-widget-btn" id="tHelpModalAiOpen" title="Спросить AI">
+                    <span class="help-ai-icon-btn help-ai-icon-btn--sm" aria-hidden="true">
+                        <span class="help-ai-icon-btn__glow"></span>
+                        <span class="help-ai-icon-btn__inner"></span>
+                    </span>
+                    <span class="help-ai-widget-label">Спросить AI</span>
+                </button>
+            </div>
+            <div class="t-help-modal-search-row">
+                <div class="t-help-modal-search">
+                    <div class="help-search-field" id="tHelpModalSearchField">
+                        <input type="search" id="tHelpModalSearch" placeholder=" " autocomplete="off" title="По всей базе при вводе текста">
+                        <span class="help-search-typewriter" id="tHelpModalSearchTypewriter" aria-hidden="true"></span>
+                    </div>
                 </div>
-                <div class="help-article-body" id="helpArticleBody"></div>
-                <div class="help-article-fb">
-                    <div class="help-fb-label">Помогло?</div>
-                    <div class="help-fb-btns">
-                        <button class="help-fb-btn positive" id="artFbYes">👍 Да</button>
-                        <button class="help-fb-btn negative" id="artFbNo">👎 Нет</button>
-                    </div>
-                    <div class="help-fb-done" id="artFbDone">✓ Спасибо!</div>
-                    <div class="help-fb-comment" id="artFbComment">
-                        <textarea id="artFbTextarea" placeholder="Ваш комментарий"></textarea>
-                        <button class="help-fb-send" id="artFbSend" title="Отправить">➤</button>
-                    </div>
-                    <button class="help-fb-support-btn" id="artSupportBtn">Написать в поддержку</button>
-                    <span class="help-fb-comment-toggle" id="artFbCommentToggle">Добавить комментарий</span>
+                <button type="button" class="t-help-modal-search-save" id="tHelpModalSave" title="Сохранённые"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+            </div>
+            <div class="t-help-modal-chips">
+                <div class="t-help-modal-chips-wrap" id="tHelpModalChips">
+                    <button type="button" class="t-help-modal-chip active" data-cat="terminal">Устройства</button>
+                    <button type="button" class="t-help-modal-chip" data-cat="refunds">Возвраты</button>
+                    <button type="button" class="t-help-modal-chip" data-cat="rates">Тарифы</button>
                 </div>
             </div>
+            <div class="t-help-modal-main-stack">
+            <div class="t-help-modal-list-wrap visible" id="tHelpModalListWrap">
+                <div class="t-help-modal-list" id="tHelpModalList"></div>
+            </div>
+            <div class="t-help-modal-saved-wrap" id="tHelpModalSavedWrap">
+                <div class="t-help-modal-saved-header">
+                    <button class="t-help-modal-saved-back" id="tHelpModalSavedBack">←</button>
+                    <span class="t-help-modal-saved-title">Сохранённые</span>
+                </div>
+                <div class="t-help-modal-saved-list" id="tHelpModalSavedList"></div>
+            </div>
+            </div>
+            <div class="t-help-modal-article" id="tHelpModalArticle">
+                <div class="t-help-modal-article-header">
+                    <button class="t-help-modal-article-back" id="tHelpModalArticleBack">←</button>
+                    <span class="t-help-modal-article-title" id="tHelpModalArticleTitle"></span>
+                    <button class="t-help-modal-article-save" id="tHelpModalArticleSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div class="t-help-modal-article-body" id="tHelpModalArticleBody">
+                    <div class="help-article-body-inner" id="tHelpModalArticleBodyInner"></div>
+                    <div class="t-help-modal-article-fb">
+                        <div class="help-feedback-card">
+                            <div class="help-feedback-card-title">Была ли статья полезной?</div>
+                            <div class="help-fb-btns">
+                                <button type="button" class="help-fb-btn positive" id="tHelpModalFbYes">Да</button>
+                                <button type="button" class="help-fb-btn negative" id="tHelpModalFbNo">Нет</button>
+                            </div>
+                            <div class="help-fb-done" id="tHelpModalFbDone">Спасибо за отзыв</div>
+                            <div class="help-article-secondary-actions">
+                                <button type="button" id="tHelpModalSuggest">Предложить правки</button>
+                                <button type="button" id="tHelpModalPdf">Скачать PDF</button>
+                            </div>
+                            <div class="help-fb-comment" id="tHelpModalFbComment">
+                                <textarea id="tHelpModalFbTextarea" placeholder="Комментарий"></textarea>
+                                <button type="button" class="help-fb-send" id="tHelpModalFbSend" title="Отправить">→</button>
+                            </div>
+                            <button type="button" class="help-fb-support-btn" id="tHelpModalSupportBtn">Написать в поддержку</button>
+                            <span class="help-fb-comment-toggle" id="tHelpModalFbCommentToggle">Добавить комментарий</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
         </div>
+    </div>
+
+    <div class="help-ai-sheet" id="helpAiSheet" aria-hidden="true">
+        <div class="help-ai-sheet-backdrop" id="helpAiSheetBackdrop"></div>
+        <div class="help-ai-sheet-panel">
+            <div class="help-ai-sheet-header">
+                <div class="help-ai-sheet-header-pill" aria-hidden="true">
+                    <span class="help-ai-icon-btn help-ai-icon-btn--sm">
+                        <span class="help-ai-icon-btn__glow"></span>
+                        <span class="help-ai-icon-btn__inner"></span>
+                    </span>
+                    <span class="help-ai-widget-label">Спросить AI</span>
+                </div>
+                <button type="button" class="help-ai-sheet-minimize" id="helpAiSheetMinimize" title="Свернуть (диалог сохранится)">▼</button>
+            </div>
+            <div class="help-ai-sheet-messages" id="helpAiMessages"></div>
+            <div class="help-ai-sheet-input-row">
+                <div class="help-ai-input-field" id="helpAiInputField">
+                    <textarea id="helpAiInput" placeholder=" " rows="2"></textarea>
+                    <span class="help-ai-input-typewriter" id="helpAiInputTypewriter" aria-hidden="true"></span>
+                </div>
+                <button type="button" class="help-ai-send" id="helpAiSend" title="Отправить" aria-label="Отправить">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-list-overlay" id="chatListOverlay">
+        <div class="chat-list-wrapper" id="chatListWrapper">
+            <div class="chat-list-modal" id="chatListModal">
+            <div class="chat-list-t-help-block" id="chatListTHelp" data-action="t-help">
+                <div class="chat-list-icon t-help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+                <div class="chat-list-content"><div class="chat-list-name">Т-Помощь</div><div class="chat-list-preview">Найдите ответ в базе знаний</div></div>
+            </div>
+            <div class="chat-list-section">Чаты</div>
+            <div class="chat-list-body" id="chatListBody">
+                <button class="chat-list-item" data-action="avto">
+                    <div class="chat-list-icon avto">🚗</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Авто</div><div class="chat-list-preview">Индивидуальные условия на топливо для...</div></div>
+                    <div class="chat-list-meta"><span class="chat-list-badge gray">3</span> Чт</div>
+                </button>
+                <button class="chat-list-item" data-action="business">
+                    <div class="chat-list-icon business">Т</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Business</div><div class="chat-list-preview">Если срочно нужно принять платеж - Алексей</div></div>
+                    <div class="chat-list-meta">19.02</div>
+                </button>
+                <button class="chat-list-item" data-action="vygoda">
+                    <div class="chat-list-icon vygoda">★</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Выгода</div><div class="chat-list-preview">Ваша реклама почти готова Вы создали о</div></div>
+                    <div class="chat-list-meta"><span class="chat-list-badge">1</span> 17.10.2025</div>
+                </button>
+                <button class="chat-list-item" data-action="manager">
+                    <div class="chat-list-icon manager">YM</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Your manager</div><div class="chat-list-preview">Теперь вам доступен личный чат с персонал</div></div>
+                    <div class="chat-list-meta">24.09.2025</div>
+                </button>
+                <button class="chat-list-item" data-action="seller">
+                    <div class="chat-list-icon seller">🛒</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Т-Селлер</div><div class="chat-list-preview">Обновили автоответы от Селлера. Подключи</div></div>
+                    <div class="chat-list-meta">18.02.2025</div>
+                </button>
+                <button class="chat-list-item" data-action="app">
+                    <div class="chat-list-icon app">📱</div>
+                    <div class="chat-list-content"><div class="chat-list-name">Обновления приложения</div><div class="chat-list-preview">Скачайте приложение Т-Бизнес, чтобы инстр</div></div>
+                    <div class="chat-list-meta">16.08.2024</div>
+                </button>
+            </div>
+            </div>
+            <div class="chat-list-actions">
+                <button class="chat-list-action-btn" id="chatListClose" title="Закрыть">✕</button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+    </div>
+    </div>
     </div>
     </div>
 
     <script>
+        function escapeHtml(str) {
+            if (str == null) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        }
+
+        function formatUpdatedRu(art) {
+            const u = art.updated || '15.03.2026';
+            if (/^\d{1,2}\.\d{1,2}\.\d{4}$/.test(String(u))) return escapeHtml(u);
+            const m = String(u).match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+            if (m) return m[2].padStart(2, '0') + '.' + m[1].padStart(2, '0') + '.' + m[3];
+            return escapeHtml(u);
+        }
+        function formatStatNum(n) {
+            const x = Math.floor(Number(n)) || 0;
+            return x.toLocaleString('ru-RU');
+        }
+        const STAT_ICON_CAL = '<svg class="help-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+        const STAT_ICON_EYE = '<svg class="help-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+        const STAT_ICON_LIKE = '<svg class="help-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/></svg>';
+        function buildArticleStatsHtml(art) {
+            const views = art.views != null ? art.views : 1247;
+            const helpful = art.helpful != null ? art.helpful : 892;
+            return '<div class="help-article-stats" role="status">' +
+                '<span class="help-stat-item">' + STAT_ICON_CAL + '<span>' + formatUpdatedRu(art) + '</span></span>' +
+                '<span class="help-stat-sep" aria-hidden="true">·</span>' +
+                '<span class="help-stat-item">' + STAT_ICON_EYE + '<span>' + formatStatNum(views) + '</span></span>' +
+                '<span class="help-stat-sep" aria-hidden="true">·</span>' +
+                '<span class="help-stat-item">' + STAT_ICON_LIKE + '<span>' + formatStatNum(helpful) + '</span></span>' +
+                '</div>';
+        }
+
         const articles = {
-            code51: { title: 'Транзакция отклонена, код 51 — что делать?', body: '<p>Недостаточно средств. Предложите другую карту, СБП или наличные.</p>' },
-            terminal_blocked: { title: 'Терминал заблокирован — как разблокировать?', body: '<p>Код из СМС или приложения. Сбросьте в ЛК, если не помните.</p>' },
-            sbp_setup: { title: 'Как настроить СБП на терминале?', body: '<p>Меню → Настройки → СБП. Привяжите к счёту в приложении банка.</p>' },
-            close_shift: { title: 'Как закрыть смену?', body: '<p>Меню → Отчёты → Закрытие смены. Z-отчёт распечатается.</p>' },
-            refund: { title: 'Как сделать возврат на карту?', body: '<p>Меню → Возврат. Сумма + 4 цифры карты. Текущий день — сразу.</p>' },
-            error02: { title: 'Ошибка 02 при оплате — что значит?', body: '<p>Отказ банка-эмитента. Другая карта или связь с банком.</p>' },
-            rates: { title: 'Сколько стоят услуги эквайринга?', body: '<p>Аренда терминала бесплатная. Стоимость зависит от тарифа счёта, схемы и способа приёма.</p><div class="example">Пример: пакет на тарифе «Простой» 1 990 ₽.</div>' },
-            no_receipt: { title: 'Терминал не печатает чек', body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>' },
-            change_tariff: { title: 'Как изменить схему оплаты и тариф?', body: '<p>Напишите в чат поддержки или позвоните 8 800 700‑66‑66. Назовите дату смены тарифа.</p><div class="help-article-img-placeholder">[Скриншот: кнопка чата]</div>' }
+            code51: {
+                title: 'Транзакция отклонена, код 51 — что делать?',
+                updated: '10.03.2026',
+                views: 8421,
+                helpful: 5120,
+                body: '<p>Недостаточно средств. Предложите другую карту, СБП или наличные.</p>',
+                recommendations: ['error02', 'terminal_blocked', 'refund']
+            },
+            terminal_blocked: {
+                title: 'Терминал заблокирован — как разблокировать?',
+                views: 3200,
+                helpful: 2100,
+                body: '<p>Код из СМС или приложения. Сбросьте в ЛК, если не помните.</p>',
+                recommendations: ['code51', 'no_receipt', 'sbp_setup']
+            },
+            sbp_setup: {
+                title: 'Как настроить СБП на терминале?',
+                body: '<p>Меню → Настройки → СБП. Привяжите к счёту в приложении банка.</p>',
+                recommendations: ['pay_receipt', 'close_shift', 'refund']
+            },
+            close_shift: {
+                title: 'Как закрыть смену?',
+                body: '<p>Меню → Отчёты → Закрытие смены. Z-отчёт распечатается.</p>',
+                recommendations: ['pay_receipt', 'sbp_setup', 'refund']
+            },
+            pay_receipt: {
+                title: 'Как принимать оплату и выдавать чеки',
+                body: '<p>Проведите картой или приложите к терминалу. Чек печатается автоматически. Для СБП — отсканируйте QR в приложении банка.</p>',
+                recommendations: ['sbp_setup', 'close_shift', 'no_receipt']
+            },
+            refund: {
+                title: 'Как сделать возврат на карту?',
+                body: '<p>Меню → Возврат. Сумма + 4 цифры карты. Текущий день — сразу.</p>',
+                recommendations: ['code51', 'error02', 'pay_receipt']
+            },
+            error02: {
+                title: 'Ошибка 02 при оплате — что значит?',
+                body: '<p>Отказ банка-эмитента. Другая карта или связь с банком.</p>',
+                recommendations: ['code51', 'terminal_blocked', 'refund']
+            },
+            rates: {
+                title: 'Сколько стоят услуги эквайринга?',
+                views: 15400,
+                helpful: 9800,
+                recommendations: ['change_tariff', 'pay_receipt', 'sbp_setup'],
+                body: `<p>Аренда терминала бесплатная. Стоимость зависит от тарифа счёта, схемы (пакетная/процентная) и способа приёма (карта/СБП).</p>
+                <ul><li>Тариф расчётного счёта</li><li>Схема оплаты эквайринга</li><li>Способ приёма (карта, СБП)</li></ul>
+                <p>При подключении считаем со дня доставки терминала.</p>
+                <div class="example">Пример: пакет на тарифе «Простой» 1 990 ₽, доставка 7 апреля. Период 28 дней: 1 990 × 28/30 = 1 857 ₽.</div>`
+            },
+            no_receipt: {
+                title: 'Терминал не печатает чек',
+                body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>',
+                recommendations: ['terminal_blocked', 'pay_receipt', 'sbp_setup']
+            },
+            change_tariff: {
+                title: 'Как изменить схему оплаты и тариф?',
+                recommendations: ['rates', 'refund', 'pay_receipt'],
+                body: `<p>Напишите в чат поддержки Т‑Бизнеса или позвоните по телефону 8 800 700‑66‑66. Объясните, на какую схему оплаты хотите перейти, и назовите дату, с которой начнёт действовать новый тариф или схема оплаты эквайринга.</p>
+                <img src="assets/tariff-change-illustration.png" alt="Схема оплаты и тариф — поддержка Т‑Бизнес">
+                <div class="tariff-calc" id="tariffCalc">
+                    <div class="tariff-calc-title">Калькулятор тарифов</div>
+                    <div class="tariff-calc-blocks">
+                        <div class="tariff-calc-block">
+                            <div class="tariff-calc-label">Оборот, ₽ <span class="tariff-calc-value" id="tariffCalcTurnoverVal">150 000</span></div>
+                            <input type="range" class="tariff-calc-slider" id="tariffCalcTurnover" min="50000" max="500000" value="150000" step="10000">
+                            <div class="tariff-calc-scale"><span>50к</span><span>250к</span><span>500к</span></div>
+                        </div>
+                        <div class="tariff-calc-block">
+                            <div class="tariff-calc-label">Терминалы <span class="tariff-calc-value" id="tariffCalcTerminalsVal">1</span></div>
+                            <input type="range" class="tariff-calc-slider" id="tariffCalcTerminals" min="1" max="10" value="1" step="1">
+                            <div class="tariff-calc-scale"><span>1</span><span>5</span><span>10</span></div>
+                        </div>
+                    </div>
+                    <div class="tariff-calc-results">
+                        <div class="tariff-calc-cards" id="tariffCalcResults"></div>
+                        <div class="tariff-calc-hint">Комиссии без НДС. Платежи по QR (СБП) не учитываются.</div>
+                    </div>
+                </div>
+                <p>Перейти в чат поддержки можно с любой страницы личного кабинета Т‑Бизнеса — нажмите на жёлтую кнопку чата.</p>
+                <p>Если у вас пакетная схема и вы переходите на новый тариф, текущий пакет обнулится, а новый подключится за полную стоимость.</p>
+                <div class="example">Например, вы перешли с тарифа «Простой» на «Продвинутый» до конца расчётного периода. На момент перехода вы получили платежей на 90 000 ₽ — то есть не успели использовать 10 000 ₽ оборота. Они сгорят, когда подключится новый пакет, — в дату, которую вы назовёте, но не ранее следующего дня после подачи заявки. В этот день спишется 2 690 ₽ — плата за пакет на тарифе «Продвинутый».</div>
+                <p>Если у вас процентная схема и вы переходите на новый тариф, изменится минимальный платёж. Если комиссия за операции по картам будет меньше, чем минимальный платёж, мы спишем разницу с расчётного счёта.</p>
+                <div class="example">Например, на тарифе «Простой» каждое 15‑е число с вашего расчётного счёта списывалась комиссия за операции по карте и минимальный платёж за терминал — 1 990 ₽. 10 апреля вы перешли на тариф «Продвинутый». На тарифе «Простой» вы уже заплатили 1 500 ₽ комиссии за платежи картой. 15 апреля мы сделаем перерасчёт: 1990 × (26 / 31) = 1 669 ₽ — сумма минимального платежа за 26 дней. Так как вы уже заплатили 1500 ₽, мы спишем только разницу — 169 ₽.</div>
+                <p>Если переходите с процентной схемы на пакетную, мы пересчитаем плату за пакет — стоимость зависит от количества терминалов, дней до конца периода и стоимости пакета.</p>
+                <div class="example">Например, 1 июня вы подключили процентную схему на тарифе «Продвинутый» за 2 690 ₽ и получили один терминал. 10 июня вы решили перейти на пакетную схему. Плата с 1 по 10 июня составит: 2 690 × 10 / 30 = 897 ₽. За 10 дней вы провели операций по карте на 15 000 ₽, комиссия: 15 000 × 2,29% = 343 ₽. Поскольку она меньше, чем плата за пакет, в конце расчётного периода мы доспишем разницу: 897 − 343 = 554 ₽. Стоимость пакета на тарифе «Продвинутый» за один терминал — 2 690 ₽. Всего в июне 30 дней, остаток неиспользованного пакета — 20 дней. 11 июня спишется 2 690 × 20 / 30 = 1 793 ₽.</div>
+                <p>Если переходите с пакетной схемы на процентную, день обращения мы посчитаем по старой схеме, а остаток по уже оплаченному пакету сгорит, когда начнёт действовать новая схема.</p>
+                <div class="example">Например, 1 апреля вы подключили пакетную схему на тарифе «Профессиональный» и получили два терминала. Вы заплатили 3990 ₽ × 2 = 7 980 ₽. 10 апреля вы решили изменить схему оплаты и обратились в поддержку. 11 апреля начала действовать процентная схема, а плата за пакеты сгорела. С 11 по 30 апреля вы платили проценты с каждой выплаты — набралось 500 ₽. 30 апреля — в конце расчётного периода — рассчитаем плату за процентную схему. Она составит 3990 × 20 / 30 − 500 = 2 160 ₽ за один терминал, а за два — 4 320 ₽.</div>
+                <p>Схема оплаты изменится в назначенную дату, но не раньше чем на следующий день после подачи заявки через поддержку. День обращения мы посчитаем по старой схеме.</p>`
+            }
         };
-        const helpChips = document.getElementById('helpChips');
-        const helpSearch = document.getElementById('helpSearch');
-        const helpArticleTitle = document.getElementById('helpArticleTitle');
-        const helpArticleBody = document.getElementById('helpArticleBody');
-        const helpDrawerWrapper = document.getElementById('helpDrawerWrapper');
-        const helpDrawerOverlay = document.getElementById('helpDrawerOverlay');
-        const helpArticleBack = document.getElementById('helpArticleBack');
-        const artFbYes = document.getElementById('artFbYes');
-        const artFbNo = document.getElementById('artFbNo');
-        const artFbDone = document.getElementById('artFbDone');
-        const artSupportBtn = document.getElementById('artSupportBtn');
-        const artFbCommentToggle = document.getElementById('artFbCommentToggle');
-        const artFbComment = document.getElementById('artFbComment');
-        const artFbTextarea = document.getElementById('artFbTextarea');
-        const artFbSend = document.getElementById('artFbSend');
 
-        helpChips.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('help-chip')) return;
-            helpChips.querySelectorAll('.help-chip').forEach(c => c.classList.remove('active'));
-            e.target.classList.add('active');
-            filterHelp();
-        });
-        helpSearch.addEventListener('input', filterHelp);
-        filterHelp();
-
-        document.querySelectorAll('.help-q').forEach(q => {
-            q.addEventListener('click', () => {
-                const artId = q.dataset.article;
-                if (artId && articles[artId]) {
-                    helpArticleTitle.textContent = articles[artId].title;
-                    helpArticleBody.innerHTML = articles[artId].body;
-                    helpDrawerWrapper.classList.add('active');
+        const TARIFFS = {
+            simple: { name: 'Простой', packLimit: 100000, packPrice: 1990, pctRate: 0.0269, minPay: 1990 },
+            advanced: { name: 'Продвинутый', packLimit: 150000, packPrice: 2690, pctRate: 0.0229, minPay: 2690 },
+            pro: { name: 'Профессиональный', packLimit: 250000, packPrice: 3990, pctRate: 0.0179, minPay: 3990 }
+        };
+        function calcTariffPackage(turnover, terminals, t) {
+            const packsNeeded = Math.ceil(turnover / t.packLimit);
+            return Math.round(packsNeeded * t.packPrice);
+        }
+        function calcTariffPercent(turnover, terminals, t) {
+            const commission = turnover * t.pctRate;
+            const minTotal = t.minPay * terminals;
+            return Math.round(Math.max(commission, minTotal));
+        }
+        function initTariffCalculator(container) {
+            if (!container) return;
+            const wrap = container.querySelector('#tariffCalc');
+            if (!wrap) return;
+            const inpTurnover = wrap.querySelector('#tariffCalcTurnover');
+            const inpTerminals = wrap.querySelector('#tariffCalcTerminals');
+            const valTurnover = wrap.querySelector('#tariffCalcTurnoverVal');
+            const valTerminals = wrap.querySelector('#tariffCalcTerminalsVal');
+            const resultsEl = wrap.querySelector('#tariffCalcResults');
+            const fmt = (n) => n.toLocaleString('ru-RU');
+            const update = () => {
+                const turnover = Math.max(50000, Math.min(500000, parseInt(inpTurnover?.value || 150000, 10) || 150000));
+                const terminals = Math.max(1, Math.min(10, parseInt(inpTerminals?.value || 1, 10) || 1));
+                if (valTurnover) valTurnover.textContent = fmt(turnover);
+                if (valTerminals) valTerminals.textContent = terminals;
+                const results = [];
+                let bestCost = Infinity;
+                Object.entries(TARIFFS).forEach(([key, t]) => {
+                    const packCost = calcTariffPackage(turnover, terminals, t);
+                    const pctCost = calcTariffPercent(turnover, terminals, t);
+                    bestCost = Math.min(bestCost, packCost, pctCost);
+                    results.push({ name: t.name, packCost, pctCost });
+                });
+                if (resultsEl) {
+                    resultsEl.innerHTML = results.map(r => {
+                        const packBest = r.packCost === bestCost;
+                        const pctBest = r.pctCost === bestCost;
+                        const isBest = packBest || pctBest;
+                        const shortName = r.name === 'Профессиональный' ? 'Проф.' : r.name;
+                        return `<div class="tariff-calc-card ${isBest ? 'best' : ''}" title="${r.name}">
+                            <div><span class="tariff-calc-card-name">${shortName}</span>${isBest ? ' <span class="tariff-calc-badge">✓</span>' : ''}</div>
+                            <div class="tariff-calc-card-costs">
+                                <div class="tariff-calc-card-cost ${packBest ? 'best' : ''}"><span>Пакет</span><strong>${fmt(r.packCost)} ₽</strong></div>
+                                <div class="tariff-calc-card-cost ${pctBest ? 'best' : ''}"><span>%</span><strong>${fmt(r.pctCost)} ₽</strong></div>
+                            </div>
+                        </div>`;
+                    }).join('');
                 }
-            });
-        });
+            };
+            [inpTurnover, inpTerminals].forEach(el => { if (el) { el.addEventListener('input', update); el.addEventListener('change', update); } });
+            update();
+        }
 
-        const closeDrawer = () => {
-            helpDrawerWrapper.classList.remove('active');
-            artFbYes.style.display = ''; artFbNo.style.display = '';
-            artFbDone.classList.remove('visible');
-            artSupportBtn.classList.remove('visible');
-            artFbCommentToggle.classList.remove('visible');
-            artFbComment.classList.remove('visible');
-            artFbTextarea.value = '';
+        const helpItems = [
+            { cat: 'rates', article: 'rates', text: 'Сколько стоит торговый эквайринг от Т‑Банка', meta: '5 мин' },
+            { cat: 'rates', article: 'change_tariff', text: 'Как изменить схему оплаты и тариф?', meta: '8 мин' },
+            { cat: 'terminal', article: 'sbp_setup', text: 'Как принимать оплату по QR‑коду на терминале', meta: '2 мин' },
+            { cat: 'terminal', article: 'pay_receipt', text: 'Как принимать оплату и выдавать чеки', meta: '2 мин' },
+            { cat: 'terminal', article: 'close_shift', text: 'Как закрыть смену?', meta: '2 мин' },
+            { cat: 'terminal', article: 'code51', text: 'Транзакция отклонена, код 51 — что делать?', meta: '1 мин' },
+            { cat: 'terminal', article: 'terminal_blocked', text: 'Терминал заблокирован — как разблокировать?', meta: '1 мин' },
+            { cat: 'terminal', article: 'error02', text: 'Ошибка 02 при оплате — что значит?', meta: '1 мин' },
+            { cat: 'terminal', article: 'no_receipt', text: 'Терминал не печатает чек', meta: '1 мин' },
+            { cat: 'refunds', article: 'refund', text: 'Как сделать возврат по торговому эквайрингу?', meta: '2 мин' }
+        ];
+
+        let helpAiTwTimer = null;
+        function syncHelpAiInputField() {
+            const field = document.getElementById('helpAiInputField');
+            const el = document.getElementById('helpAiInput');
+            if (!field || !el) return;
+            field.classList.toggle('has-value', !!el.value.trim());
+        }
+        function initHelpAiInputTypewriter() {
+            const el = document.getElementById('helpAiInput');
+            const tw = document.getElementById('helpAiInputTypewriter');
+            const field = document.getElementById('helpAiInputField');
+            if (!el || !tw || !field) return;
+            const phrases = helpItems.slice(0, 5).map(i => i.text);
+            let pi = 0;
+            let ch = 0;
+            let phase = 'typing';
+            function tick() {
+                clearTimeout(helpAiTwTimer);
+                if (document.activeElement === el || el.value.trim()) {
+                    tw.textContent = '';
+                    helpAiTwTimer = setTimeout(tick, 500);
+                    return;
+                }
+                const phrase = phrases[pi % phrases.length];
+                if (phase === 'typing') {
+                    if (ch < phrase.length) {
+                        ch++;
+                        tw.textContent = phrase.slice(0, ch);
+                        helpAiTwTimer = setTimeout(tick, 38);
+                    } else {
+                        phase = 'pause';
+                        helpAiTwTimer = setTimeout(() => { phase = 'deleting'; tick(); }, 1750);
+                    }
+                } else if (phase === 'deleting') {
+                    if (ch > 0) {
+                        ch--;
+                        tw.textContent = phrase.slice(0, ch);
+                        helpAiTwTimer = setTimeout(tick, 24);
+                    } else {
+                        phase = 'typing';
+                        pi++;
+                        helpAiTwTimer = setTimeout(tick, 420);
+                    }
+                }
+            }
+            el.addEventListener('focus', () => { clearTimeout(helpAiTwTimer); tw.textContent = ''; });
+            el.addEventListener('blur', () => { if (!el.value.trim()) { phase = 'typing'; ch = 0; tick(); } });
+            el.addEventListener('input', syncHelpAiInputField);
+            tick();
+        }
+        initHelpAiInputTypewriter();
+
+        function renderArticleContent(artId, bodyEl, openArticleFn) {
+            const art = articles[artId];
+            if (!art) return;
+            bodyEl.innerHTML = buildArticleStatsHtml(art) + art.body;
+            if (artId === 'change_tariff') initTariffCalculator(bodyEl);
+            const recs = art.recommendations;
+            if (recs && recs.length) {
+                const recDiv = document.createElement('div');
+                recDiv.className = 'help-article-recommendations';
+                recDiv.innerHTML = '<div class="help-article-recommendations-title">Рекомендации</div><div class="help-article-recommendations-list">' + recs.filter(id => articles[id]).map(id => '<a href="#" data-article="' + id + '">' + (articles[id].title || id) + '</a>').join('') + '</div>';
+                recDiv.querySelectorAll('a').forEach(a => {
+                    a.addEventListener('click', (e) => { e.preventDefault(); if (openArticleFn) openArticleFn(a.dataset.article); else openArticle(a.dataset.article); });
+                });
+                bodyEl.appendChild(recDiv);
+            }
+        }
+
+        const openArticle = (artId) => {
+            if (!artId || !articles[artId]) return;
+            openTHelpModal();
+            showModalArticle(artId);
         };
-        helpDrawerOverlay.addEventListener('click', closeDrawer);
-        helpArticleBack.addEventListener('click', closeDrawer);
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && helpDrawerWrapper.classList.contains('active')) closeDrawer(); });
 
-        artFbYes.addEventListener('click', function() {
-            this.style.display = 'none'; artFbNo.style.display = 'none';
-            artFbDone.classList.add('visible');
-            artFbCommentToggle.classList.add('visible');
-        });
-        artFbNo.addEventListener('click', function() {
-            this.style.display = 'none'; artFbYes.style.display = 'none';
-            artSupportBtn.classList.add('visible');
-            artFbComment.classList.add('visible');
-            artFbTextarea.placeholder = 'Что не так?';
-        });
-        artFbCommentToggle.addEventListener('click', () => { artFbCommentToggle.classList.remove('visible'); artFbComment.classList.add('visible'); });
-        const sendFb = () => { const t = artFbTextarea.value.trim(); alert(t ? 'Обратная связь: ' + t : 'Отправлено'); };
-        artFbSend.addEventListener('click', sendFb);
-        artFbTextarea.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFb(); } });
-        artSupportBtn.addEventListener('click', () => alert('Чат поддержки'));
+        function suggestArticleChange(artId) {
+            const art = artId && articles[artId];
+            const label = art ? art.title : 'статья';
+            const text = prompt('Опишите, что стоит поправить в материале «' + label + '» (прототип):');
+            if (text !== null && String(text).trim()) alert('Спасибо, предложение отправлено на рассмотрение.');
+        }
 
-        function filterHelp() {
-            const cat = helpChips.querySelector('.help-chip.active').dataset.cat;
-            const q = helpSearch.value.toLowerCase().trim();
-            document.querySelectorAll('.help-q').forEach(item => {
-                const matchCat = cat === 'all' || item.dataset.cat === cat;
-                const matchSearch = !q || item.querySelector('.help-q-text').textContent.toLowerCase().includes(q);
-                item.classList.toggle('hidden', !(matchCat && matchSearch));
+        function printArticlePdf(artId) {
+            const art = artId && articles[artId];
+            if (!art) return;
+            const w = window.open('', '_blank');
+            if (!w) {
+                alert('Разрешите всплывающие окна, чтобы сохранить PDF');
+                return;
+            }
+            w.document.write('<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><title>' + escapeHtml(art.title) + '</title><style>body{font-family:system-ui,-apple-system,BlinkMacSystemFont,sans-serif;padding:32px;max-width:720px;margin:0 auto;color:#222;line-height:1.55}h1{font-size:20px;font-weight:600;margin-bottom:16px}.help-article-stats{font-size:12px;color:#555;margin-bottom:20px;padding:12px 14px;background:#f5f5f7;border-radius:12px;border:1px solid rgba(0,0,0,0.06)}.help-article-stats-row{margin-bottom:6px}</style></head><body><h1>' + escapeHtml(art.title) + '</h1>' + buildArticleStatsHtml(art) + art.body + '</body></html>');
+            w.document.close();
+            w.onload = function() { w.focus(); w.print(); };
+        }
+
+
+        const tHelpModalOverlay = document.getElementById('tHelpModalOverlay');
+        const tHelpModalClose = document.getElementById('tHelpModalClose');
+        const tHelpModalSearch = document.getElementById('tHelpModalSearch');
+        const tHelpModalChips = document.getElementById('tHelpModalChips');
+        const tHelpModalList = document.getElementById('tHelpModalList');
+        if (!tHelpModalOverlay || !tHelpModalList || !tHelpModalChips || !tHelpModalSearch) {
+            console.error('t-help-widget mobile: modal DOM nodes missing');
+        }
+        const tHelpModalListWrap = document.getElementById('tHelpModalListWrap');
+        const tHelpModalArticle = document.getElementById('tHelpModalArticle');
+        const tHelpModalArticleBack = document.getElementById('tHelpModalArticleBack');
+        const tHelpModalArticleTitle = document.getElementById('tHelpModalArticleTitle');
+        const tHelpModalArticleBodyInner = document.getElementById('tHelpModalArticleBodyInner');
+
+        const SAVED_HELP_KEY = 't-help-saved';
+        const getSavedArticles = () => { try { const j = localStorage.getItem(SAVED_HELP_KEY); return j ? new Set(JSON.parse(j)) : new Set(); } catch (_) { return new Set(); } };
+        const setSavedArticles = (set) => { try { localStorage.setItem(SAVED_HELP_KEY, JSON.stringify([...set])); } catch (_) {} };
+        let savedArticles = getSavedArticles();
+
+        const bookmarkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+
+        function toggleSaveArticle(articleId) {
+            if (savedArticles.has(articleId)) savedArticles.delete(articleId);
+            else savedArticles.add(articleId);
+            setSavedArticles(savedArticles);
+            updateSaveButtons(articleId);
+        }
+        function updateSaveButtons(articleId) {
+            const saved = articleId ? savedArticles.has(articleId) : false;
+            const btn = document.getElementById('tHelpModalSave');
+            const artBtn = document.getElementById('tHelpModalArticleSave');
+            if (btn) { btn.classList.toggle('saved', savedArticles.size > 0); btn.title = 'Сохранённые'; }
+            if (artBtn) { artBtn.classList.toggle('saved', saved); artBtn.title = saved ? 'Убрать из сохранённых' : 'Сохранить'; }
+            if (!tHelpModalList) return;
+            tHelpModalList.querySelectorAll('.t-help-modal-q').forEach(el => {
+                const id = el.dataset.article;
+                const saveBtn = el.querySelector('.t-help-modal-q-save');
+                if (saveBtn) saveBtn.classList.toggle('saved', savedArticles.has(id));
             });
         }
-        document.getElementById('helpSupport').addEventListener('click', (e) => { e.preventDefault(); alert('Чат поддержки'); });
+
+        function renderTHelpModalList() {
+            if (!tHelpModalChips || !tHelpModalList || !tHelpModalSearch) return;
+            const cat = tHelpModalChips.querySelector('.t-help-modal-chip.active')?.dataset.cat || 'terminal';
+            const q = tHelpModalSearch.value.toLowerCase().trim();
+            const filtered = helpItems.filter(item => {
+                const matchCat = item.cat === cat;
+                const matchSearch = !q || item.text.toLowerCase().includes(q);
+                return q ? matchSearch : (matchCat && matchSearch);
+            });
+            tHelpModalList.innerHTML = filtered.map(item => {
+                const saved = savedArticles.has(item.article);
+                return '<div class="t-help-modal-q" data-cat="' + item.cat + '" data-article="' + item.article + '">' +
+                    '<div class="t-help-modal-q-content"><div class="t-help-modal-q-text">' + item.text + '</div><div class="t-help-modal-q-meta">' + item.meta + '</div></div>' +
+                    '<button type="button" class="t-help-modal-q-save ' + (saved ? 'saved' : '') + '" data-article="' + item.article + '" title="' + (saved ? 'Убрать из сохранённых' : 'Сохранить') + '">' + bookmarkSvg + '</button>' +
+                    '<span class="t-help-modal-q-chevron" aria-hidden="true">›</span></div>';
+            }).join('');
+            tHelpModalList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); });
+            });
+        }
+        renderTHelpModalList();
+
+        function filterTHelpModal() {
+            renderTHelpModalList();
+        }
+
+        let helpModalSearchTwTimer = null;
+        function syncModalSearchField() {
+            const field = document.getElementById('tHelpModalSearchField');
+            const el = document.getElementById('tHelpModalSearch');
+            if (!field || !el) return;
+            field.classList.toggle('has-value', !!el.value.trim());
+        }
+        function initModalSearchTypewriter() {
+            const el = document.getElementById('tHelpModalSearch');
+            const tw = document.getElementById('tHelpModalSearchTypewriter');
+            const field = document.getElementById('tHelpModalSearchField');
+            if (!el || !tw || !field) return;
+            const phrases = helpItems.slice(0, 5).map(i => i.text);
+            let pi = 0;
+            let ch = 0;
+            let phase = 'typing';
+            function tick() {
+                clearTimeout(helpModalSearchTwTimer);
+                if (document.activeElement === el || el.value.trim()) {
+                    tw.textContent = '';
+                    helpModalSearchTwTimer = setTimeout(tick, 500);
+                    return;
+                }
+                const phrase = phrases[pi % phrases.length];
+                if (phase === 'typing') {
+                    if (ch < phrase.length) {
+                        ch++;
+                        tw.textContent = phrase.slice(0, ch);
+                        helpModalSearchTwTimer = setTimeout(tick, 38);
+                    } else {
+                        phase = 'pause';
+                        helpModalSearchTwTimer = setTimeout(() => { phase = 'deleting'; tick(); }, 1750);
+                    }
+                } else if (phase === 'deleting') {
+                    if (ch > 0) {
+                        ch--;
+                        tw.textContent = phrase.slice(0, ch);
+                        helpModalSearchTwTimer = setTimeout(tick, 24);
+                    } else {
+                        phase = 'typing';
+                        pi++;
+                        helpModalSearchTwTimer = setTimeout(tick, 420);
+                    }
+                }
+            }
+            el.addEventListener('focus', () => { clearTimeout(helpModalSearchTwTimer); tw.textContent = ''; });
+            el.addEventListener('blur', () => { if (!el.value.trim()) { phase = 'typing'; ch = 0; tick(); } });
+            el.addEventListener('input', syncModalSearchField);
+            tick();
+        }
+        initModalSearchTypewriter();
+
+        const tHelpModalSavedWrap = document.getElementById('tHelpModalSavedWrap');
+        const tHelpModalSavedList = document.getElementById('tHelpModalSavedList');
+        const tHelpModalSavedBack = document.getElementById('tHelpModalSavedBack');
+
+        function renderSavedList() {
+            savedArticles = getSavedArticles();
+            const seen = new Set();
+            const items = helpItems.filter(item => savedArticles.has(item.article) && !seen.has(item.article) && seen.add(item.article));
+            tHelpModalSavedList.innerHTML = items.length ? items.map(item => {
+                const saved = true;
+                return `<div class="t-help-modal-q" data-cat="${item.cat}" data-article="${item.article}"><div class="t-help-modal-q-content"><div class="t-help-modal-q-text">${item.text}</div><div class="t-help-modal-q-meta">${item.meta}</div></div><button class="t-help-modal-q-save saved" data-article="${item.article}" title="Убрать из сохранённых">${bookmarkSvg}</button></div>`;
+            }).join('') : '<div class="t-help-modal-saved-empty" style="padding: 24px; text-align: center; color: #999; font-size: 14px;">Нет сохранённых статей</div>';
+            tHelpModalSavedList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); renderSavedList(); });
+            });
+        }
+
+        function openSavedList() {
+            currentModalArticleId = null;
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+            tHelpModalListWrap.classList.add('visible');
+            tHelpModalListWrap.classList.remove('hidden');
+            tHelpModalArticle.classList.remove('visible');
+            tHelpModalSavedWrap.classList.add('visible');
+            renderSavedList();
+        }
+
+        let cameFromSavedList = false;
+        function showModalArticle(artId, fromSaved) {
+            const art = articles[artId];
+            if (!art) return;
+            if (fromSaved === undefined) cameFromSavedList = false;
+            else cameFromSavedList = fromSaved;
+            currentModalArticleId = artId;
+            tHelpModalArticleTitle.textContent = art.title;
+            renderArticleContent(artId, tHelpModalArticleBodyInner, showModalArticle);
+            resetModalArticleFeedback();
+            tHelpModalListWrap.classList.remove('visible');
+            tHelpModalListWrap.classList.add('hidden');
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalArticle.classList.add('visible');
+            document.getElementById('tHelpModalWrapper').classList.add('in-article');
+            updateSaveButtons(artId);
+        }
+        tHelpModalSavedList.addEventListener('click', (e) => {
+            const q = e.target.closest('.t-help-modal-q');
+            if (!q || !q.dataset.article || e.target.closest('.t-help-modal-q-save')) return;
+            showModalArticle(q.dataset.article, true);
+        });
+
+        tHelpModalSavedBack.addEventListener('click', () => {
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalListWrap.classList.add('visible');
+            tHelpModalListWrap.classList.remove('hidden');
+        });
+
+        const HELP_AI_STORAGE_KEY = 't-help-widget-ai-chat-v1';
+        const helpAiSheet = document.getElementById('helpAiSheet');
+        const helpAiMessagesEl = document.getElementById('helpAiMessages');
+        const helpAiInput = document.getElementById('helpAiInput');
+        let helpAiChatHistory = [];
+
+        function loadHelpAiChat() {
+            try {
+                const j = localStorage.getItem(HELP_AI_STORAGE_KEY);
+                helpAiChatHistory = j ? JSON.parse(j) : [];
+                if (!Array.isArray(helpAiChatHistory)) helpAiChatHistory = [];
+            } catch (_) {
+                helpAiChatHistory = [];
+            }
+        }
+        function saveHelpAiChat() {
+            try { localStorage.setItem(HELP_AI_STORAGE_KEY, JSON.stringify(helpAiChatHistory)); } catch (_) {}
+        }
+        function renderHelpAiMessages() {
+            if (!helpAiMessagesEl) return;
+            helpAiMessagesEl.innerHTML = helpAiChatHistory.map(m => {
+                const roleClass = m.role === 'user' ? 'user' : 'assistant';
+                return '<div class="help-ai-msg help-ai-msg--' + roleClass + '">' + escapeHtml(m.text) + '</div>';
+            }).join('');
+            helpAiMessagesEl.scrollTop = helpAiMessagesEl.scrollHeight;
+        }
+        function pushHelpAiMessage(role, text) {
+            helpAiChatHistory.push({ role: role, text: text, t: Date.now() });
+            saveHelpAiChat();
+            renderHelpAiMessages();
+        }
+        function attachHelpAiSheetHost() {
+            const host = document.getElementById('iphoneMockupRoot') || document.body;
+            if (helpAiSheet && helpAiSheet.parentElement !== host) {
+                host.appendChild(helpAiSheet);
+            }
+        }
+        function focusHelpAiInputDeferred() {
+            if (!helpAiInput) return;
+            const doFocus = () => {
+                try { helpAiInput.focus({ preventScroll: true }); } catch (_) { helpAiInput.focus(); }
+            };
+            setTimeout(doFocus, 400);
+        }
+        function openHelpAiSheet() {
+            if (!tHelpModalOverlay.classList.contains('visible')) {
+                openTHelpModal();
+            }
+            attachHelpAiSheetHost();
+            loadHelpAiChat();
+            renderHelpAiMessages();
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    if (helpAiSheet) {
+                        helpAiSheet.classList.add('visible');
+                        helpAiSheet.setAttribute('aria-hidden', 'false');
+                    }
+                    focusHelpAiInputDeferred();
+                });
+            });
+        }
+        function minimizeHelpAiSheet() {
+            if (helpAiSheet) {
+                helpAiSheet.classList.remove('visible');
+                helpAiSheet.setAttribute('aria-hidden', 'true');
+            }
+        }
+        loadHelpAiChat();
+        attachHelpAiSheetHost();
+
+        function openTHelpModal() {
+            document.body.classList.add('t-help-modal-open');
+            tHelpModalOverlay.classList.add('visible');
+            tHelpModalListWrap.classList.remove('hidden');
+            tHelpModalListWrap.classList.add('visible');
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalArticle.classList.remove('visible');
+            tHelpModalSearch.value = '';
+            syncModalSearchField();
+            tHelpModalChips.querySelectorAll('.t-help-modal-chip').forEach(c => c.classList.remove('active'));
+            tHelpModalChips.querySelector('.t-help-modal-chip[data-cat="terminal"]').classList.add('active');
+            filterTHelpModal();
+            updateSaveButtons(null);
+        }
+
+        function closeTHelpModal() {
+            minimizeHelpAiSheet();
+            document.body.classList.remove('t-help-modal-open');
+            tHelpModalOverlay.classList.remove('visible');
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+            tHelpModalSavedWrap.classList.remove('visible');
+        }
+
+        tHelpModalClose.addEventListener('click', closeTHelpModal);
+        tHelpModalOverlay.addEventListener('click', (e) => { if (e.target === tHelpModalOverlay) closeTHelpModal(); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (helpAiSheet && helpAiSheet.classList.contains('visible')) {
+                minimizeHelpAiSheet();
+                return;
+            }
+            if (tHelpModalOverlay.classList.contains('visible')) closeTHelpModal();
+        });
+
+        tHelpModalSearch.addEventListener('input', () => { syncModalSearchField(); filterTHelpModal(); });
+        tHelpModalChips.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('t-help-modal-chip')) return;
+            tHelpModalChips.querySelectorAll('.t-help-modal-chip').forEach(c => c.classList.remove('active'));
+            e.target.classList.add('active');
+            currentModalArticleId = null;
+            cameFromSavedList = false;
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+            tHelpModalArticle.classList.remove('visible');
+            tHelpModalSavedWrap.classList.remove('visible');
+            tHelpModalListWrap.classList.add('visible');
+            tHelpModalListWrap.classList.remove('hidden');
+            filterTHelpModal();
+        });
+
+        const tHelpModalFbYes = document.getElementById('tHelpModalFbYes');
+        const tHelpModalFbNo = document.getElementById('tHelpModalFbNo');
+        const tHelpModalFbDone = document.getElementById('tHelpModalFbDone');
+        const tHelpModalFbComment = document.getElementById('tHelpModalFbComment');
+        const tHelpModalFbCommentToggle = document.getElementById('tHelpModalFbCommentToggle');
+        const tHelpModalFbTextarea = document.getElementById('tHelpModalFbTextarea');
+        const tHelpModalFbSend = document.getElementById('tHelpModalFbSend');
+        const tHelpModalSupportBtn = document.getElementById('tHelpModalSupportBtn');
+
+        const resetModalArticleFeedback = () => {
+            tHelpModalFbYes.style.display = '';
+            tHelpModalFbNo.style.display = '';
+            tHelpModalFbDone.classList.remove('visible');
+            tHelpModalFbCommentToggle.classList.remove('visible');
+            tHelpModalFbComment.classList.remove('visible');
+            tHelpModalSupportBtn.classList.remove('visible');
+            tHelpModalFbTextarea.value = '';
+            tHelpModalFbTextarea.placeholder = 'Ваш комментарий';
+        };
+
+        let currentModalArticleId = null;
+        tHelpModalList.addEventListener('click', (e) => {
+            const q = e.target.closest('.t-help-modal-q');
+            if (!q || !q.dataset.article) return;
+            showModalArticle(q.dataset.article);
+        });
+
+        tHelpModalFbYes.addEventListener('click', function() {
+            this.style.display = 'none';
+            tHelpModalFbNo.style.display = 'none';
+            tHelpModalFbDone.classList.add('visible');
+            tHelpModalFbCommentToggle.classList.add('visible');
+        });
+        tHelpModalFbNo.addEventListener('click', function() {
+            this.style.display = 'none';
+            tHelpModalFbYes.style.display = 'none';
+            tHelpModalSupportBtn.classList.add('visible');
+            tHelpModalFbComment.classList.add('visible');
+            tHelpModalFbTextarea.placeholder = 'Что не так?';
+            requestAnimationFrame(() => {
+                tHelpModalSupportBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+            });
+        });
+        tHelpModalFbCommentToggle.addEventListener('click', () => {
+            tHelpModalFbCommentToggle.classList.remove('visible');
+            tHelpModalFbComment.classList.add('visible');
+        });
+        const sendModalArticleFb = () => {
+            const text = tHelpModalFbTextarea.value.trim();
+            if (text) alert('Обратная связь отправлена: ' + text);
+            else alert('Обратная связь отправлена');
+        };
+        tHelpModalFbSend.addEventListener('click', sendModalArticleFb);
+        tHelpModalFbTextarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendModalArticleFb(); }
+        });
+        tHelpModalSupportBtn.addEventListener('click', () => { closeTHelpModal(); openChatList(); });
+
+        document.getElementById('tHelpModalSuggest').addEventListener('click', () => suggestArticleChange(currentModalArticleId));
+        document.getElementById('tHelpModalPdf').addEventListener('click', () => printArticlePdf(currentModalArticleId));
+
+        tHelpModalArticleBack.addEventListener('click', () => {
+            currentModalArticleId = null;
+            tHelpModalArticle.classList.remove('visible');
+            if (cameFromSavedList) {
+                cameFromSavedList = false;
+                tHelpModalSavedWrap.classList.add('visible');
+                renderSavedList();
+            } else {
+                tHelpModalListWrap.classList.add('visible');
+                tHelpModalListWrap.classList.remove('hidden');
+            }
+            document.getElementById('tHelpModalWrapper').classList.remove('in-article');
+        });
+
+        document.getElementById('tHelpModalAiOpen').addEventListener('click', () => { openHelpAiSheet(); });
+        document.getElementById('helpAiSheetBackdrop').addEventListener('click', () => { minimizeHelpAiSheet(); });
+        document.getElementById('helpAiSheetMinimize').addEventListener('click', () => { minimizeHelpAiSheet(); });
+        function sendHelpAiMessage() {
+            const text = helpAiInput && helpAiInput.value.trim();
+            if (!text) return;
+            pushHelpAiMessage('user', text);
+            helpAiInput.value = '';
+            syncHelpAiInputField();
+            setTimeout(() => {
+                pushHelpAiMessage('assistant', 'Прототип: ответ по базе знаний появится здесь. Уточните детали или откройте полный экран AI.');
+            }, 450);
+        }
+        document.getElementById('helpAiSend').addEventListener('click', sendHelpAiMessage);
+        if (helpAiInput) {
+            helpAiInput.addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter' || e.shiftKey) return;
+                e.preventDefault();
+                sendHelpAiMessage();
+            });
+        }
+        const tHelpModalWidenEl = document.getElementById('tHelpModalWiden');
+        if (tHelpModalWidenEl) tHelpModalWidenEl.addEventListener('click', () => {
+            document.getElementById('tHelpModal').classList.toggle('wider');
+        });
+        document.getElementById('tHelpModalSave').addEventListener('click', openSavedList);
+        document.getElementById('tHelpModalArticleSave').addEventListener('click', () => {
+            if (currentModalArticleId) toggleSaveArticle(currentModalArticleId);
+        });
+
+        const mobileOpenHelpAi = document.getElementById('mobileOpenHelpAi');
+        if (mobileOpenHelpAi) mobileOpenHelpAi.addEventListener('click', () => { openHelpAiSheet(); });
+
+        (function initMobileEntryWidget() {
+            const field = document.getElementById('mobileEntrySearchField');
+            const inp = document.getElementById('mobileEntrySearch');
+            const tw = document.getElementById('mobileEntrySearchTw');
+            const chips = document.getElementById('mobileEntryChips');
+            const questionsEl = document.getElementById('mobileEntryQuestions');
+            if (!field || !inp || !tw || !chips || !questionsEl) return;
+
+            function renderMobileEntryQuestions() {
+                const act = chips.querySelector('.help-chip.active');
+                const cat = act ? act.dataset.cat : 'terminal';
+                const items = helpItems.filter(function (item) { return item.cat === cat; }).slice(0, 3);
+                const padCount = Math.max(0, 3 - items.length);
+                const padded = items.concat(Array(padCount).fill(null));
+                questionsEl.innerHTML = padded.map(function (item) {
+                    if (!item) {
+                        return '<div class="help-q help-q--pad" aria-hidden="true">' +
+                            '<div class="help-q-main"><div class="help-q-text">&#160;</div></div>' +
+                            '<span class="help-q-chevron" aria-hidden="true">&#160;</span></div>';
+                    }
+                    return '<div class="help-q" data-cat="' + item.cat + '" data-article="' + item.article + '">' +
+                        '<div class="help-q-main"><div class="help-q-text">' + item.text + '</div></div>' +
+                        '<span class="help-q-chevron" aria-hidden="true">›</span></div>';
+                }).join('');
+                questionsEl.querySelectorAll('.help-q').forEach(function (q) {
+                    q.addEventListener('click', function () {
+                        const id = q.dataset.article;
+                        if (id) openArticle(id);
+                    });
+                });
+            }
+            const phrases = helpItems.slice(0, 5).map(i => i.text);
+            let pi = 0;
+            let ch = 0;
+            let phase = 'typing';
+            let twTimer = null;
+            function syncField() {
+                field.classList.toggle('has-value', !!inp.value.trim());
+            }
+            function tick() {
+                clearTimeout(twTimer);
+                if (document.activeElement === inp) {
+                    tw.textContent = '';
+                    twTimer = setTimeout(tick, 500);
+                    return;
+                }
+                const phrase = phrases[pi % phrases.length];
+                if (phase === 'typing') {
+                    if (ch < phrase.length) {
+                        ch++;
+                        tw.textContent = phrase.slice(0, ch);
+                        twTimer = setTimeout(tick, 38);
+                    } else {
+                        phase = 'pause';
+                        twTimer = setTimeout(() => { phase = 'deleting'; tick(); }, 1750);
+                    }
+                } else if (phase === 'deleting') {
+                    if (ch > 0) {
+                        ch--;
+                        tw.textContent = phrase.slice(0, ch);
+                        twTimer = setTimeout(tick, 24);
+                    } else {
+                        phase = 'typing';
+                        pi++;
+                        twTimer = setTimeout(tick, 420);
+                    }
+                }
+            }
+            inp.addEventListener('focus', () => { clearTimeout(twTimer); tw.textContent = ''; });
+            inp.addEventListener('blur', () => { if (!inp.value.trim()) { phase = 'typing'; ch = 0; tick(); } });
+            inp.addEventListener('click', (e) => { e.preventDefault(); openTHelpModal(); });
+            inp.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    openTHelpModal();
+                }
+            });
+            tick();
+            renderMobileEntryQuestions();
+            chips.addEventListener('click', (e) => {
+                const btn = e.target.closest('.help-chip');
+                if (!btn || !btn.dataset.cat) return;
+                chips.querySelectorAll('.help-chip').forEach(c => c.classList.remove('active'));
+                btn.classList.add('active');
+                renderMobileEntryQuestions();
+            });
+        })();
+
+        const chatListOverlay = document.getElementById('chatListOverlay');
+        function openChatList() {
+            const wrapper = document.getElementById('chatListWrapper');
+            wrapper.style.right = 'auto';
+            wrapper.style.left = '0';
+            wrapper.style.top = '0';
+            wrapper.style.bottom = '0';
+            wrapper.style.width = '100%';
+            wrapper.style.maxWidth = '100%';
+            wrapper.style.margin = '0';
+            chatListOverlay.classList.add('visible');
+            document.body.classList.add('t-help-modal-open');
+        }
+        function closeChatList() {
+            chatListOverlay.classList.remove('visible');
+            document.body.classList.remove('t-help-modal-open');
+        }
+        document.getElementById('chatListClose').addEventListener('click', closeChatList);
+        chatListOverlay.addEventListener('click', (e) => { if (e.target === chatListOverlay) closeChatList(); });
+        document.getElementById('chatListModal').addEventListener('click', (e) => {
+            const item = e.target.closest('[data-action]');
+            if (!item || !item.dataset.action) return;
+            closeChatList();
+            if (item.dataset.action === 't-help') openTHelpModal();
+            else alert('Чат: ' + (item.querySelector('.chat-list-name')?.textContent || item.dataset.action));
+        });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && chatListOverlay.classList.contains('visible')) closeChatList(); });
+
     </script>
 </body>
 </html>
