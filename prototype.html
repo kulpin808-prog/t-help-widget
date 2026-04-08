@@ -3,6 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <script>
+        (function applyCacheBusting() {
+            var appVersion = '2026-04-08-1';
+            window.__APP_VERSION__ = appVersion;
+            var url = new URL(window.location.href);
+            if (url.searchParams.get('v') !== appVersion) {
+                url.searchParams.set('v', appVersion);
+                window.location.replace(url.toString());
+            }
+        })();
+    </script>
     <title>Т-Бизнес — Счета и платежи</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
