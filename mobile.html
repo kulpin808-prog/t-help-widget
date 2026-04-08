@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-1';
+            var appVersion = '2026-04-08-2';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -668,6 +668,19 @@
         .t-help-modal-action-btn svg { width: 18px; height: 18px; }
         .t-help-modal-action-btn.saved { color: var(--help-accent); }
         .t-help-modal-action-btn.saved svg { fill: currentColor; }
+        .t-help-modal-q-actions { display: flex; align-items: flex-start; gap: 2px; flex-shrink: 0; }
+        .t-help-modal-q-open-tab {
+            width: 28px; height: 28px; flex-shrink: 0; border: none; background: transparent; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.45; color: #666;
+        }
+        .t-help-modal-q-open-tab:hover { opacity: 1; color: var(--help-accent); }
+        .t-help-modal-q-open-tab svg { width: 15px; height: 15px; }
+        .t-help-modal-q-share {
+            width: 28px; height: 28px; flex-shrink: 0; border: none; background: transparent; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.45; color: #666;
+        }
+        .t-help-modal-q-share:hover { opacity: 1; color: var(--help-accent); }
+        .t-help-modal-q-share svg { width: 15px; height: 15px; }
         .t-help-modal-q-save { width: 28px; height: 28px; flex-shrink: 0; border: none; background: transparent; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.5; }
         .t-help-modal-q-save:hover { opacity: 1; }
         .t-help-modal-q-save.saved { opacity: 1; color: var(--help-accent); }
@@ -790,7 +803,20 @@
         .t-help-modal-saved-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 16px; }
         .t-help-modal-article-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--help-line); flex-shrink: 0; background: #FAFAFA; }
         .t-help-modal-article-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
-        .t-help-modal-article-title { font-size: var(--type-body); font-weight: var(--weight-title); flex: 1; line-height: 1.35; letter-spacing: -0.02em; }
+        .t-help-modal-article-title { font-size: var(--type-body); font-weight: var(--weight-title); flex: 1; line-height: 1.35; letter-spacing: -0.02em; min-width: 0; }
+        .t-help-modal-article-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .t-help-modal-article-open-tab {
+            width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #555;
+        }
+        .t-help-modal-article-open-tab:hover { background: #E0E0E0; color: var(--help-accent); }
+        .t-help-modal-article-open-tab svg { width: 16px; height: 16px; }
+        .t-help-modal-article-share {
+            width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #555;
+        }
+        .t-help-modal-article-share:hover { background: #E0E0E0; color: var(--help-accent); }
+        .t-help-modal-article-share svg { width: 16px; height: 16px; }
         .t-help-modal-article-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 16px 32px; font-size: var(--type-body-sm); line-height: 1.55; display: flex; flex-direction: column; scroll-padding-bottom: 32px; }
         .t-help-modal-article-body .help-article-body-inner { flex: 0 0 auto; }
         .t-help-modal-article-body .help-article-stats { margin-bottom: 14px; }
@@ -1347,7 +1373,15 @@
                 <div class="t-help-modal-article-header">
                     <button class="t-help-modal-article-back" id="tHelpModalArticleBack">←</button>
                     <span class="t-help-modal-article-title" id="tHelpModalArticleTitle"></span>
-                    <button class="t-help-modal-article-save" id="tHelpModalArticleSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                    <div class="t-help-modal-article-actions">
+                        <button type="button" class="t-help-modal-article-open-tab" id="tHelpModalArticleOpenTab" title="Открыть в новой вкладке" aria-label="Открыть в новой вкладке">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                        </button>
+                        <button type="button" class="t-help-modal-article-share" id="tHelpModalArticleShare" title="Поделиться" aria-label="Поделиться">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                        </button>
+                        <button class="t-help-modal-article-save" id="tHelpModalArticleSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                    </div>
                 </div>
                 <div class="t-help-modal-article-body" id="tHelpModalArticleBody">
                     <div class="help-article-body-inner" id="tHelpModalArticleBodyInner"></div>
@@ -1746,6 +1780,38 @@
             w.onload = function() { w.focus(); w.print(); };
         }
 
+        function openHelpInNewTab(articleId) {
+            try {
+                const u = new URL(window.location.href);
+                u.hash = articleId ? 't-help-article=' + encodeURIComponent(articleId) : 't-help';
+                window.open(u.toString(), '_blank', 'noopener,noreferrer');
+            } catch (_) {
+                const base = window.location.href.split('#')[0];
+                window.open(base + (articleId ? '#t-help-article=' + encodeURIComponent(articleId) : '#t-help'), '_blank', 'noopener,noreferrer');
+            }
+        }
+        function buildArticleShareUrl(articleId) {
+            try {
+                const u = new URL(window.location.href);
+                u.hash = articleId ? 't-help-article=' + encodeURIComponent(articleId) : 't-help';
+                return u.toString();
+            } catch (_) {
+                const base = window.location.href.split('#')[0];
+                return base + (articleId ? '#t-help-article=' + encodeURIComponent(articleId) : '#t-help');
+            }
+        }
+        function shareArticle(articleId) {
+            const art = articleId && articles[articleId];
+            const title = art ? art.title : 'Т-Помощь';
+            const url = buildArticleShareUrl(articleId);
+            if (navigator.share) {
+                navigator.share({ title: title, text: title, url: url }).catch(function () {});
+            } else if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(url).then(function () { alert('Ссылка скопирована'); }).catch(function () { window.prompt('Ссылка:', url); });
+            } else {
+                window.prompt('Ссылка:', url);
+            }
+        }
 
         const tHelpModalOverlay = document.getElementById('tHelpModalOverlay');
         const tHelpModalClose = document.getElementById('tHelpModalClose');
@@ -1767,6 +1833,8 @@
         let savedArticles = getSavedArticles();
 
         const bookmarkSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
+        const newTabSvgSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+        const shareSvgSmall = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>';
 
         function toggleSaveArticle(articleId) {
             if (savedArticles.has(articleId)) savedArticles.delete(articleId);
@@ -1801,11 +1869,21 @@
                 const saved = savedArticles.has(item.article);
                 return '<div class="t-help-modal-q" data-cat="' + item.cat + '" data-article="' + item.article + '">' +
                     '<div class="t-help-modal-q-content"><div class="t-help-modal-q-text">' + item.text + '</div><div class="t-help-modal-q-meta">' + item.meta + '</div></div>' +
+                    '<div class="t-help-modal-q-actions">' +
+                    '<button type="button" class="t-help-modal-q-open-tab" data-article="' + item.article + '" title="Открыть в новой вкладке">' + newTabSvgSmall + '</button>' +
+                    '<button type="button" class="t-help-modal-q-share" data-article="' + item.article + '" title="Поделиться" aria-label="Поделиться">' + shareSvgSmall + '</button>' +
                     '<button type="button" class="t-help-modal-q-save ' + (saved ? 'saved' : '') + '" data-article="' + item.article + '" title="' + (saved ? 'Убрать из сохранённых' : 'Сохранить') + '">' + bookmarkSvg + '</button>' +
+                    '</div>' +
                     '<span class="t-help-modal-q-chevron" aria-hidden="true">›</span></div>';
             }).join('');
             tHelpModalList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
                 btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); });
+            });
+            tHelpModalList.querySelectorAll('.t-help-modal-q-open-tab').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); openHelpInNewTab(btn.dataset.article); });
+            });
+            tHelpModalList.querySelectorAll('.t-help-modal-q-share').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); shareArticle(btn.dataset.article); });
             });
         }
         renderTHelpModalList();
@@ -1876,10 +1954,16 @@
             const items = helpItems.filter(item => savedArticles.has(item.article) && !seen.has(item.article) && seen.add(item.article));
             tHelpModalSavedList.innerHTML = items.length ? items.map(item => {
                 const saved = true;
-                return `<div class="t-help-modal-q" data-cat="${item.cat}" data-article="${item.article}"><div class="t-help-modal-q-content"><div class="t-help-modal-q-text">${item.text}</div><div class="t-help-modal-q-meta">${item.meta}</div></div><button class="t-help-modal-q-save saved" data-article="${item.article}" title="Убрать из сохранённых">${bookmarkSvg}</button></div>`;
+                return `<div class="t-help-modal-q" data-cat="${item.cat}" data-article="${item.article}"><div class="t-help-modal-q-content"><div class="t-help-modal-q-text">${item.text}</div><div class="t-help-modal-q-meta">${item.meta}</div></div><div class="t-help-modal-q-actions"><button type="button" class="t-help-modal-q-open-tab" data-article="${item.article}" title="Открыть в новой вкладке">${newTabSvgSmall}</button><button type="button" class="t-help-modal-q-share" data-article="${item.article}" title="Поделиться" aria-label="Поделиться">${shareSvgSmall}</button><button class="t-help-modal-q-save saved" data-article="${item.article}" title="Убрать из сохранённых">${bookmarkSvg}</button></div></div>`;
             }).join('') : '<div class="t-help-modal-saved-empty" style="padding: 24px; text-align: center; color: #999; font-size: 14px;">Нет сохранённых статей</div>';
             tHelpModalSavedList.querySelectorAll('.t-help-modal-q-save').forEach(btn => {
                 btn.addEventListener('click', (e) => { e.stopPropagation(); toggleSaveArticle(btn.dataset.article); renderSavedList(); });
+            });
+            tHelpModalSavedList.querySelectorAll('.t-help-modal-q-open-tab').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); openHelpInNewTab(btn.dataset.article); });
+            });
+            tHelpModalSavedList.querySelectorAll('.t-help-modal-q-share').forEach(btn => {
+                btn.addEventListener('click', (e) => { e.stopPropagation(); shareArticle(btn.dataset.article); });
             });
         }
 
@@ -1901,6 +1985,10 @@
             else cameFromSavedList = fromSaved;
             currentModalArticleId = artId;
             tHelpModalArticleTitle.textContent = art.title;
+            const artOpenTab = document.getElementById('tHelpModalArticleOpenTab');
+            if (artOpenTab) artOpenTab.dataset.article = artId;
+            const artShare = document.getElementById('tHelpModalArticleShare');
+            if (artShare) artShare.dataset.article = artId;
             renderArticleContent(artId, tHelpModalArticleBodyInner, showModalArticle);
             resetModalArticleFeedback();
             tHelpModalListWrap.classList.remove('visible');
@@ -1911,6 +1999,8 @@
             updateSaveButtons(artId);
         }
         tHelpModalSavedList.addEventListener('click', (e) => {
+            if (e.target.closest('.t-help-modal-q-open-tab')) return;
+            if (e.target.closest('.t-help-modal-q-share')) return;
             const q = e.target.closest('.t-help-modal-q');
             if (!q || !q.dataset.article || e.target.closest('.t-help-modal-q-save')) return;
             showModalArticle(q.dataset.article, true);
@@ -2062,7 +2152,24 @@
         };
 
         let currentModalArticleId = null;
+        const tHelpModalArticleOpenTabEl = document.getElementById('tHelpModalArticleOpenTab');
+        if (tHelpModalArticleOpenTabEl) {
+            tHelpModalArticleOpenTabEl.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.article;
+                if (id) openHelpInNewTab(id);
+            });
+        }
+        const tHelpModalArticleShareEl = document.getElementById('tHelpModalArticleShare');
+        if (tHelpModalArticleShareEl) {
+            tHelpModalArticleShareEl.addEventListener('click', (e) => {
+                const id = e.currentTarget.dataset.article;
+                if (id) shareArticle(id);
+            });
+        }
         tHelpModalList.addEventListener('click', (e) => {
+            if (e.target.closest('.t-help-modal-q-open-tab')) return;
+            if (e.target.closest('.t-help-modal-q-share')) return;
+            if (e.target.closest('.t-help-modal-q-save')) return;
             const q = e.target.closest('.t-help-modal-q');
             if (!q || !q.dataset.article) return;
             showModalArticle(q.dataset.article);
