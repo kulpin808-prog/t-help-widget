@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-5';
+            var appVersion = '2026-04-08-6';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -1225,14 +1225,14 @@
                 </div>
                 <h2 class="content-title">Операции</h2>
                 <input type="text" class="ops-search" placeholder="Контрагент, назначение, счет или сумма">
-                <div class="ops-chips">
-                    <button class="ops-chip active">Все</button>
-                    <button class="ops-chip">Списания</button>
-                    <button class="ops-chip">Поступления</button>
-                    <button class="ops-chip">За все время</button>
-                    <button class="ops-chip">Категории</button>
+                <div class="ops-chips" id="opsChips" role="group" aria-label="Фильтр операций">
+                    <button type="button" class="ops-chip active" data-ops-filter="all">Все</button>
+                    <button type="button" class="ops-chip" data-ops-filter="outflow">Списания</button>
+                    <button type="button" class="ops-chip" data-ops-filter="inflow">Поступления</button>
+                    <button type="button" class="ops-chip" data-ops-filter="period">За все время</button>
+                    <button type="button" class="ops-chip" data-ops-filter="categories">Категории</button>
                 </div>
-                <div class="txn-list">
+                <div class="txn-list" id="opsTxnList">
                     <div class="txn-date">12 февраля</div>
                     <div class="txn-item">
                         <div class="txn-desc">АО "ТБанк" Комиссия за вывод средств</div>
@@ -2628,6 +2628,52 @@
         }
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyHelpHashFromLocation);
         else applyHelpHashFromLocation();
+
+        (function initOpsTxnFilter() {
+            const opsChips = document.getElementById('opsChips');
+            const opsTxnList = document.getElementById('opsTxnList');
+            if (!opsChips || !opsTxnList) return;
+
+            const OPS_TXN_DATA = {
+                all: [
+                    { date: '12 февраля', items: [{ desc: 'АО "ТБанк" Комиссия за вывод средств', amount: '−8,27 ₽', neg: true }] },
+                    { date: '10 февраля', items: [{ desc: 'Поступление', amount: '+225,00 ₽', neg: false }] }
+                ],
+                outflow: [
+                    { date: '12 февраля', items: [{ desc: 'АО "ТБанк" Комиссия за вывод средств', amount: '−8,27 ₽', neg: true }] },
+                    { date: '9 февраля', items: [{ desc: 'Оплата по QR — ООО «Кофе»', amount: '−1 450,00 ₽', neg: true }] },
+                    { date: '8 февраля', items: [{ desc: 'Перевод ИП Иванов А.В.', amount: '−3 200,00 ₽', neg: true }] }
+                ],
+                inflow: [
+                    { date: '10 февраля', items: [{ desc: 'Поступление', amount: '+225,00 ₽', neg: false }] },
+                    { date: '7 февраля', items: [{ desc: 'Возврат от покупателя', amount: '+5 000,00 ₽', neg: false }] }
+                ]
+            };
+
+            function opsFilterToKey(filter) {
+                if (filter === 'period' || filter === 'categories') return 'all';
+                return OPS_TXN_DATA[filter] ? filter : 'all';
+            }
+
+            function renderOpsTxnList(filter) {
+                const key = opsFilterToKey(filter);
+                const groups = OPS_TXN_DATA[key] || OPS_TXN_DATA.all;
+                opsTxnList.innerHTML = groups.map(function (g) {
+                    const blocks = g.items.map(function (it) {
+                        return '<div class="txn-item"><div class="txn-desc">' + escapeHtml(it.desc) + '</div><div class="txn-amount' + (it.neg ? ' neg' : '') + '">' + escapeHtml(it.amount) + '</div></div>';
+                    }).join('');
+                    return '<div class="txn-date">' + escapeHtml(g.date) + '</div>' + blocks;
+                }).join('');
+            }
+
+            opsChips.addEventListener('click', function (e) {
+                const btn = e.target.closest('.ops-chip');
+                if (!btn || !btn.dataset.opsFilter) return;
+                opsChips.querySelectorAll('.ops-chip').forEach(function (c) { c.classList.remove('active'); });
+                btn.classList.add('active');
+                renderOpsTxnList(btn.dataset.opsFilter);
+            });
+        })();
     </script>
 </body>
 </html>
