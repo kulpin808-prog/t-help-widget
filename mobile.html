@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-3';
+            var appVersion = '2026-04-08-4';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -654,11 +654,10 @@
         .float-btn.with-badge { position: relative; }
         .float-btn .badge { position: absolute; top: -2px; right: -2px; min-width: 18px; height: 18px; background: #E53935; color: white; font-size: 11px; font-weight: 600; border-radius: 9px; display: flex; align-items: center; justify-content: center; padding: 0 4px; border: 2px solid white; }
 
-        body.t-help-modal-open { overflow: hidden; }
         .t-help-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
-        .t-help-modal-overlay.visible { opacity: 1; pointer-events: auto; }
+        .t-help-modal-overlay.visible { opacity: 1; pointer-events: none; }
         .t-help-modal-list, .t-help-modal-saved-list, .t-help-modal-article-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
-        .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; }
+        .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: auto; }
         .t-help-modal-overlay.visible .t-help-modal-wrapper { opacity: 1; transform: scale(1); }
         .t-help-modal { position: relative; background: #FAFAFA; border-radius: var(--help-radius-xl); box-shadow: 0 12px 48px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06); width: 462px; height: 720px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; transition: width 0.3s ease; border: 1px solid var(--help-line); }
         .t-help-modal.wider { width: 584px; }
@@ -2073,14 +2072,11 @@
         }
 
         tHelpModalClose.addEventListener('click', closeTHelpModal);
-        tHelpModalOverlay.addEventListener('click', (e) => { if (e.target === tHelpModalOverlay) closeTHelpModal(); });
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Escape') return;
             if (helpAiSheet && helpAiSheet.classList.contains('visible')) {
                 minimizeHelpAiSheet();
-                return;
             }
-            if (tHelpModalOverlay.classList.contains('visible')) closeTHelpModal();
         });
 
         tHelpModalSearch.addEventListener('input', () => { syncModalSearchField(); filterTHelpModal(); });
