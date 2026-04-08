@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-7';
+            var appVersion = '2026-04-08-8';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -691,6 +691,10 @@
             font-weight: var(--weight-title);
             color: var(--help-text);
             letter-spacing: -0.02em;
+            min-width: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .t-help-modal-search-row { display: flex; align-items: center; gap: 8px; padding: 10px 16px 10px; flex-shrink: 0; background: #FAFAFA; border-bottom: none; }
         .t-help-modal-search { flex: 1; min-width: 0; position: relative; }
@@ -751,7 +755,10 @@
             cursor: pointer;
             font-family: inherit;
             flex-shrink: 0;
-            max-width: 42%;
+            max-width: 118px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .t-help-modal-home-btn:hover { background: var(--help-accent-soft); }
         .t-help-modal--search-results .t-help-modal-home-btn { display: inline-flex; }
@@ -1014,7 +1021,20 @@
         }
         .t-help-modal-chip:hover { background: #E0E0E0; }
         .t-help-modal-chip.active { background: var(--help-accent); color: #fff; box-shadow: var(--help-shadow-sm); }
+        .t-help-modal-body-scroll {
+            flex: 1;
+            min-height: 0;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
         .t-help-modal-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 16px 20px; }
+        .t-help-modal-body-scroll .t-help-modal-list {
+            flex: none;
+            min-height: 0;
+            overflow: visible;
+        }
         .t-help-modal-q {
             padding: 14px 4px 14px 0;
             border-radius: 0;
@@ -1346,6 +1366,20 @@
             flex: 1 !important;
             min-width: 0 !important;
         }
+        body.mobile-app .t-help-modal--search-results .t-help-modal-topbar-title {
+            display: none !important;
+        }
+        body.mobile-app .t-help-modal--search-results .t-help-modal-topbar .help-ai-widget-btn {
+            margin-left: auto;
+        }
+        body.mobile-app .t-help-modal-topbar .help-ai-widget-btn {
+            flex-shrink: 0;
+            max-width: min(160px, 46vw);
+        }
+        body.mobile-app .t-help-modal-topbar .help-ai-widget-label {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
         body.mobile-app .t-help-modal-actions {
             display: none !important;
         }
@@ -1456,8 +1490,7 @@
             width: 100% !important;
             flex: 1 1 0% !important;
             min-height: 0 !important;
-            max-height: none !important;
-            height: auto !important;
+            max-height: 100% !important;
             display: flex !important;
             flex-direction: column !important;
             overflow: hidden !important;
@@ -1469,17 +1502,26 @@
             flex: 1 1 0% !important;
             min-height: 0 !important;
             overflow: hidden !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
-        body.mobile-app .t-help-modal-list-wrap:not(.hidden) {
+        body.mobile-app .t-help-modal-body-scroll {
             flex: 1 1 0% !important;
             min-height: 0 !important;
-            overflow: hidden !important;
-        }
-        body.mobile-app .t-help-modal-list {
-            flex: 1 1 auto !important;
-            min-height: 0 !important;
+            overflow-x: hidden !important;
             overflow-y: auto !important;
             -webkit-overflow-scrolling: touch !important;
+            overscroll-behavior: contain !important;
+        }
+        body.mobile-app .t-help-modal-list-wrap:not(.hidden) {
+            flex: 0 0 auto !important;
+            min-height: 0 !important;
+            overflow: visible !important;
+        }
+        body.mobile-app .t-help-modal-list {
+            flex: none !important;
+            min-height: 0 !important;
+            overflow: visible !important;
         }
         body.mobile-app #tHelpModalWrapper.in-article .t-help-modal-main-stack {
             flex: 0 0 0 !important;
@@ -1620,6 +1662,8 @@
                 </div>
                 <button type="button" class="t-help-modal-search-save" id="tHelpModalSave" title="Сохранённые"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
             </div>
+            <div class="t-help-modal-main-stack">
+            <div class="t-help-modal-body-scroll" id="tHelpModalBodyScroll">
             <div class="t-help-rag" id="tHelpModalRag" aria-live="polite" aria-hidden="true">
                 <div class="t-help-rag-card" id="tHelpModalRagCard">
                     <div class="t-help-rag-loading" id="tHelpModalRagLoading" aria-hidden="true">
@@ -1656,9 +1700,9 @@
                     <button type="button" class="t-help-modal-chip" data-cat="rates">Тарифы</button>
                 </div>
             </div>
-            <div class="t-help-modal-main-stack">
             <div class="t-help-modal-list-wrap visible" id="tHelpModalListWrap">
                 <div class="t-help-modal-list" id="tHelpModalList"></div>
+            </div>
             </div>
             <div class="t-help-modal-saved-wrap" id="tHelpModalSavedWrap">
                 <div class="t-help-modal-saved-header">
