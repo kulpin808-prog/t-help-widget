@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-9';
+            var appVersion = '2026-04-09-1';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -1114,8 +1114,46 @@
         .chat-list-action-btn { width: 36px; height: 36px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #666; }
         .chat-list-action-btn:hover { background: #E8E8E8; color: #333; }
         .chat-list-header { padding: 20px 20px 16px; font-size: 22px; font-weight: 700; color: #333; border-bottom: 1px solid #F0F0F0; flex-shrink: 0; }
-        .chat-list-t-help-block { padding: 16px 20px; border-bottom: 1px solid #E8E8E8; flex-shrink: 0; cursor: pointer; display: flex; align-items: center; gap: 14px; background: #FFFBF0; }
-        .chat-list-t-help-block:hover { background: #FFF8E1; }
+        .chat-list-help-entry {
+            flex-shrink: 0;
+            padding: 14px 16px 16px;
+            border-bottom: 1px solid #E8E8E8;
+            background: linear-gradient(180deg, #FFFBF0 0%, #FFFEF9 100%);
+        }
+        .chat-list-help-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .chat-list-help-title {
+            font-size: var(--type-section);
+            font-weight: var(--weight-title);
+            color: var(--help-text);
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+        }
+        .chat-list-help-search-wrap {
+            position: relative;
+        }
+        .chat-list-help-search-wrap .help-search-field input {
+            padding: 10px 12px 10px 36px;
+            border-radius: 12px;
+            font-size: 13px;
+            background: #FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='%23999' viewBox='0 0 24 24'%3E%3Ccircle cx='10' cy='10' r='6' stroke='currentColor' fill='none' stroke-width='2'/%3E%3Cpath d='M14.5 14.5L19 19' stroke='currentColor' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 10px center;
+        }
+        .chat-list-help-search-wrap .help-search-typewriter { left: 36px; font-size: 13px; }
+        .chat-list-help-suggest.t-help-search-suggest {
+            top: calc(100% + 4px);
+            z-index: 30;
+        }
+        .chat-list-help-hint {
+            margin-top: 8px;
+            font-size: 11px;
+            line-height: 1.35;
+            color: var(--help-muted);
+        }
         .chat-list-section { padding: 12px 20px 8px; font-size: 12px; font-weight: 600; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
         .chat-list-body { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 0; }
         .chat-list-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
@@ -1412,9 +1450,25 @@
     <div class="chat-list-overlay" id="chatListOverlay">
         <div class="chat-list-wrapper" id="chatListWrapper">
             <div class="chat-list-modal" id="chatListModal">
-            <div class="chat-list-t-help-block" id="chatListTHelp" data-action="t-help">
-                <div class="chat-list-icon t-help"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="24" height="24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-                <div class="chat-list-content"><div class="chat-list-name">Т-Помощь</div><div class="chat-list-preview">Найдите ответ в базе знаний</div></div>
+            <div class="chat-list-help-entry" id="chatListHelpEntry">
+                <div class="chat-list-help-header">
+                    <span class="chat-list-help-title">Помощь</span>
+                    <button type="button" class="help-ai-widget-btn" id="chatListHelpAiOpen" title="Спросить AI">
+                        <span class="help-ai-icon-btn help-ai-icon-btn--sm" aria-hidden="true">
+                            <span class="help-ai-icon-btn__glow"></span>
+                            <span class="help-ai-icon-btn__inner"></span>
+                        </span>
+                        <span class="help-ai-widget-label">Спросить AI</span>
+                    </button>
+                </div>
+                <div class="chat-list-help-search-wrap">
+                    <div class="help-search-field" id="chatListHelpSearchField">
+                        <input type="search" id="chatListHelpSearch" placeholder=" " autocomplete="off" title="Поиск по базе знаний">
+                        <span class="help-search-typewriter" id="chatListHelpSearchTw" aria-hidden="true"></span>
+                    </div>
+                    <div class="t-help-search-suggest chat-list-help-suggest" id="chatListHelpSuggest" role="listbox" aria-label="Подсказки" hidden></div>
+                </div>
+                <p class="chat-list-help-hint">Подсказки и Enter открывают Т‑Помощь с ответом и выдачей</p>
             </div>
             <div class="chat-list-section">Чаты</div>
             <div class="chat-list-body" id="chatListBody">
@@ -2063,6 +2117,51 @@
             if (idx < 0) return escapeHtml(text);
             return escapeHtml(text.slice(0, idx)) + '<mark>' + escapeHtml(text.slice(idx, idx + q.length)) + '</mark>' + escapeHtml(text.slice(idx + q.length));
         }
+        let chatListHelpSuggestBlurTimer = null;
+        function hideChatListHelpSuggest() {
+            const el = document.getElementById('chatListHelpSuggest');
+            if (!el) return;
+            el.classList.remove('is-open');
+            el.hidden = true;
+            el.innerHTML = '';
+        }
+        function openHelpFromChatListSearch(q) {
+            const q2 = String(q || '').trim();
+            if (!q2) return;
+            closeChatList();
+            openTHelpModal({ query: q2 });
+        }
+        function syncChatListHelpSearchField() {
+            const field = document.getElementById('chatListHelpSearchField');
+            const el = document.getElementById('chatListHelpSearch');
+            if (!field || !el) return;
+            field.classList.toggle('has-value', !!el.value.trim());
+        }
+        function updateChatListHelpSuggest() {
+            const inp = document.getElementById('chatListHelpSearch');
+            const el = document.getElementById('chatListHelpSuggest');
+            if (!inp || !el) return;
+            const q = inp.value.trim();
+            if (!q) { hideChatListHelpSuggest(); return; }
+            const items = helpItems.filter(i => i.text.toLowerCase().includes(q.toLowerCase())).slice(0, 8);
+            if (!items.length) { hideChatListHelpSuggest(); return; }
+            el.innerHTML = items.map((it, idx) =>
+                '<button type="button" class="t-help-search-suggest-item" role="option" data-article="' + escapeHtml(it.article) + '" id="chatListSuggestOpt-' + idx + '">' + highlightSuggestLabel(it.text, q) + '</button>'
+            ).join('');
+            el.classList.add('is-open');
+            el.hidden = false;
+            el.querySelectorAll('.t-help-search-suggest-item').forEach(btn => {
+                btn.addEventListener('mousedown', (e) => { e.preventDefault(); });
+                btn.addEventListener('click', () => {
+                    const it0 = helpItems.find(x => x.article === btn.dataset.article);
+                    if (!it0) return;
+                    inp.value = it0.text;
+                    syncChatListHelpSearchField();
+                    hideChatListHelpSuggest();
+                    openHelpFromChatListSearch(it0.text.trim());
+                });
+            });
+        }
         let modalSuggestBlurTimer = null;
         function hideModalSearchSuggest() {
             const el = document.getElementById('tHelpModalSearchSuggest');
@@ -2320,7 +2419,8 @@
         }
         loadHelpAiChat();
 
-        function openTHelpModal() {
+        function openTHelpModal(opts) {
+            opts = opts && typeof opts === 'object' && typeof opts.query === 'string' ? opts : {};
             document.body.classList.add('t-help-modal-open');
             tHelpModalOverlay.classList.add('visible');
             tHelpModalListWrap.classList.remove('hidden');
@@ -2351,6 +2451,16 @@
             wrapper.style.top = top + 'px';
             wrapper.style.bottom = 'auto';
             hideRagBlock();
+            const qFromOpts = String(opts.query || '').trim();
+            if (qFromOpts) {
+                const q = qFromOpts;
+                tHelpModalSearch.value = q;
+                syncModalSearchField();
+                setHelpSearchMode('results');
+                showRagBlock(q);
+                filterTHelpModal();
+                hideModalSearchSuggest();
+            }
         }
 
         function closeTHelpModal() {
@@ -2599,6 +2709,7 @@
             document.body.classList.add('t-help-modal-open');
         }
         function closeChatList() {
+            hideChatListHelpSuggest();
             chatListOverlay.classList.remove('visible');
             document.body.classList.remove('t-help-modal-open');
         }
@@ -2609,9 +2720,77 @@
             const item = e.target.closest('[data-action]');
             if (!item || !item.dataset.action) return;
             closeChatList();
-            if (item.dataset.action === 't-help') openTHelpModal();
-            else alert('Чат: ' + (item.querySelector('.chat-list-name')?.textContent || item.dataset.action));
+            alert('Чат: ' + (item.querySelector('.chat-list-name')?.textContent || item.dataset.action));
         });
+        (function initChatListHelpEntry() {
+            const inp = document.getElementById('chatListHelpSearch');
+            const tw = document.getElementById('chatListHelpSearchTw');
+            const field = document.getElementById('chatListHelpSearchField');
+            const aiBtn = document.getElementById('chatListHelpAiOpen');
+            if (!inp || !field) return;
+            const phrases = helpItems.slice(0, 5).map(i => i.text);
+            let pi = 0;
+            let ch = 0;
+            let phase = 'typing';
+            let twTimer = null;
+            function tick() {
+                clearTimeout(twTimer);
+                if (!tw) return;
+                if (document.activeElement === inp || inp.value.trim()) {
+                    tw.textContent = '';
+                    twTimer = setTimeout(tick, 500);
+                    return;
+                }
+                const phrase = phrases[pi % phrases.length];
+                if (phase === 'typing') {
+                    if (ch < phrase.length) {
+                        ch++;
+                        tw.textContent = phrase.slice(0, ch);
+                        twTimer = setTimeout(tick, 38);
+                    } else {
+                        phase = 'pause';
+                        twTimer = setTimeout(() => { phase = 'deleting'; tick(); }, 1750);
+                    }
+                } else if (phase === 'deleting') {
+                    if (ch > 0) {
+                        ch--;
+                        tw.textContent = phrase.slice(0, ch);
+                        twTimer = setTimeout(tick, 24);
+                    } else {
+                        phase = 'typing';
+                        pi++;
+                        twTimer = setTimeout(tick, 420);
+                    }
+                }
+            }
+            inp.addEventListener('focus', () => {
+                clearTimeout(twTimer);
+                if (tw) tw.textContent = '';
+                clearTimeout(chatListHelpSuggestBlurTimer);
+                updateChatListHelpSuggest();
+            });
+            inp.addEventListener('blur', () => {
+                if (!inp.value.trim()) { phase = 'typing'; ch = 0; tick(); }
+                chatListHelpSuggestBlurTimer = setTimeout(hideChatListHelpSuggest, 200);
+            });
+            inp.addEventListener('input', () => { syncChatListHelpSearchField(); updateChatListHelpSuggest(); });
+            inp.addEventListener('keydown', (e) => {
+                if (e.key !== 'Enter') return;
+                e.preventDefault();
+                const q = inp.value.trim();
+                hideChatListHelpSuggest();
+                if (!q) return;
+                openHelpFromChatListSearch(q);
+            });
+            tick();
+            if (aiBtn) {
+                aiBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    closeChatList();
+                    openHelpAiSheet();
+                });
+            }
+        })();
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && chatListOverlay.classList.contains('visible')) closeChatList(); });
 
         function applyHelpHashFromLocation() {
