@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-6';
+            var appVersion = '2026-04-08-9';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -661,8 +661,8 @@
         .t-help-modal-overlay { position: fixed; inset: 0; background: transparent; z-index: 1100; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
         .t-help-modal-overlay.visible { opacity: 1; pointer-events: none; }
         .t-help-modal-list, .t-help-modal-saved-list, .t-help-modal-article-body { overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
-        .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: auto; }
-        .t-help-modal-overlay.visible .t-help-modal-wrapper { opacity: 1; transform: scale(1); }
+        .t-help-modal-wrapper { position: fixed; z-index: 1101; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: none; }
+        .t-help-modal-overlay.visible .t-help-modal-wrapper { opacity: 1; transform: scale(1); pointer-events: auto; }
         .t-help-modal { position: relative; background: #FAFAFA; border-radius: var(--help-radius-xl); box-shadow: 0 12px 48px rgba(0,0,0,0.14), 0 2px 8px rgba(0,0,0,0.06); width: 462px; height: 720px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; transition: width 0.3s ease; border: 1px solid var(--help-line); }
         @media (min-width: 601px) {
             .t-help-modal { height: 792px; }
@@ -1107,8 +1107,8 @@
         .help-article-recommendations-list a:hover { text-decoration: underline; }
         .chat-list-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1095; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
         .chat-list-overlay.visible { opacity: 1; pointer-events: auto; }
-        .chat-list-wrapper { position: fixed; z-index: 1096; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; }
-        .chat-list-overlay.visible .chat-list-wrapper { opacity: 1; transform: scale(1); }
+        .chat-list-wrapper { position: fixed; z-index: 1096; display: flex; flex-direction: row; align-items: flex-start; gap: 0; opacity: 0; transform: scale(0.96); transition: opacity 0.2s ease, transform 0.2s ease; pointer-events: none; }
+        .chat-list-overlay.visible .chat-list-wrapper { opacity: 1; transform: scale(1); pointer-events: auto; }
         .chat-list-modal { background: white; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.2); width: 357px; height: 583px; display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; }
         .chat-list-actions { display: flex; flex-direction: column; gap: 8px; padding-top: 12px; padding-left: 8px; flex-shrink: 0; }
         .chat-list-action-btn { width: 36px; height: 36px; border: none; background: #F5F5F5; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #666; }
