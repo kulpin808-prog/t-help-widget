@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-09-1';
+            var appVersion = '2026-04-09-2';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -1118,13 +1118,9 @@
             flex-shrink: 0;
             padding: 14px 16px 16px;
             border-bottom: 1px solid #E8E8E8;
-            background: linear-gradient(180deg, #FFFBF0 0%, #FFFEF9 100%);
+            background: #FFFFFF;
         }
         .chat-list-help-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
             margin-bottom: 10px;
         }
         .chat-list-help-title {
@@ -1147,12 +1143,6 @@
         .chat-list-help-suggest.t-help-search-suggest {
             top: calc(100% + 4px);
             z-index: 30;
-        }
-        .chat-list-help-hint {
-            margin-top: 8px;
-            font-size: 11px;
-            line-height: 1.35;
-            color: var(--help-muted);
         }
         .chat-list-section { padding: 12px 20px 8px; font-size: 12px; font-weight: 600; color: #64748B; text-transform: uppercase; letter-spacing: 0.5px; flex-shrink: 0; }
         .chat-list-body { flex: 1; min-height: 0; overflow-y: auto; padding: 8px 0; }
@@ -1453,13 +1443,6 @@
             <div class="chat-list-help-entry" id="chatListHelpEntry">
                 <div class="chat-list-help-header">
                     <span class="chat-list-help-title">Помощь</span>
-                    <button type="button" class="help-ai-widget-btn" id="chatListHelpAiOpen" title="Спросить AI">
-                        <span class="help-ai-icon-btn help-ai-icon-btn--sm" aria-hidden="true">
-                            <span class="help-ai-icon-btn__glow"></span>
-                            <span class="help-ai-icon-btn__inner"></span>
-                        </span>
-                        <span class="help-ai-widget-label">Спросить AI</span>
-                    </button>
                 </div>
                 <div class="chat-list-help-search-wrap">
                     <div class="help-search-field" id="chatListHelpSearchField">
@@ -1468,7 +1451,6 @@
                     </div>
                     <div class="t-help-search-suggest chat-list-help-suggest" id="chatListHelpSuggest" role="listbox" aria-label="Подсказки" hidden></div>
                 </div>
-                <p class="chat-list-help-hint">Подсказки и Enter открывают Т‑Помощь с ответом и выдачей</p>
             </div>
             <div class="chat-list-section">Чаты</div>
             <div class="chat-list-body" id="chatListBody">
@@ -2726,7 +2708,6 @@
             const inp = document.getElementById('chatListHelpSearch');
             const tw = document.getElementById('chatListHelpSearchTw');
             const field = document.getElementById('chatListHelpSearchField');
-            const aiBtn = document.getElementById('chatListHelpAiOpen');
             if (!inp || !field) return;
             const phrases = helpItems.slice(0, 5).map(i => i.text);
             let pi = 0;
@@ -2783,13 +2764,6 @@
                 openHelpFromChatListSearch(q);
             });
             tick();
-            if (aiBtn) {
-                aiBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    closeChatList();
-                    openHelpAiSheet();
-                });
-            }
         })();
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && chatListOverlay.classList.contains('visible')) closeChatList(); });
 
