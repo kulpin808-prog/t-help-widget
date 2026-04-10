@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-08-9';
+            var appVersion = '2026-04-10-31';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -40,6 +40,9 @@
             --weight-title: 600;
             --weight-body: 400;
             --weight-em: 500;
+            --help-ui-label: 12px;
+            --help-ui-section: 15px;
+            --help-ui-line: 1.5;
         }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif; font-size: 14px; background: #F5F5F7; min-height: 100vh; color: var(--help-text); -webkit-font-smoothing: antialiased; }
 
@@ -121,6 +124,7 @@
         }
         .sub-tab:hover { color: #222; background: rgba(0,0,0,0.04); }
         .sub-tab.active { color: #1565C0; font-weight: var(--weight-title); background: white; box-shadow: 0 0 0 1px #E0E0E0; }
+        .sub-tabs a.sub-tab { text-decoration: none; color: inherit; }
 
         .main-layout { display: flex; flex: 1; min-height: 0; max-width: 1400px; margin: 0 auto; width: 100%; overflow: hidden; }
 
@@ -422,18 +426,25 @@
             transition: max-height 0.2s;
         }
         .help-q.expanded .help-q-answer { max-height: 240px; overflow-y: auto; }
-        .help-q-answer-inner { padding: 8px 0 0; font-size: 13px; color: #555; line-height: 1.5; }
+        .help-q-answer-inner { padding: 8px 0 0; font-size: var(--type-body-sm); color: #555; line-height: 1.5; }
         .help-feedback { padding: 6px 0; }
-        .help-fb-done { display: none; }
-        .help-fb-done.visible { display: block; }
-        .help-fb-support-btn { display: none; width: 100%; }
-        .help-fb-support-btn.visible { display: block; }
-        .help-fb-comment-toggle { display: none; font-size: 12px; color: var(--help-muted); margin-top: 8px; cursor: pointer; }
-        .help-fb-comment-toggle.visible { display: block; }
         .help-fb-comment { display: none; margin-top: 8px; }
-        .help-fb-comment.visible { display: flex; gap: 8px; align-items: flex-end; }
-        .help-fb-comment textarea { flex: 1; padding: 10px 12px; font-size: 13px; border: 1px solid var(--help-line); border-radius: 10px; resize: none; min-height: 40px; background: #FAFAFA; }
-        .help-fb-send { width: 40px; height: 40px; flex-shrink: 0; border: none; border-radius: 10px; background: var(--help-accent); color: white; cursor: pointer; font-size: 16px; transition: opacity 0.15s; }
+        .help-fb-comment.visible { display: flex; gap: 8px; align-items: center; }
+        .help-fb-comment textarea {
+            flex: 1;
+            padding: 10px 12px;
+            font-size: var(--type-body-sm);
+            line-height: var(--help-ui-line);
+            font-family: inherit;
+            border: 1px solid var(--help-line);
+            border-radius: 10px;
+            resize: none;
+            min-height: 44px;
+            box-sizing: border-box;
+            background: #FAFAFA;
+            color: var(--help-text);
+        }
+        .help-fb-send { width: 44px; height: 44px; flex-shrink: 0; border: none; border-radius: 12px; background: #FFDD2D; color: #0D0D0D; cursor: pointer; font-size: 16px; transition: opacity 0.15s; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); }
         .help-fb-send:hover { opacity: 0.92; }
         .help-article-body-inner { flex: 0 0 auto; min-height: 0; }
         .help-article-stats {
@@ -464,26 +475,28 @@
         }
         .help-stat-icon { width: 16px; height: 16px; flex-shrink: 0; color: #636366; opacity: 0.9; }
         .help-stat-sep { color: #C7C7CC; font-weight: 400; user-select: none; flex: 0 0 auto; opacity: 0.85; }
-        .t-help-modal-article-body h3 { font-size: 14px; margin: 12px 0 6px; font-weight: 600; }
+        .t-help-modal-article-body h3 {
+            font-size: var(--help-ui-section);
+            font-weight: var(--weight-title);
+            line-height: 1.35;
+            margin: 14px 0 8px;
+            color: #111827;
+            letter-spacing: -0.02em;
+        }
         .t-help-modal-article-body h3:first-child { margin-top: 0; }
         .t-help-modal-article-body p, .t-help-modal-article-body li { margin-bottom: 8px; }
         .t-help-modal-article-body ul { padding-left: 16px; }
         .t-help-modal-article-body a { color: var(--help-accent); text-underline-offset: 2px; }
         .t-help-modal-article-body .example { background: #F5F5F5; padding: 10px 12px; border-radius: 6px; margin: 10px 0; font-size: 12px; line-height: 1.5; }
         .help-article-img-placeholder { background: #E8E8E8; border-radius: 6px; padding: 24px; text-align: center; font-size: 12px; color: #666; margin: 10px 0; min-height: 60px; }
-        .help-feedback-card {
-            padding: 14px 14px 12px;
-            background: var(--help-surface-elevated);
-            border-radius: var(--help-radius-lg);
-            border: 1px solid var(--help-line);
-            box-shadow: var(--help-shadow-sm);
-        }
         .help-feedback-card-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: #374151;
+            font-size: var(--help-ui-section);
+            font-weight: var(--weight-title);
+            line-height: 1.35;
+            color: #111827;
             margin-bottom: 10px;
             letter-spacing: -0.02em;
+            text-align: left;
         }
         .help-fb-btns {
             display: flex;
@@ -493,8 +506,10 @@
         .help-fb-btn {
             flex: 1;
             padding: 10px 14px;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: var(--type-body-sm);
+            font-weight: var(--weight-em);
+            line-height: 1.35;
+            font-family: inherit;
             border: 1px solid var(--help-line);
             background: #FAFAFA;
             border-radius: 10px;
@@ -504,43 +519,409 @@
         }
         .help-fb-btn:hover { background: #F3F4F6; border-color: rgba(0,0,0,0.1); }
         .help-fb-btn:active { transform: scale(0.99); }
-        .help-feedback-card .help-fb-done {
-            font-size: 13px;
-            color: #6B7280;
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid rgba(0,0,0,0.05);
+        .help-feedback-article-extras { display: flex; flex-direction: column; gap: 0; }
+        .help-fb-section--poll {
+            padding: 14px 14px 12px;
+            background: var(--help-surface-elevated);
+            border-radius: var(--help-radius-lg);
+            border: 1px solid var(--help-line);
+            box-shadow: var(--help-shadow-sm);
+            margin-bottom: 12px;
         }
-        .help-article-secondary-actions {
+        .help-fb-stage2[hidden],
+        .help-fb-stage-thanks[hidden] { display: none !important; }
+        .help-fb-stage2-heading { margin-bottom: 12px; color: #111827; }
+        .help-fb-thanks-message {
+            margin: 0;
+            font-size: var(--type-body-sm);
+            font-weight: var(--weight-em);
+            line-height: var(--help-ui-line);
+            color: #0F766E;
+            text-align: left;
+        }
+        .help-fb-section--support {
+            margin-bottom: 12px;
+        }
+        .help-article-recs-mount:empty { display: none; }
+        .help-fb-comment--in-no { margin-top: 0; }
+        .help-fb-stage2 .help-fb-comment--in-no {
+            display: flex !important;
+            gap: 8px;
+            align-items: center;
+        }
+        .help-fb-stage2 .help-fb-comment--in-no textarea {
+            height: 44px;
+            min-height: 44px;
+            max-height: 44px;
+            padding: 0 10px;
+            line-height: 42px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+        #tHelpModalFbTextarea {
+            height: 44px;
+            min-height: 44px;
+            max-height: 44px;
+            padding: 0 10px;
+            line-height: 42px;
+            box-sizing: border-box;
+        }
+        .help-fb-support-wrap { margin-top: 0; }
+        .help-fb-support-wrap.is-hidden { display: none !important; }
+        .help-fb-support-btn {
+            box-sizing: border-box;
+            margin-top: 0;
+            width: 100%;
+            padding: 10px 14px;
+            font-size: var(--type-body-sm);
+            font-weight: var(--weight-em);
+            line-height: 1.35;
+            font-family: inherit;
+            border-radius: 10px;
+            border: 1px solid var(--help-line);
+            cursor: pointer;
+            color: #374151;
+            background: #FAFAFA;
+            -webkit-tap-highlight-color: transparent;
+            scroll-margin-bottom: 24px;
+            transition: background 0.15s ease, border-color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+        }
+        .help-fb-support-btn:hover { background: #F3F4F6; border-color: rgba(0, 0, 0, 0.1); }
+        .help-fb-support-btn:active { transform: scale(0.99); }
+        .help-fb-support-btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(91, 143, 240, 0.45);
+        }
+        .help-fb-reasons {
             display: flex;
             flex-direction: column;
-            gap: 2px;
-            margin-top: 8px;
+            gap: 10px;
+            margin-bottom: 12px;
         }
-        .help-article-secondary-actions button {
+        .help-fb-reason-chip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            padding: 12px 14px;
+            font-family: inherit;
+            text-align: left;
+            border: 1px solid var(--help-line);
+            border-radius: 10px;
+            background: #FAFAFA;
+            color: #374151;
+            cursor: pointer;
+            transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .help-fb-reason-text {
+            flex: 1;
+            min-width: 0;
+            font-size: var(--type-body-sm);
+            font-weight: var(--weight-body);
+            line-height: var(--help-ui-line);
+            color: var(--help-text);
+        }
+        .help-fb-reason-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid #D1D5DB;
+            background: #FFFFFF;
+            flex-shrink: 0;
+            position: relative;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+        }
+        .help-fb-reason-chip:hover { background: #F3F4F6; }
+        .help-fb-reason-chip.is-selected {
+            border-color: rgba(91, 143, 240, 0.45);
+            background: #F3F4F6;
+            color: #374151;
+        }
+        .help-fb-reason-chip.is-selected .help-fb-reason-check {
+            border-color: #5B8FF0;
+            background: #5B8FF0;
+            box-shadow: inset 0 0 0 3px #FFFFFF;
+        }
+
+        .support-feedback-chat {
+            position: absolute;
+            inset: 0;
+            z-index: 1118;
+            display: none;
+            flex-direction: column;
+            background: #F0F2F5;
+            border-radius: inherit;
+            overflow: hidden;
+        }
+        .support-feedback-chat.is-open { display: flex; }
+        .support-fb-chat-header {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 10px 10px;
+            padding-top: max(8px, env(safe-area-inset-top, 0px));
+            background: #FFFFFF;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .support-fb-chat-back {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
+            cursor: pointer;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 10px 12px;
-            font-size: 13px;
-            font-weight: 500;
+            color: var(--help-accent);
+            padding: 0;
+        }
+        .support-fb-chat-back:hover { background: rgba(91, 143, 240, 0.08); }
+        .support-fb-chat-back svg { width: 24px; height: 24px; }
+        .support-fb-chat-brand {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .support-fb-chat-avatar-t {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #FFDD2D, #FFC107);
+            color: #1A1A1A;
+            font-size: 17px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+        .support-fb-chat-head-text { min-width: 0; }
+        .support-fb-chat-title { font-size: 16px; font-weight: 700; color: #1D1D1F; letter-spacing: -0.02em; line-height: 1.2; }
+        .support-fb-chat-sub { font-size: 12px; color: #86868B; margin-top: 2px; line-height: 1.2; }
+        .support-fb-chat-search {
+            width: 44px;
+            height: 44px;
             border: none;
+            border-radius: 50%;
             background: transparent;
-            border-radius: 8px;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--help-accent);
+        }
+        .support-fb-chat-search:hover { background: rgba(91, 143, 240, 0.08); }
+        .support-fb-chat-search svg { width: 22px; height: 22px; }
+        .support-fb-chat-scroll {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            padding: 12px 12px 8px;
+        }
+        .support-fb-chat-body { padding-bottom: 8px; }
+        .support-fb-chat-row { margin-bottom: 10px; }
+        .support-fb-chat-row--user { display: flex; justify-content: flex-end; }
+        .support-fb-chat-row--op { display: flex; justify-content: flex-start; align-items: flex-end; gap: 8px; }
+        .support-fb-chat-bubble--user {
+            max-width: 88%;
+            padding: 10px 12px 8px;
+            border-radius: 18px 18px 4px 18px;
+            background: var(--help-accent);
+            color: #FFFFFF;
+            font-size: 14px;
+            line-height: 1.45;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+        }
+        .support-fb-chat-bubble-text { white-space: pre-wrap; word-break: break-word; }
+        .support-fb-chat-bubble-text--with-help {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+        .support-fb-chat-material-line {
+            flex: 1;
+            min-width: 0;
+        }
+        .support-fb-chat-help-tap {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            margin: -4px -4px -4px 0;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+            transition: background 0.15s ease, transform 0.12s ease;
+        }
+        .support-fb-chat-help-tap:hover { background: rgba(255, 255, 255, 0.32); }
+        .support-fb-chat-help-tap:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.38); }
+        .support-fb-chat-help-tap:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+        }
+        .support-fb-chat-help-tap svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; }
+        .support-fb-chat-bubble-meta {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+            margin-top: 6px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.85);
+        }
+        .support-fb-chat-checks { font-size: 12px; letter-spacing: -2px; opacity: 0.95; }
+        .support-fb-chat-avatar-sm {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, #E0E7FF, #C7D2FE);
+            flex-shrink: 0;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .support-fb-chat-op-col { max-width: calc(100% - 40px); }
+        .support-fb-chat-name { font-size: 13px; font-weight: 600; color: var(--help-accent); margin-bottom: 4px; padding-left: 2px; }
+        .support-fb-chat-bubble--op {
+            padding: 10px 12px;
+            border-radius: 18px 18px 18px 4px;
+            background: #FFFFFF;
+            color: #1D1D1F;
+            font-size: 14px;
+            line-height: 1.45;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        }
+        .support-fb-chat-op-time { font-size: 11px; color: #9CA3AF; margin-top: 4px; padding-left: 2px; }
+        .support-fb-chat-status-line {
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.45;
+            color: #86868B;
+            padding: 12px 16px 20px;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+        .support-fb-chat-typing {
+            display: flex;
+            gap: 4px;
+            padding: 12px 14px;
+            background: #FFFFFF;
+            border-radius: 18px;
+            width: fit-content;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .support-fb-chat-typing span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #94A3B8;
+            animation: supportFbTyping 1.2s ease-in-out infinite;
+        }
+        .support-fb-chat-typing span:nth-child(2) { animation-delay: 0.15s; }
+        .support-fb-chat-typing span:nth-child(3) { animation-delay: 0.3s; }
+        @keyframes supportFbTyping {
+            0%, 60%, 100% { opacity: 0.35; transform: translateY(0); }
+            30% { opacity: 1; transform: translateY(-3px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .support-fb-chat-typing span { animation: none; opacity: 0.6; }
+        }
+        .support-fb-chat-composer {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            padding-bottom: max(10px, env(safe-area-inset-bottom, 0px));
+            background: #FFFFFF;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+        }
+        .support-fb-chat-attach {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: transparent;
             cursor: pointer;
             color: var(--help-accent);
-            transition: background 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
-        .help-article-secondary-actions button:hover { background: var(--help-accent-soft); }
-        .help-fb-support-btn {
-            margin-top: 12px;
-            border-radius: 10px !important;
-            background: #F3F4F6 !important;
-            border: 1px solid var(--help-line) !important;
-            color: #374151 !important;
-            scroll-margin-bottom: 24px;
+        .support-fb-chat-attach svg { width: 22px; height: 22px; }
+        .support-fb-chat-input-wrap {
+            flex: 1;
+            min-width: 0;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            align-self: stretch;
+            gap: 10px;
+            padding: 0 12px;
+            background: #F3F4F6;
+            border-radius: 22px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
         }
-        .help-fb-support-btn:hover { background: #E5E7EB !important; }
+        .support-fb-chat-input-wrap input {
+            flex: 1;
+            min-width: 0;
+            border: none;
+            background: transparent;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+        }
+        .support-fb-chat-input-wrap input::placeholder { color: #9CA3AF; }
+        .support-fb-chat-emoji {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: none;
+            cursor: default;
+            opacity: 0.5;
+            font-size: 18px;
+        }
+        .support-fb-chat-send {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 50%;
+            background: #FFDD2D;
+            color: #0D0D0D;
+            cursor: pointer;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+        .support-fb-chat-send:hover { filter: brightness(1.03); }
+        .support-fb-chat-send svg { width: 20px; height: 20px; stroke: #0D0D0D; }
+        body.mobile-app .iphone-mockup-inner .support-feedback-chat {
+            position: absolute !important;
+            inset: 0 !important;
+            z-index: 1210 !important;
+        }
 
         .help-ai-sheet {
             position: absolute; inset: 0; z-index: 200; pointer-events: none;
@@ -677,6 +1058,14 @@
         .t-help-modal-article-save.saved { color: var(--help-accent); background: var(--help-accent-soft); }
         .t-help-modal-article-save.saved svg { fill: currentColor; }
         .t-help-modal-article-save svg { width: 18px; height: 18px; }
+        .t-help-modal-head {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            background: #FAFAFA;
+            position: relative;
+        }
         .t-help-modal-topbar {
             display: flex;
             align-items: center;
@@ -1056,7 +1445,7 @@
         .t-help-modal-article { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
         .t-help-modal-article.visible { display: flex; }
         .t-help-modal-main-stack { position: relative; flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
-        .t-help-modal-list-wrap { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+        .t-help-modal-list-wrap { display: flex; flex-direction: column; flex: 0 1 auto; min-height: 0; overflow: visible; }
         .t-help-modal-list-wrap.hidden { display: none !important; }
         .t-help-modal-saved-wrap {
             position: absolute;
@@ -1089,27 +1478,135 @@
         .t-help-modal-saved-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
         .t-help-modal-saved-title { font-size: var(--type-body); font-weight: var(--weight-title); }
         .t-help-modal-saved-list { flex: 1; min-height: 0; overflow-y: auto; padding: 0 16px 16px; }
-        .t-help-modal-article-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--help-line); flex-shrink: 0; background: #FAFAFA; }
-        .t-help-modal-article-back { width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer; font-size: 18px; }
-        .t-help-modal-article-title { font-size: var(--type-body); font-weight: var(--weight-title); flex: 1; line-height: 1.35; letter-spacing: -0.02em; min-width: 0; }
-        .t-help-modal-article-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-        .t-help-modal-article-open-tab {
-            width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #555;
+        .t-help-modal-article-header {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+            margin: 0 -16px 0;
+            padding: 10px 16px 14px;
+            border-bottom: 1px solid var(--help-line);
+            flex-shrink: 0;
+            background: #FAFAFA;
         }
-        .t-help-modal-article-open-tab:hover { background: #E0E0E0; color: var(--help-accent); }
-        .t-help-modal-article-open-tab svg { width: 16px; height: 16px; }
-        .t-help-modal-article-share {
-            width: 36px; height: 36px; border: none; background: #E8E8E8; border-radius: 50%; cursor: pointer;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #555;
+        .t-help-modal-article-header-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
         }
-        .t-help-modal-article-share:hover { background: #E0E0E0; color: var(--help-accent); }
-        .t-help-modal-article-share svg { width: 16px; height: 16px; }
-        .t-help-modal-article-body { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 16px 32px; font-size: var(--type-body-sm); line-height: 1.55; display: flex; flex-direction: column; scroll-padding-bottom: 32px; }
+        .t-help-modal-article-back {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: transparent;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 22px;
+            line-height: 1;
+            color: var(--help-accent);
+            flex-shrink: 0;
+            margin-top: 0;
+        }
+        .t-help-modal-article-back:hover { background: rgba(91, 143, 240, 0.08); }
+        .t-help-modal-article-heading {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 0;
+        }
+        .t-help-modal-article-title {
+            font-size: 17px;
+            font-weight: var(--weight-title);
+            line-height: 1.35;
+            letter-spacing: -0.02em;
+            text-align: left;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-break: break-word;
+            max-width: 100%;
+            color: #111827;
+            margin: 0;
+            padding: 2px 0 0;
+        }
+        .t-help-modal-article-toolbar {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 10px 0 4px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .t-help-modal-article-toolbar::-webkit-scrollbar { display: none; }
+        .t-help-article-tool-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            padding: 0;
+            border: none;
+            background: #F5F5F5;
+            border-radius: 50%;
+            cursor: pointer;
+            color: #64748B;
+            transition: background 0.15s ease, color 0.15s ease, transform 0.12s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .t-help-article-tool-btn:hover { background: #E8E8E8; color: #374151; }
+        .t-help-article-tool-btn:active { transform: scale(0.96); background: #E0E0E0; }
+        .t-help-article-tool-btn svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.5;
+        }
+        .t-help-modal-search-save svg {
+            stroke-width: 1.5;
+        }
+        .t-help-article-tool-btn.t-help-article-tool-btn--saved {
+            color: var(--help-accent);
+            background: var(--help-accent-soft);
+        }
+        .t-help-article-tool-btn.t-help-article-tool-btn--saved:hover {
+            background: rgba(91, 143, 240, 0.2);
+            color: var(--help-accent);
+        }
+        .t-help-modal-article-body {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            padding: 0 16px 32px;
+            font-size: var(--type-body-sm);
+            line-height: var(--help-ui-line);
+            font-weight: var(--weight-body);
+            color: var(--help-text);
+            display: flex;
+            flex-direction: column;
+            scroll-padding-bottom: 32px;
+        }
         .t-help-modal-article-body .help-article-body-inner { flex: 0 0 auto; }
         .t-help-modal-article-body .help-article-stats { margin-bottom: 14px; }
         .t-help-modal-article-body img { max-width: 100%; height: auto; border-radius: 6px; margin: 10px 0; display: block; }
-        .t-help-modal-article-fb { margin-top: 20px; padding: 16px 0 0; border-top: 1px solid var(--help-line); flex-shrink: 0; background: transparent; }
+        .t-help-modal-article-fb {
+            margin-top: 28px;
+            padding: 20px 0 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            flex-shrink: 0;
+            background: transparent;
+        }
         .t-help-modal-article-fb .help-fb-label { display: none; }
         .tariff-calc { background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%); border-radius: 10px; padding: 10px 12px; margin: 10px 0; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
         .tariff-calc-title { font-weight: 700; font-size: 12px; color: #1E293B; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
@@ -1124,7 +1621,7 @@
         .tariff-calc-scale { display: flex; justify-content: space-between; margin-top: 1px; font-size: 9px; color: #94A3B8; }
         .tariff-calc-scale span { text-align: center; }
         .tariff-calc-results { margin-top: 8px; padding-top: 8px; border-top: 1px solid #E2E8F0; }
-        .tariff-calc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+        .tariff-calc-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
         .tariff-calc-card { display: flex; flex-direction: column; gap: 4px; padding: 6px 8px; background: white; border-radius: 6px; border: 1px solid #E2E8F0; }
         .tariff-calc-card.best { border-color: #4CAF50; background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%); box-shadow: 0 1px 3px rgba(76,175,80,0.12); }
         .tariff-calc-card-name { font-weight: 600; font-size: 11px; color: #334155; line-height: 1.2; }
@@ -1134,11 +1631,120 @@
         .tariff-calc-card-cost span:first-child { font-size: 9px; color: #94A3B8; }
         .tariff-calc-card-cost strong { font-size: 11px; color: #1E293B; }
         .tariff-calc-card-cost.best strong { color: #2E7D32; }
-        .tariff-calc-hint { font-size: 9px; color: #94A3B8; margin-top: 6px; line-height: 1.25; }
-        .help-article-recommendations, .t-help-modal-article-body .help-article-recommendations { margin-top: 24px; padding-top: 16px; border-top: 1px solid #E8E8E8; }
-        .help-article-recommendations-title { font-size: 13px; font-weight: 600; color: #666; margin-bottom: 10px; }
-        .help-article-recommendations-list { display: flex; flex-direction: column; gap: 6px; }
-        .help-article-recommendations-list a { font-size: 14px; color: #1976D2; text-decoration: none; }
+        .tariff-cjm { margin: 14px 0 16px; padding: 14px 14px 16px; background: linear-gradient(165deg, #FAFBFC 0%, #F4F6F8 100%); border-radius: 14px; border: 1px solid #E8ECF0; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+        .tariff-cjm-title { font-size: 13px; font-weight: 700; color: #1E293B; letter-spacing: -0.02em; margin-bottom: 12px; }
+        .tariff-cjm-track { display: flex; flex-direction: column; gap: 0; position: relative; padding-left: 0; }
+        .tariff-cjm-track::before {
+            content: '';
+            position: absolute;
+            left: 13px;
+            top: 9px;
+            bottom: 9px;
+            width: 2px;
+            background: linear-gradient(180deg, #5B8FF0 0%, #7CB3FF 42%, #B8D4FF 72%, #E2E8F0 100%);
+            border-radius: 2px;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .tariff-cjm-step { display: flex; flex-direction: row; align-items: flex-start; gap: 12px; padding-bottom: 14px; position: relative; z-index: 1; }
+        .tariff-cjm-step:last-child { padding-bottom: 0; }
+        .tariff-cjm-step-marker { width: 28px; flex-shrink: 0; display: flex; justify-content: center; position: relative; background: transparent; }
+        .tariff-cjm-dot { position: relative; top: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 3px solid #5B8FF0; box-shadow: 0 0 0 2px rgba(91,143,240,0.15); flex-shrink: 0; z-index: 2; }
+        .tariff-cjm-step:nth-child(1) .tariff-cjm-dot { border-color: #5B8FF0; }
+        .tariff-cjm-step:nth-child(2) .tariff-cjm-dot { border-color: #42A5F5; }
+        .tariff-cjm-step:nth-child(3) .tariff-cjm-dot { border-color: #7CB342; }
+        .tariff-cjm-step:nth-child(4) .tariff-cjm-dot { border-color: #9575CD; }
+        .tariff-cjm-step-body { flex: 1; min-width: 0; }
+        .tariff-cjm-step-label { font-size: 11px; font-weight: 700; color: #334155; line-height: 1.3; margin-bottom: 2px; }
+        .tariff-cjm-step-desc { font-size: 11px; color: #64748B; line-height: 1.45; }
+        .tariff-cjm-badge { display: inline-flex; align-items: center; margin-top: 6px; padding: 3px 8px; border-radius: 999px; font-size: 10px; font-weight: 700; background: #E8F5E9; color: #2E7D32; }
+        .tariff-exp-wrap { margin: 14px 0; padding: 16px 14px 14px; background: #fff; border-radius: 16px; border: 1px solid #E8ECF0; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+        .tariff-exp-head { margin-bottom: 8px; }
+        .tariff-exp-head-title { font-size: 13px; font-weight: 600; color: #1D1D1F; letter-spacing: -0.02em; line-height: 1.35; }
+        .tariff-chart-value { font-size: 22px; font-weight: 800; color: #1D1D1F; letter-spacing: -0.03em; margin: 4px 0 10px; line-height: 1.15; }
+        .tariff-chart-svg-wrap { position: relative; height: 112px; margin: 0 -2px; cursor: crosshair; touch-action: none; }
+        .tariff-chart-svg-wrap svg { width: 100%; height: 112px; display: block; overflow: visible; }
+        .tariff-chart-cursor { stroke: #5B8FF0; stroke-opacity: 0.45; stroke-width: 1; stroke-dasharray: 3 4; pointer-events: none; }
+        .tariff-chart-dot { pointer-events: none; }
+        .tariff-chart-area-fill { opacity: 0; transition: opacity 0.55s ease; }
+        .tariff-chart-area-fill.is-visible { opacity: 1; }
+        .tariff-chart-line { fill: none; stroke: #5B8FF0; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; transition: stroke-dashoffset 0.85s cubic-bezier(0.4, 0, 0.2, 1); }
+        .tariff-chart-grid { stroke: #E8ECF0; stroke-width: 1; }
+        .tariff-chart-months { display: flex; justify-content: space-between; font-size: 10px; color: #94A3B8; margin-top: 4px; padding: 0 4px; }
+        .tariff-chart-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+        .tariff-chart-metric { background: #F5F5F7; border-radius: 10px; padding: 8px 10px; }
+        .tariff-chart-metric-label { font-size: 10px; color: #64748B; margin-bottom: 2px; }
+        .tariff-chart-metric-val { font-size: 13px; font-weight: 700; color: #1D1D1F; letter-spacing: -0.02em; }
+        @media (prefers-reduced-motion: reduce) {
+            .tariff-chart-area-fill { opacity: 1 !important; transition: none; }
+            .tariff-chart-line { stroke-dashoffset: 0 !important; transition: none; }
+        }
+        .tariff-acct-open {
+            display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; margin: 10px 0 6px;
+            padding: 12px 14px; font-size: 13px; font-weight: 600; font-family: inherit;
+            color: #0D0D0D; background: #FFDD2D; border: none; border-radius: 12px; cursor: pointer;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .tariff-acct-open:active { opacity: 0.94; transform: scale(0.99); }
+        .tariff-acct-sheet { position: fixed; inset: 0; z-index: 1205; pointer-events: none; opacity: 0; transition: opacity 0.28s ease; }
+        .tariff-acct-sheet.is-open { pointer-events: auto; opacity: 1; }
+        .tariff-acct-sheet-backdrop { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.45); }
+        .tariff-acct-sheet-panel {
+            position: absolute; left: 0; right: 0; bottom: 0; max-height: min(78vh, 520px);
+            background: #fff; border-radius: 18px 18px 0 0; box-shadow: 0 -8px 32px rgba(0,0,0,0.18);
+            transform: translateY(104%); transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+            display: flex; flex-direction: column; padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        .tariff-acct-sheet.is-open .tariff-acct-sheet-panel { transform: translateY(0); }
+        .tariff-acct-sheet-handle { width: 40px; height: 4px; border-radius: 4px; background: #E2E8F0; margin: 10px auto 6px; flex-shrink: 0; }
+        .tariff-acct-sheet-title { font-size: 16px; font-weight: 700; color: #0F172A; padding: 4px 20px 10px; letter-spacing: -0.02em; }
+        .tariff-acct-sheet-list { flex: 1; min-height: 0; overflow-y: auto; padding: 4px 12px 8px; -webkit-overflow-scrolling: touch; }
+        .tariff-acct-row {
+            display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 10px; margin-bottom: 4px;
+            border: 1px solid transparent; border-radius: 12px; background: #FAFAFA; cursor: pointer; text-align: left;
+            font-family: inherit; -webkit-tap-highlight-color: transparent;
+        }
+        .tariff-acct-row:hover { background: #F1F5F9; }
+        .tariff-acct-row.is-selected { border-color: #5B8FF0; background: #F0F7FF; }
+        .tariff-acct-icon { width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .tariff-acct-icon--dark { background: linear-gradient(145deg, #37474F, #263238); color: #fff; }
+        .tariff-acct-icon--silver { background: linear-gradient(145deg, #ECEFF1, #B0BEC5); color: #37474F; }
+        .tariff-acct-icon--blue { background: linear-gradient(145deg, #42A5F5, #1E88E5); color: #fff; }
+        .tariff-acct-meta { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+        .tariff-acct-bal { font-size: 15px; font-weight: 700; color: #0F172A; letter-spacing: -0.02em; line-height: 1.2; }
+        .tariff-acct-name { font-size: 12px; color: #64748B; line-height: 1.3; margin: 0; }
+        .tariff-acct-check { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #CBD5E1; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: transparent; }
+        .tariff-acct-row.is-selected .tariff-acct-check { border-color: #5B8FF0; background: #5B8FF0; color: #fff; }
+        .tariff-acct-done {
+            margin: 8px 16px 14px; padding: 14px; font-size: 15px; font-weight: 700; font-family: inherit;
+            color: #fff; background: linear-gradient(135deg, #5B8FF0, #3D7DD6); border: none; border-radius: 12px; cursor: pointer;
+        }
+        .tariff-acct-done:active { opacity: 0.95; }
+        .help-article-recommendations, .t-help-modal-article-body .help-article-recommendations {
+            margin-top: 0;
+            padding: 14px 14px 14px;
+            background: var(--help-surface-elevated);
+            border-radius: var(--help-radius-lg);
+            border: 1px solid var(--help-line);
+            box-shadow: var(--help-shadow-sm);
+        }
+        .help-article-recommendations-title {
+            font-size: var(--help-ui-section);
+            font-weight: var(--weight-title);
+            line-height: 1.35;
+            color: #111827;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+        .help-article-recommendations-list { display: flex; flex-direction: column; gap: 8px; }
+        .help-article-recommendations-list a {
+            font-size: var(--type-body-sm);
+            font-weight: var(--weight-body);
+            line-height: var(--help-ui-line);
+            color: var(--help-accent);
+            text-decoration: none;
+        }
         .help-article-recommendations-list a:hover { text-decoration: underline; }
         .chat-list-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1095; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; }
         .chat-list-overlay.visible { opacity: 1; pointer-events: auto; }
@@ -1183,41 +1789,22 @@
             align-items: stretch;
             box-sizing: border-box;
         }
-        .mobile-page-header {
-            flex-shrink: 0;
-            width: 100%;
-            background: #fff;
-            border-bottom: 1px solid #E0E0E0;
-            box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+        .iphone-mockup-page > .top-header { flex-shrink: 0; }
+        .top-header--compact { padding: 0; }
+        .top-header--compact .top-header-inner { padding: 4px 16px; min-height: 34px; align-items: center; }
+        .top-header--compact .logo-text { font-size: 15px; }
+        .top-header--compact .header-user { font-size: 11px; }
+        .header-proto-nav {
+            display: flex; align-items: center; gap: 0; flex: 1; justify-content: center;
+            min-width: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
-        .mobile-page-header .mobile-header-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            padding: 12px 20px 10px;
-            max-width: 1400px;
-            margin: 0 auto;
+        .header-proto-nav::-webkit-scrollbar { display: none; }
+        .header-proto-link {
+            font-size: 11px; color: #5C5C5C; text-decoration: none; padding: 3px 7px; border-radius: 5px;
+            white-space: nowrap; font-weight: 500;
         }
-        .mobile-page-header .mobile-header-nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px 16px;
-            align-items: center;
-            justify-content: flex-end;
-            padding: 0 20px 14px;
-            max-width: 1400px;
-            margin: 0 auto;
-            border-top: 1px solid #F0F0F0;
-        }
-        .mobile-page-header .mobile-header-nav a {
-            font-size: var(--type-caption);
-            color: #1565C0;
-            text-decoration: none;
-            font-weight: var(--weight-em);
-            white-space: nowrap;
-        }
-        .mobile-page-header .mobile-header-nav a:hover { text-decoration: underline; }
+        .header-proto-link:hover { background: #F5F5F5; color: #222; }
+        .header-proto-link.is-active { color: #1565C0; font-weight: 600; background: #F3F8FD; }
         .iphone-mockup-stage {
             flex: 1;
             display: flex;
@@ -1320,6 +1907,7 @@
             margin: 0 auto !important;
             flex-shrink: 1 !important;
             min-height: 0 !important;
+            overflow: hidden !important;
             opacity: 1 !important;
             transform: translate3d(0, 105%, 0) !important;
             transition: transform 0.38s cubic-bezier(0.32, 0.72, 0, 1) !important;
@@ -1400,7 +1988,6 @@
             opacity: 1 !important;
         }
         .mobile-viewport { width: 100%; max-width: 390px; margin: 0 auto; min-height: 100vh; background: #F5F5F5; position: relative; padding-bottom: env(safe-area-inset-bottom); overflow-x: hidden; }
-        .mobile-logo { font-size: 17px; font-weight: 700; }
         .mobile-user { font-size: 14px; color: #666; }
         .mobile-content { padding: 16px; }
         .mobile-section { background: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
@@ -1491,6 +2078,7 @@
             flex: 1 1 0% !important;
             min-height: 0 !important;
             max-height: 100% !important;
+            height: 100% !important;
             display: flex !important;
             flex-direction: column !important;
             overflow: hidden !important;
@@ -1564,20 +2152,31 @@
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
         }
+        body.mobile-app .t-help-modal-article-header {
+            border-bottom: none;
+        }
+        body.mobile-app .t-help-modal-article-fb {
+            border-top: none;
+        }
     </style>
 </head>
 <body class="mobile-app">
     <div class="iphone-mockup-page">
-    <header class="mobile-page-header">
-        <div class="mobile-header-row">
-            <span class="mobile-logo">Т БИЗНЕС</span>
-            <span class="mobile-user">ИП Христов А.</span>
+    <header class="top-header top-header--compact">
+        <div class="top-header-inner">
+            <div class="logo">
+                <span class="logo-text">Т‑Бизнес</span>
+            </div>
+            <nav class="header-proto-nav" aria-label="Прототипы">
+                <a class="header-proto-link is-active" href="mobile.html">Мобильная</a>
+                <a class="header-proto-link" href="prototype.html">Desktop</a>
+                <a class="header-proto-link" href="entry-points-catalog.html">Точки входа</a>
+                <a class="header-proto-link" href="help-ai.html">Справка AI</a>
+            </nav>
+            <div class="header-right">
+                <span class="header-user">ИП Христов А.</span>
+            </div>
         </div>
-        <nav class="mobile-header-nav" aria-label="Прототипы">
-            <a href="prototype.html">Desktop версия</a>
-            <a href="entry-points-catalog.html">Точки входа</a>
-            <a href="help-ai.html">Справка с AI</a>
-        </nav>
     </header>
     <div class="iphone-mockup-stage">
     <div class="iphone-mockup-device">
@@ -1640,6 +2239,7 @@
         <div class="t-help-modal-wrapper" id="tHelpModalWrapper">
             <div class="mobile-help-sheet-handle" aria-hidden="true"></div>
             <div class="t-help-modal" id="tHelpModal">
+            <div class="t-help-modal-head">
             <div class="t-help-modal-topbar">
                 <button type="button" class="mobile-help-topbar-close" id="tHelpModalClose" title="Закрыть">✕</button>
                 <button type="button" class="t-help-modal-home-btn" id="tHelpModalHomeBtn" title="К списку тем">← На главную</button>
@@ -1660,7 +2260,8 @@
                     </div>
                     <div class="t-help-search-suggest" id="tHelpModalSearchSuggest" role="listbox" aria-label="Подсказки" hidden></div>
                 </div>
-                <button type="button" class="t-help-modal-search-save" id="tHelpModalSave" title="Сохранённые"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                <button type="button" class="t-help-modal-search-save" id="tHelpModalSave" title="Сохранённые"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+            </div>
             </div>
             <div class="t-help-modal-main-stack">
             <div class="t-help-modal-body-scroll" id="tHelpModalBodyScroll">
@@ -1713,40 +2314,75 @@
             </div>
             </div>
             <div class="t-help-modal-article" id="tHelpModalArticle">
+                <div class="t-help-modal-article-body" id="tHelpModalArticleBody">
                 <div class="t-help-modal-article-header">
-                    <button class="t-help-modal-article-back" id="tHelpModalArticleBack">←</button>
-                    <span class="t-help-modal-article-title" id="tHelpModalArticleTitle"></span>
-                    <div class="t-help-modal-article-actions">
-                        <button type="button" class="t-help-modal-article-open-tab" id="tHelpModalArticleOpenTab" title="Открыть в новой вкладке" aria-label="Открыть в новой вкладке">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    <div class="t-help-modal-article-header-row">
+                        <button type="button" class="t-help-modal-article-back" id="tHelpModalArticleBack" aria-label="Назад">‹</button>
+                        <div class="t-help-modal-article-heading">
+                            <h1 class="t-help-modal-article-title" id="tHelpModalArticleTitle"></h1>
+                        </div>
+                    </div>
+                    <div class="t-help-modal-article-toolbar" role="toolbar" aria-label="Действия со статьёй">
+                        <button type="button" class="t-help-article-tool-btn" id="tHelpModalArticleOpenTab" aria-label="Открыть в новой вкладке" title="Открыть в новой вкладке">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                         </button>
-                        <button type="button" class="t-help-modal-article-share" id="tHelpModalArticleShare" title="Поделиться" aria-label="Поделиться">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                        <button type="button" class="t-help-article-tool-btn" id="tHelpModalArticleShare" aria-label="Поделиться" title="Поделиться">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
                         </button>
-                        <button class="t-help-modal-article-save" id="tHelpModalArticleSave" title="Сохранить"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                        <button type="button" class="t-help-article-tool-btn" id="tHelpModalArticleSave" aria-label="Сохранить" title="Сохранить">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                        </button>
+                        <button type="button" class="t-help-article-tool-btn" id="tHelpModalSuggest" aria-label="Предложить правки" title="Предложить правки">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        </button>
+                        <button type="button" class="t-help-article-tool-btn" id="tHelpModalPdf" aria-label="Скачать PDF" title="Скачать PDF">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="11"/><polyline points="9 15 12 18 15 15"/></svg>
+                        </button>
                     </div>
                 </div>
-                <div class="t-help-modal-article-body" id="tHelpModalArticleBody">
                     <div class="help-article-body-inner" id="tHelpModalArticleBodyInner"></div>
                     <div class="t-help-modal-article-fb">
-                        <div class="help-feedback-card">
-                            <div class="help-feedback-card-title">Была ли статья полезной?</div>
-                            <div class="help-fb-btns">
-                                <button type="button" class="help-fb-btn positive" id="tHelpModalFbYes">Да</button>
-                                <button type="button" class="help-fb-btn negative" id="tHelpModalFbNo">Нет</button>
+                        <div class="help-feedback-article-extras">
+                            <div class="help-fb-section help-fb-section--poll">
+                                <div id="tHelpModalFbStage1" class="help-fb-stage1">
+                                    <div class="help-feedback-card-title">Была ли статья полезной?</div>
+                                    <div class="help-fb-btns">
+                                        <button type="button" class="help-fb-btn positive" id="tHelpModalFbYes">Да</button>
+                                        <button type="button" class="help-fb-btn negative" id="tHelpModalFbNo">Нет</button>
+                                    </div>
+                                </div>
+                                <div id="tHelpModalFbStageThanks" class="help-fb-stage-thanks" hidden>
+                                    <p class="help-fb-thanks-message" role="status">Спасибо за отзыв</p>
+                                </div>
+                                <div id="tHelpModalFbStage2" class="help-fb-stage2" hidden>
+                                    <div class="help-feedback-card-title help-fb-stage2-heading">Что можно улучшить?</div>
+                                    <div class="help-fb-reasons" id="tHelpModalFbReasons" role="group" aria-label="Что не подошло">
+                                        <button type="button" class="help-fb-reason-chip" data-reason="Нет нужной информации" aria-pressed="false">
+                                            <span class="help-fb-reason-text">Нет нужной информации</span>
+                                            <span class="help-fb-reason-check" aria-hidden="true"></span>
+                                        </button>
+                                        <button type="button" class="help-fb-reason-chip" data-reason="Не устроили условия" aria-pressed="false">
+                                            <span class="help-fb-reason-text">Не устроили условия</span>
+                                            <span class="help-fb-reason-check" aria-hidden="true"></span>
+                                        </button>
+                                        <button type="button" class="help-fb-reason-chip" data-reason="Не хватает функционала" aria-pressed="false">
+                                            <span class="help-fb-reason-text">Не хватает функционала</span>
+                                            <span class="help-fb-reason-check" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                    <div class="help-fb-comment help-fb-comment--in-no" id="tHelpModalFbCommentNo">
+                                        <textarea id="tHelpModalFbTextarea" placeholder="Комментарий"></textarea>
+                                        <button type="button" class="help-fb-send" id="tHelpModalFbSend" title="Отправить в чат">→</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="help-fb-done" id="tHelpModalFbDone">Спасибо за отзыв</div>
-                            <div class="help-article-secondary-actions">
-                                <button type="button" id="tHelpModalSuggest">Предложить правки</button>
-                                <button type="button" id="tHelpModalPdf">Скачать PDF</button>
+                            <div class="help-fb-section help-fb-section--support">
+                                <div class="help-fb-support-wrap" id="tHelpModalSupportWrap">
+                                    <button type="button" class="help-fb-support-btn" id="tHelpModalSupportBtn">Написать в поддержку</button>
+                                </div>
                             </div>
-                            <div class="help-fb-comment" id="tHelpModalFbComment">
-                                <textarea id="tHelpModalFbTextarea" placeholder="Комментарий"></textarea>
-                                <button type="button" class="help-fb-send" id="tHelpModalFbSend" title="Отправить">→</button>
-                            </div>
-                            <button type="button" class="help-fb-support-btn" id="tHelpModalSupportBtn">Написать в поддержку</button>
-                            <span class="help-fb-comment-toggle" id="tHelpModalFbCommentToggle">Добавить комментарий</span>
                         </div>
+                        <div id="tHelpModalArticleRecsMount" class="help-article-recs-mount" aria-live="polite"></div>
                     </div>
                 </div>
             </div>
@@ -1761,6 +2397,39 @@
                 </div>
             </div>
             </div>
+        </div>
+    </div>
+
+    <div class="support-feedback-chat" id="supportFeedbackChat" aria-hidden="true">
+        <div class="support-fb-chat-header">
+            <button type="button" class="support-fb-chat-back" id="supportFbChatBack" aria-label="Назад">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <div class="support-fb-chat-brand">
+                <div class="support-fb-chat-avatar-t" aria-hidden="true">Т</div>
+                <div class="support-fb-chat-head-text">
+                    <div class="support-fb-chat-title">Business</div>
+                    <div class="support-fb-chat-sub">Мы рядом 24/7</div>
+                </div>
+            </div>
+            <button type="button" class="support-fb-chat-search" aria-label="Поиск" title="Поиск">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+            </button>
+        </div>
+        <div class="support-fb-chat-scroll" id="supportFbChatScroll">
+            <div class="support-fb-chat-body" id="supportFbChatBody"></div>
+        </div>
+        <div class="support-fb-chat-composer">
+            <button type="button" class="support-fb-chat-attach" aria-label="Вложение" title="Вложение">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+            </button>
+            <div class="support-fb-chat-input-wrap">
+                <input type="text" readonly tabindex="-1" placeholder="Сообщение" aria-hidden="true">
+                <span class="support-fb-chat-emoji" aria-hidden="true">☺</span>
+            </div>
+            <button type="button" class="support-fb-chat-send" aria-label="Отправить" title="Отправить">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+            </button>
         </div>
     </div>
 
@@ -1805,7 +2474,7 @@
                     <div class="chat-list-meta"><span class="chat-list-badge gray">3</span> Чт</div>
                 </button>
                 <button class="chat-list-item" data-action="business">
-                    <div class="chat-list-icon business">Т</div>
+                    <div class="chat-list-icon business">Б</div>
                     <div class="chat-list-content"><div class="chat-list-name">Business</div><div class="chat-list-preview">Если срочно нужно принять платеж - Алексей</div></div>
                     <div class="chat-list-meta">19.02</div>
                 </button>
@@ -1924,18 +2593,7 @@
                 body: `<p>Аренда терминала бесплатная. Стоимость зависит от тарифа счёта, схемы (пакетная/процентная) и способа приёма (карта/СБП).</p>
                 <ul><li>Тариф расчётного счёта</li><li>Схема оплаты эквайринга</li><li>Способ приёма (карта, СБП)</li></ul>
                 <p>При подключении считаем со дня доставки терминала.</p>
-                <div class="example">Пример: пакет на тарифе «Простой» 1 990 ₽, доставка 7 апреля. Период 28 дней: 1 990 × 28/30 = 1 857 ₽.</div>`
-            },
-            no_receipt: {
-                title: 'Терминал не печатает чек',
-                body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>',
-                recommendations: ['terminal_blocked', 'pay_receipt', 'sbp_setup']
-            },
-            change_tariff: {
-                title: 'Как изменить схему оплаты и тариф?',
-                recommendations: ['rates', 'refund', 'pay_receipt'],
-                body: `<p>Напишите в чат поддержки Т‑Бизнеса или позвоните по телефону 8 800 700‑66‑66. Объясните, на какую схему оплаты хотите перейти, и назовите дату, с которой начнёт действовать новый тариф или схема оплаты эквайринга.</p>
-                <img src="assets/tariff-change-illustration.png" alt="Схема оплаты и тариф — поддержка Т‑Бизнес">
+                <div class="example">Пример: пакет на тарифе «Простой» 1 990 ₽, доставка 7 апреля. Период 28 дней: 1 990 × 28/30 = 1 857 ₽.</div>
                 <div class="tariff-calc" id="tariffCalc">
                     <div class="tariff-calc-title">Калькулятор тарифов</div>
                     <div class="tariff-calc-blocks">
@@ -1952,19 +2610,104 @@
                     </div>
                     <div class="tariff-calc-results">
                         <div class="tariff-calc-cards" id="tariffCalcResults"></div>
-                        <div class="tariff-calc-hint">Комиссии без НДС. Платежи по QR (СБП) не учитываются.</div>
+                    </div>
+                </div>`
+            },
+            no_receipt: {
+                title: 'Терминал не печатает чек',
+                body: '<p>Проверьте бумагу. Меню → Тест печати. Замените рулон.</p>',
+                recommendations: ['terminal_blocked', 'pay_receipt', 'sbp_setup']
+            },
+            change_tariff: {
+                title: 'Как изменить схему оплаты и тариф?',
+                recommendations: ['rates', 'refund', 'pay_receipt'],
+                body: `<div class="tariff-cjm" role="region" aria-label="Этапы смены схемы оплаты">
+                    <div class="tariff-cjm-title">Как проходит смена схемы</div>
+                    <div class="tariff-cjm-track">
+                        <div class="tariff-cjm-step">
+                            <div class="tariff-cjm-step-marker"><span class="tariff-cjm-dot" aria-hidden="true"></span></div>
+                            <div class="tariff-cjm-step-body">
+                                <div class="tariff-cjm-step-label">Заявка в поддержку</div>
+                                <div class="tariff-cjm-step-desc">Чат или звонок: какая схема и тариф нужны, с какой даты.</div>
+                            </div>
+                        </div>
+                        <div class="tariff-cjm-step">
+                            <div class="tariff-cjm-step-marker"><span class="tariff-cjm-dot" aria-hidden="true"></span></div>
+                            <div class="tariff-cjm-step-body">
+                                <div class="tariff-cjm-step-label">Согласование даты</div>
+                                <div class="tariff-cjm-step-desc">Новые условия — не раньше следующего дня после заявки; день обращения ещё по старой схеме.</div>
+                                <span class="tariff-cjm-badge">Не раньше завтра</span>
+                            </div>
+                        </div>
+                        <div class="tariff-cjm-step">
+                            <div class="tariff-cjm-step-marker"><span class="tariff-cjm-dot" aria-hidden="true"></span></div>
+                            <div class="tariff-cjm-step-body">
+                                <div class="tariff-cjm-step-label">Старт новой схемы</div>
+                                <div class="tariff-cjm-step-desc">В назначенную дату включаются выбранный тариф и пакетная или процентная схема.</div>
+                            </div>
+                        </div>
+                        <div class="tariff-cjm-step">
+                            <div class="tariff-cjm-step-marker"><span class="tariff-cjm-dot" aria-hidden="true"></span></div>
+                            <div class="tariff-cjm-step-body">
+                                <div class="tariff-cjm-step-label">Списания</div>
+                                <div class="tariff-cjm-step-desc">Комиссии и минимальные платежи списываются с расчётного счёта, привязанного к эквайрингу.</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <p>Перейти в чат поддержки можно с любой страницы личного кабинета Т‑Бизнеса — нажмите на жёлтую кнопку чата.</p>
-                <p>Если у вас пакетная схема и вы переходите на новый тариф, текущий пакет обнулится, а новый подключится за полную стоимость.</p>
-                <div class="example">Например, вы перешли с тарифа «Простой» на «Продвинутый» до конца расчётного периода. На момент перехода вы получили платежей на 90 000 ₽ — то есть не успели использовать 10 000 ₽ оборота. Они сгорят, когда подключится новый пакет, — в дату, которую вы назовёте, но не ранее следующего дня после подачи заявки. В этот день спишется 2 690 ₽ — плата за пакет на тарифе «Продвинутый».</div>
-                <p>Если у вас процентная схема и вы переходите на новый тариф, изменится минимальный платёж. Если комиссия за операции по картам будет меньше, чем минимальный платёж, мы спишем разницу с расчётного счёта.</p>
-                <div class="example">Например, на тарифе «Простой» каждое 15‑е число с вашего расчётного счёта списывалась комиссия за операции по карте и минимальный платёж за терминал — 1 990 ₽. 10 апреля вы перешли на тариф «Продвинутый». На тарифе «Простой» вы уже заплатили 1 500 ₽ комиссии за платежи картой. 15 апреля мы сделаем перерасчёт: 1990 × (26 / 31) = 1 669 ₽ — сумма минимального платежа за 26 дней. Так как вы уже заплатили 1500 ₽, мы спишем только разницу — 169 ₽.</div>
-                <p>Если переходите с процентной схемы на пакетную, мы пересчитаем плату за пакет — стоимость зависит от количества терминалов, дней до конца периода и стоимости пакета.</p>
-                <div class="example">Например, 1 июня вы подключили процентную схему на тарифе «Продвинутый» за 2 690 ₽ и получили один терминал. 10 июня вы решили перейти на пакетную схему. Плата с 1 по 10 июня составит: 2 690 × 10 / 30 = 897 ₽. За 10 дней вы провели операций по карте на 15 000 ₽, комиссия: 15 000 × 2,29% = 343 ₽. Поскольку она меньше, чем плата за пакет, в конце расчётного периода мы доспишем разницу: 897 − 343 = 554 ₽. Стоимость пакета на тарифе «Продвинутый» за один терминал — 2 690 ₽. Всего в июне 30 дней, остаток неиспользованного пакета — 20 дней. 11 июня спишется 2 690 × 20 / 30 = 1 793 ₽.</div>
-                <p>Если переходите с пакетной схемы на процентную, день обращения мы посчитаем по старой схеме, а остаток по уже оплаченному пакету сгорит, когда начнёт действовать новая схема.</p>
-                <div class="example">Например, 1 апреля вы подключили пакетную схему на тарифе «Профессиональный» и получили два терминала. Вы заплатили 3990 ₽ × 2 = 7 980 ₽. 10 апреля вы решили изменить схему оплаты и обратились в поддержку. 11 апреля начала действовать процентная схема, а плата за пакеты сгорела. С 11 по 30 апреля вы платили проценты с каждой выплаты — набралось 500 ₽. 30 апреля — в конце расчётного периода — рассчитаем плату за процентную схему. Она составит 3990 × 20 / 30 − 500 = 2 160 ₽ за один терминал, а за два — 4 320 ₽.</div>
-                <p>Схема оплаты изменится в назначенную дату, но не раньше чем на следующий день после подачи заявки через поддержку. День обращения мы посчитаем по старой схеме.</p>`
+                <p>Две схемы оплаты и льготные ставки для некоторых видов бизнеса. Вы сами выбираете, как платить за эквайринг: одним платежом или с каждой продажи.</p>
+                <div class="tariff-exp-wrap" id="tariffExpBlock">
+                    <div class="tariff-exp-head">
+                        <div class="tariff-exp-head-title">Выручка по картам</div>
+                    </div>
+                    <div class="tariff-chart-value" id="tariffChartHeadline">—</div>
+                    <div class="tariff-chart-svg-wrap">
+                        <svg viewBox="0 0 320 100" preserveAspectRatio="none" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="tariffChartFillGrad" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0%" stop-color="#5B8FF0" stop-opacity="0.42"/>
+                                    <stop offset="100%" stop-color="#5B8FF0" stop-opacity="0"/>
+                                </linearGradient>
+                            </defs>
+                            <line class="tariff-chart-grid" x1="8" y1="90" x2="312" y2="90"/>
+                            <path id="tariffChartArea" class="tariff-chart-area-fill" fill="url(#tariffChartFillGrad)" d=""/>
+                            <path id="tariffChartLine" class="tariff-chart-line" d=""/>
+                            <line id="tariffChartCursor" class="tariff-chart-cursor" x1="160" y1="8" x2="160" y2="90"/>
+                            <circle id="tariffChartDot" class="tariff-chart-dot" r="5" cx="160" cy="50" fill="#5B8FF0" stroke="#fff" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="tariff-chart-months"><span>Февр</span><span>Март</span><span>Апр</span><span>Май</span><span>Июнь</span></div>
+                    <div class="tariff-chart-metrics">
+                        <div class="tariff-chart-metric"><div class="tariff-chart-metric-label">Поступления</div><div class="tariff-chart-metric-val" id="tariffChartIn">—</div></div>
+                        <div class="tariff-chart-metric"><div class="tariff-chart-metric-label">Комиссия</div><div class="tariff-chart-metric-val" id="tariffChartFee">—</div></div>
+                    </div>
+                </div>
+                <button type="button" class="tariff-acct-open" id="tariffAcctSheetOpen">С какого счёта спишется оплата</button>
+                <div class="tariff-acct-sheet" id="tariffAcctSheet" aria-hidden="true">
+                    <div class="tariff-acct-sheet-backdrop" id="tariffAcctSheetBackdrop"></div>
+                    <div class="tariff-acct-sheet-panel" role="dialog" aria-modal="true" aria-labelledby="tariffAcctSheetTitle">
+                        <div class="tariff-acct-sheet-handle" aria-hidden="true"></div>
+                        <div class="tariff-acct-sheet-title" id="tariffAcctSheetTitle">Выберите расчётный счёт</div>
+                        <div class="tariff-acct-sheet-list">
+                            <button type="button" class="tariff-acct-row is-selected" data-acct="1">
+                                <span class="tariff-acct-icon tariff-acct-icon--dark" aria-hidden="true">💳</span>
+                                <span class="tariff-acct-meta"><span class="tariff-acct-bal">142 186 ₽</span><span class="tariff-acct-name">Расчётный счёт ·40802*5072</span></span>
+                                <span class="tariff-acct-check" aria-hidden="true">✓</span>
+                            </button>
+                            <button type="button" class="tariff-acct-row" data-acct="2">
+                                <span class="tariff-acct-icon tariff-acct-icon--silver" aria-hidden="true">💎</span>
+                                <span class="tariff-acct-meta"><span class="tariff-acct-bal">89 400 ₽</span><span class="tariff-acct-name">Платинум ·40817*9041</span></span>
+                                <span class="tariff-acct-check" aria-hidden="true">✓</span>
+                            </button>
+                            <button type="button" class="tariff-acct-row" data-acct="3">
+                                <span class="tariff-acct-icon tariff-acct-icon--blue" aria-hidden="true">✈</span>
+                                <span class="tariff-acct-meta"><span class="tariff-acct-bal">12 050 ₽</span><span class="tariff-acct-name">ALL Airlines ·40820*1122</span></span>
+                                <span class="tariff-acct-check" aria-hidden="true">✓</span>
+                            </button>
+                        </div>
+                        <button type="button" class="tariff-acct-done" id="tariffAcctSheetDone">Готово</button>
+                    </div>
+                </div>`
             }
         };
 
@@ -1999,7 +2742,7 @@
                 if (valTerminals) valTerminals.textContent = terminals;
                 const results = [];
                 let bestCost = Infinity;
-                Object.entries(TARIFFS).forEach(([key, t]) => {
+                Object.entries(TARIFFS).filter(([key]) => key !== 'pro').forEach(([key, t]) => {
                     const packCost = calcTariffPackage(turnover, terminals, t);
                     const pctCost = calcTariffPercent(turnover, terminals, t);
                     bestCost = Math.min(bestCost, packCost, pctCost);
@@ -2010,7 +2753,7 @@
                         const packBest = r.packCost === bestCost;
                         const pctBest = r.pctCost === bestCost;
                         const isBest = packBest || pctBest;
-                        const shortName = r.name === 'Профессиональный' ? 'Проф.' : r.name;
+                        const shortName = r.name;
                         return `<div class="tariff-calc-card ${isBest ? 'best' : ''}" title="${r.name}">
                             <div><span class="tariff-calc-card-name">${shortName}</span>${isBest ? ' <span class="tariff-calc-badge">✓</span>' : ''}</div>
                             <div class="tariff-calc-card-costs">
@@ -2023,6 +2766,212 @@
             };
             [inpTurnover, inpTerminals].forEach(el => { if (el) { el.addEventListener('input', update); el.addEventListener('change', update); } });
             update();
+        }
+
+        function initTariffChangeExtras(container) {
+            if (!container || !container.querySelector('#tariffExpBlock')) return;
+            const t = TARIFFS.advanced;
+            const lineEl = container.querySelector('#tariffChartLine');
+            const areaEl = container.querySelector('#tariffChartArea');
+            const headEl = container.querySelector('#tariffChartHeadline');
+            const inEl = container.querySelector('#tariffChartIn');
+            const feeEl = container.querySelector('#tariffChartFee');
+            const chartWrap = container.querySelector('.tariff-chart-svg-wrap');
+            const cursorLine = container.querySelector('#tariffChartCursor');
+            const dotEl = container.querySelector('#tariffChartDot');
+            const reduceMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const fmtMoney = (n) => Number(n).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' \u20BD';
+            const fmtInt = (n) => Math.round(n).toLocaleString('ru-RU');
+            function readTurnoverTerminals() {
+                const inpT = container.querySelector('#tariffCalcTurnover');
+                const inpN = container.querySelector('#tariffCalcTerminals');
+                const turnover = inpT
+                    ? Math.max(50000, Math.min(500000, parseInt(inpT.value, 10) || 150000))
+                    : 150000;
+                const terminals = inpN
+                    ? Math.max(1, Math.min(10, parseInt(inpN.value, 10) || 1))
+                    : 1;
+                return { turnover, terminals };
+            }
+            function anchorScreenPoints(anchors, w, h, pad) {
+                const maxV = Math.max.apply(null, anchors.concat([1]));
+                const minV = Math.min.apply(null, anchors) * 0.82;
+                const span = maxV - minV || 1;
+                const bottom = h - 10;
+                const n = anchors.length;
+                const pts = [];
+                for (let i = 0; i < n; i++) {
+                    const v = anchors[i];
+                    const x = pad + (n <= 1 ? 0 : (i / (n - 1)) * (w - 2 * pad));
+                    const y = bottom - ((v - minV) / span) * (bottom - pad - 6);
+                    pts.push({ x: x, y: y });
+                }
+                return { pts: pts, bottom: bottom };
+            }
+            function catmullRomPathD(points) {
+                const n = points.length;
+                if (n < 2) return '';
+                let d = 'M ' + points[0].x + ' ' + points[0].y;
+                for (let i = 0; i < n - 1; i++) {
+                    const p0 = points[Math.max(0, i - 1)];
+                    const p1 = points[i];
+                    const p2 = points[i + 1];
+                    const p3 = points[Math.min(n - 1, i + 2)];
+                    const cp1x = p1.x + (p2.x - p0.x) / 6;
+                    const cp1y = p1.y + (p2.y - p0.y) / 6;
+                    const cp2x = p2.x - (p3.x - p1.x) / 6;
+                    const cp2y = p2.y - (p3.y - p1.y) / 6;
+                    d += ' C ' + cp1x + ' ' + cp1y + ' ' + cp2x + ' ' + cp2y + ' ' + p2.x + ' ' + p2.y;
+                }
+                return d;
+            }
+            function areaPathFromLine(lineD, first, last, bottom) {
+                return lineD + ' L ' + last.x + ' ' + bottom + ' L ' + first.x + ' ' + bottom + ' Z';
+            }
+            function strokeLenFallback(pts) {
+                let L = 0;
+                for (let i = 1; i < pts.length; i++) {
+                    const dx = pts[i].x - pts[i - 1].x;
+                    const dy = pts[i].y - pts[i - 1].y;
+                    L += Math.sqrt(dx * dx + dy * dy);
+                }
+                return L * 1.25;
+            }
+            let chartAnimated = false;
+            let lastAnchors = [];
+            let lastPts = [];
+            function applyChartPoint(i) {
+                if (!lastAnchors.length || !lastPts.length) return;
+                const n = lastAnchors.length;
+                i = Math.max(0, Math.min(n - 1, i | 0));
+                const v = lastAnchors[i];
+                const inflow = Math.round(v * 1.08);
+                const fee = Math.round(v * t.pctRate);
+                if (headEl) headEl.textContent = fmtMoney(v);
+                if (inEl) inEl.textContent = fmtInt(inflow) + ' \u20BD';
+                if (feeEl) feeEl.textContent = fmtInt(fee) + ' \u20BD';
+                if (cursorLine && lastPts[i]) {
+                    const px = lastPts[i].x;
+                    cursorLine.setAttribute('x1', px);
+                    cursorLine.setAttribute('x2', px);
+                }
+                if (dotEl && lastPts[i]) {
+                    dotEl.setAttribute('cx', lastPts[i].x);
+                    dotEl.setAttribute('cy', lastPts[i].y);
+                }
+            }
+            function updateChart(animate) {
+                const o = readTurnoverTerminals();
+                const turnover = o.turnover;
+                var mults = [0.44, 0.93, 0.46, 0.81, 1.0];
+                const anchors = mults.map(function (m) { return turnover * m; });
+                const built = anchorScreenPoints(anchors, 320, 100, 8);
+                const pts = built.pts;
+                const bottom = built.bottom;
+                const ld = catmullRomPathD(pts);
+                const ad = areaPathFromLine(ld, pts[0], pts[pts.length - 1], bottom);
+                lastAnchors = anchors.slice();
+                lastPts = pts;
+                if (lineEl) {
+                    if (!animate) lineEl.style.transition = 'none';
+                    lineEl.setAttribute('d', ld);
+                    let len = strokeLenFallback(pts);
+                    if (typeof lineEl.getTotalLength === 'function') {
+                        try {
+                            const tl = lineEl.getTotalLength();
+                            if (tl > 0 && isFinite(tl)) len = tl;
+                        } catch (e) {}
+                    }
+                    lineEl.setAttribute('stroke-dasharray', String(len));
+                    if (animate && !reduceMotion && !chartAnimated) {
+                        lineEl.setAttribute('stroke-dashoffset', String(len));
+                        if (areaEl) areaEl.classList.remove('is-visible');
+                        requestAnimationFrame(function () {
+                            requestAnimationFrame(function () {
+                                lineEl.style.strokeDashoffset = '0';
+                                if (areaEl) areaEl.classList.add('is-visible');
+                            });
+                        });
+                        chartAnimated = true;
+                    } else {
+                        lineEl.setAttribute('stroke-dashoffset', '0');
+                        lineEl.style.strokeDashoffset = '';
+                        if (areaEl) areaEl.classList.add('is-visible');
+                    }
+                    if (!animate) {
+                        requestAnimationFrame(function () { lineEl.style.transition = ''; });
+                    }
+                }
+                if (areaEl) areaEl.setAttribute('d', ad);
+                applyChartPoint(lastAnchors.length - 1);
+            }
+            function indexFromClientX(clientX) {
+                if (!chartWrap || !lastPts.length) return lastAnchors.length ? lastAnchors.length - 1 : 0;
+                const rect = chartWrap.getBoundingClientRect();
+                if (rect.width <= 0) return lastPts.length - 1;
+                const svgX = ((clientX - rect.left) / rect.width) * 320;
+                let best = 0, bestD = Infinity;
+                for (let i = 0; i < lastPts.length; i++) {
+                    const d = Math.abs(lastPts[i].x - svgX);
+                    if (d < bestD) { bestD = d; best = i; }
+                }
+                return best;
+            }
+            if (chartWrap) {
+                chartWrap.addEventListener('pointermove', function (e) {
+                    if (!lastPts.length) return;
+                    applyChartPoint(indexFromClientX(e.clientX));
+                });
+                chartWrap.addEventListener('pointerleave', function () {
+                    if (lastAnchors.length) applyChartPoint(lastAnchors.length - 1);
+                });
+            }
+            const inpT = container.querySelector('#tariffCalcTurnover');
+            const inpN = container.querySelector('#tariffCalcTerminals');
+            if (inpT || inpN) {
+                [inpT, inpN].forEach((el) => {
+                    if (el) {
+                        el.addEventListener('input', function () { updateChart(false); });
+                        el.addEventListener('change', function () { updateChart(false); });
+                    }
+                });
+            }
+            updateChart(true);
+
+            const sheet = container.querySelector('#tariffAcctSheet');
+            const openBtn = container.querySelector('#tariffAcctSheetOpen');
+            const backdrop = container.querySelector('#tariffAcctSheetBackdrop');
+            const doneBtn = container.querySelector('#tariffAcctSheetDone');
+            const rows = container.querySelectorAll('.tariff-acct-row');
+            function closeSheet() {
+                if (!sheet) return;
+                sheet.classList.remove('is-open');
+                sheet.setAttribute('aria-hidden', 'true');
+            }
+            function openSheet() {
+                if (!sheet) return;
+                sheet.classList.add('is-open');
+                sheet.setAttribute('aria-hidden', 'false');
+            }
+            if (openBtn) openBtn.addEventListener('click', openSheet);
+            if (backdrop) backdrop.addEventListener('click', closeSheet);
+            if (doneBtn) doneBtn.addEventListener('click', closeSheet);
+            rows.forEach((row) => {
+                row.addEventListener('click', () => {
+                    rows.forEach((r) => r.classList.remove('is-selected'));
+                    row.classList.add('is-selected');
+                });
+            });
+            if (!window.__tariffAcctSheetEscBound) {
+                window.__tariffAcctSheetEscBound = true;
+                document.addEventListener('keydown', (e) => {
+                    if (e.key !== 'Escape') return;
+                    const s = document.getElementById('tariffAcctSheet');
+                    if (!s || !s.classList.contains('is-open')) return;
+                    s.classList.remove('is-open');
+                    s.setAttribute('aria-hidden', 'true');
+                });
+            }
         }
 
         const helpItems = [
@@ -2285,16 +3234,23 @@
             const art = articles[artId];
             if (!art) return;
             bodyEl.innerHTML = buildArticleStatsHtml(art) + art.body;
-            if (artId === 'change_tariff') initTariffCalculator(bodyEl);
+            if (artId === 'rates') {
+                initTariffCalculator(bodyEl);
+            }
+            if (artId === 'change_tariff') {
+                initTariffChangeExtras(bodyEl);
+            }
+            const recMount = document.getElementById('tHelpModalArticleRecsMount');
+            if (recMount) recMount.innerHTML = '';
             const recs = art.recommendations;
-            if (recs && recs.length) {
+            if (recs && recs.length && recMount) {
                 const recDiv = document.createElement('div');
                 recDiv.className = 'help-article-recommendations';
-                recDiv.innerHTML = '<div class="help-article-recommendations-title">Рекомендации</div><div class="help-article-recommendations-list">' + recs.filter(id => articles[id]).map(id => '<a href="#" data-article="' + id + '">' + (articles[id].title || id) + '</a>').join('') + '</div>';
+                recDiv.innerHTML = '<div class="help-article-recommendations-title">Узнать больше</div><div class="help-article-recommendations-list">' + recs.filter(id => articles[id]).map(id => '<a href="#" data-article="' + id + '">' + (articles[id].title || id) + '</a>').join('') + '</div>';
                 recDiv.querySelectorAll('a').forEach(a => {
                     a.addEventListener('click', (e) => { e.preventDefault(); if (openArticleFn) openArticleFn(a.dataset.article); else openArticle(a.dataset.article); });
                 });
-                bodyEl.appendChild(recDiv);
+                recMount.appendChild(recDiv);
             }
         }
 
@@ -2389,7 +3345,11 @@
             const btn = document.getElementById('tHelpModalSave');
             const artBtn = document.getElementById('tHelpModalArticleSave');
             if (btn) { btn.classList.toggle('saved', savedArticles.size > 0); btn.title = 'Сохранённые'; }
-            if (artBtn) { artBtn.classList.toggle('saved', saved); artBtn.title = saved ? 'Убрать из сохранённых' : 'Сохранить'; }
+            if (artBtn) {
+                artBtn.classList.toggle('t-help-article-tool-btn--saved', saved);
+                artBtn.title = saved ? 'Убрать из сохранённых' : 'Сохранить';
+                artBtn.setAttribute('aria-pressed', saved ? 'true' : 'false');
+            }
             if (!tHelpModalList) return;
             tHelpModalList.querySelectorAll('.t-help-modal-q').forEach(el => {
                 const id = el.dataset.article;
@@ -2486,6 +3446,7 @@
         const tHelpModalSavedWrap = document.getElementById('tHelpModalSavedWrap');
         const tHelpModalSavedList = document.getElementById('tHelpModalSavedList');
         const tHelpModalSavedBack = document.getElementById('tHelpModalSavedBack');
+        let currentModalArticleId = null;
 
         function renderSavedList() {
             savedArticles = getSavedArticles();
@@ -2739,25 +3700,150 @@
 
         const tHelpModalFbYes = document.getElementById('tHelpModalFbYes');
         const tHelpModalFbNo = document.getElementById('tHelpModalFbNo');
-        const tHelpModalFbDone = document.getElementById('tHelpModalFbDone');
-        const tHelpModalFbComment = document.getElementById('tHelpModalFbComment');
-        const tHelpModalFbCommentToggle = document.getElementById('tHelpModalFbCommentToggle');
+        const tHelpModalFbStage1 = document.getElementById('tHelpModalFbStage1');
+        const tHelpModalFbStageThanks = document.getElementById('tHelpModalFbStageThanks');
+        const tHelpModalFbStage2 = document.getElementById('tHelpModalFbStage2');
         const tHelpModalFbTextarea = document.getElementById('tHelpModalFbTextarea');
         const tHelpModalFbSend = document.getElementById('tHelpModalFbSend');
         const tHelpModalSupportBtn = document.getElementById('tHelpModalSupportBtn');
+        const supportFeedbackChat = document.getElementById('supportFeedbackChat');
+        const supportFbChatBody = document.getElementById('supportFbChatBody');
+        const supportFbChatScroll = document.getElementById('supportFbChatScroll');
+        const supportFbChatBack = document.getElementById('supportFbChatBack');
+        const tHelpModalSupportWrap = document.getElementById('tHelpModalSupportWrap');
+        let supportFbOperatorTimer = null;
+
+        function scrollSupportChatToEnd() {
+            const el = supportFbChatScroll || supportFbChatBody;
+            if (el) el.scrollTop = el.scrollHeight;
+        }
+
+        function closeSupportFeedbackChat() {
+            if (supportFbOperatorTimer) {
+                clearTimeout(supportFbOperatorTimer);
+                supportFbOperatorTimer = null;
+            }
+            if (supportFeedbackChat) {
+                supportFeedbackChat.classList.remove('is-open');
+                supportFeedbackChat.setAttribute('aria-hidden', 'true');
+            }
+            if (supportFbChatBody) supportFbChatBody.innerHTML = '';
+        }
+
+        function buildSupportFeedbackComment() {
+            const chips = document.querySelectorAll('#tHelpModalFbReasons .help-fb-reason-chip.is-selected');
+            const reasons = Array.from(chips).map(function (c) { return c.getAttribute('data-reason'); }).filter(Boolean);
+            const txt = tHelpModalFbTextarea && tHelpModalFbTextarea.value.trim();
+            const head = reasons.length ? reasons.join('; ') : '';
+            if (head && txt) return head + '\n\n' + txt;
+            if (head) return head;
+            if (txt) return txt;
+            return '';
+        }
+
+        function showArticleFeedbackThanks() {
+            if (tHelpModalFbStage1) tHelpModalFbStage1.hidden = true;
+            if (tHelpModalFbStageThanks) tHelpModalFbStageThanks.hidden = false;
+            if (tHelpModalFbStage2) tHelpModalFbStage2.hidden = true;
+            requestAnimationFrame(function () {
+                const el = document.getElementById('tHelpModalFbStageThanks');
+                if (el) el.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            });
+        }
+        function showArticleFeedbackImprove() {
+            if (tHelpModalFbStage1) tHelpModalFbStage1.hidden = true;
+            if (tHelpModalFbStageThanks) tHelpModalFbStageThanks.hidden = true;
+            if (tHelpModalFbStage2) tHelpModalFbStage2.hidden = false;
+            requestAnimationFrame(function () {
+                const s2 = document.getElementById('tHelpModalFbStage2');
+                if (s2) s2.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+            });
+        }
+
+        function escapeHtmlWithBreaks(str) {
+            return escapeHtml(str).replace(/\r\n|\r|\n/g, '<br>');
+        }
+
+        const HELP_TAP_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg>';
+
+        function openSupportFeedbackChat(commentText, articleId) {
+            const title = (tHelpModalArticleTitle && tHelpModalArticleTitle.textContent)
+                ? tHelpModalArticleTitle.textContent.trim()
+                : 'Статья';
+            const artId = (articleId != null && String(articleId).trim() !== '') ? String(articleId).trim() : currentModalArticleId;
+            if (!supportFeedbackChat || !supportFbChatBody) return;
+            if (supportFbOperatorTimer) {
+                clearTimeout(supportFbOperatorTimer);
+                supportFbOperatorTimer = null;
+            }
+            if (tHelpModalSupportWrap) tHelpModalSupportWrap.classList.add('is-hidden');
+            const trimmed = commentText && String(commentText).trim();
+            const secondText = trimmed
+                ? escapeHtmlWithBreaks(trimmed)
+                : 'Комментарий не добавлен';
+            const t = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            const line1Text = 'Я прочитал материал: «' + escapeHtml(title) + '»';
+            const helpBtn = (artId && articles[artId])
+                ? '<button type="button" class="support-fb-chat-help-tap" data-open-help-article="' + escapeHtml(artId) + '" aria-label="Открыть в Помощи" title="Открыть в Помощи">' + HELP_TAP_SVG + '</button>'
+                : '';
+            const line1Block = helpBtn
+                ? '<div class="support-fb-chat-bubble-text support-fb-chat-bubble-text--with-help"><span class="support-fb-chat-material-line">' + line1Text + '</span>' + helpBtn + '</div>'
+                : '<div class="support-fb-chat-bubble-text">' + line1Text + '</div>';
+            supportFbChatBody.innerHTML =
+                '<div class="support-fb-chat-row support-fb-chat-row--user">' +
+                '<div class="support-fb-chat-bubble--user">' +
+                line1Block +
+                '<div class="support-fb-chat-bubble-meta"><span>' + escapeHtml(t) + '</span><span class="support-fb-chat-checks" aria-hidden="true">✓✓</span></div>' +
+                '</div></div>' +
+                '<div class="support-fb-chat-row support-fb-chat-row--user">' +
+                '<div class="support-fb-chat-bubble--user">' +
+                '<div class="support-fb-chat-bubble-text">' + secondText + '</div>' +
+                '<div class="support-fb-chat-bubble-meta"><span>' + escapeHtml(t) + '</span><span class="support-fb-chat-checks" aria-hidden="true">✓✓</span></div>' +
+                '</div></div>' +
+                '<div class="support-fb-chat-row" id="supportFbChatTypingWrap"><div class="support-fb-chat-typing" aria-hidden="true"><span></span><span></span><span></span></div></div>';
+            supportFeedbackChat.classList.add('is-open');
+            supportFeedbackChat.setAttribute('aria-hidden', 'false');
+            const host = document.getElementById('iphoneMockupRoot') || document.body;
+            if (supportFeedbackChat.parentElement !== host) host.appendChild(supportFeedbackChat);
+            requestAnimationFrame(function () {
+                scrollSupportChatToEnd();
+            });
+            supportFbOperatorTimer = setTimeout(function () {
+                const tw = document.getElementById('supportFbChatTypingWrap');
+                if (tw) tw.remove();
+                const op = document.createElement('div');
+                op.className = 'support-fb-chat-row support-fb-chat-row--op';
+                op.setAttribute('role', 'status');
+                const t2 = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                op.innerHTML =
+                    '<div class="support-fb-chat-avatar-sm" aria-hidden="true">💬</div>' +
+                    '<div class="support-fb-chat-op-col">' +
+                    '<div class="support-fb-chat-name">Ассистент поддержки</div>' +
+                    '<div class="support-fb-chat-bubble--op">Мы уже занимаемся вашим вопросом и ответим в ближайшее время.</div>' +
+                    '<div class="support-fb-chat-op-time">' + escapeHtml(t2) + '</div>' +
+                    '</div>';
+                supportFbChatBody.appendChild(op);
+                scrollSupportChatToEnd();
+                supportFbOperatorTimer = null;
+            }, 950);
+        }
 
         const resetModalArticleFeedback = () => {
-            tHelpModalFbYes.style.display = '';
-            tHelpModalFbNo.style.display = '';
-            tHelpModalFbDone.classList.remove('visible');
-            tHelpModalFbCommentToggle.classList.remove('visible');
-            tHelpModalFbComment.classList.remove('visible');
-            tHelpModalSupportBtn.classList.remove('visible');
-            tHelpModalFbTextarea.value = '';
-            tHelpModalFbTextarea.placeholder = 'Ваш комментарий';
+            closeSupportFeedbackChat();
+            if (tHelpModalFbStage1) tHelpModalFbStage1.hidden = false;
+            if (tHelpModalFbStageThanks) tHelpModalFbStageThanks.hidden = true;
+            if (tHelpModalFbStage2) tHelpModalFbStage2.hidden = true;
+            if (tHelpModalSupportWrap) tHelpModalSupportWrap.classList.remove('is-hidden');
+            document.querySelectorAll('#tHelpModalFbReasons .help-fb-reason-chip').forEach(function (c) {
+                c.classList.remove('is-selected');
+                c.setAttribute('aria-pressed', 'false');
+            });
+            if (tHelpModalFbTextarea) {
+                tHelpModalFbTextarea.value = '';
+                tHelpModalFbTextarea.placeholder = 'Комментарий';
+            }
         };
 
-        let currentModalArticleId = null;
         const tHelpModalArticleOpenTabEl = document.getElementById('tHelpModalArticleOpenTab');
         if (tHelpModalArticleOpenTabEl) {
             tHelpModalArticleOpenTabEl.addEventListener('click', (e) => {
@@ -2779,36 +3865,47 @@
             showModalArticle(q.dataset.article);
         });
 
-        tHelpModalFbYes.addEventListener('click', function() {
-            this.style.display = 'none';
-            tHelpModalFbNo.style.display = 'none';
-            tHelpModalFbDone.classList.add('visible');
-            tHelpModalFbCommentToggle.classList.add('visible');
+        if (tHelpModalFbYes) tHelpModalFbYes.addEventListener('click', showArticleFeedbackThanks);
+        if (tHelpModalFbNo) tHelpModalFbNo.addEventListener('click', showArticleFeedbackImprove);
+        if (tHelpModalFbSend) tHelpModalFbSend.addEventListener('click', function () {
+            openSupportFeedbackChat(buildSupportFeedbackComment(), currentModalArticleId);
         });
-        tHelpModalFbNo.addEventListener('click', function() {
-            this.style.display = 'none';
-            tHelpModalFbYes.style.display = 'none';
-            tHelpModalSupportBtn.classList.add('visible');
-            tHelpModalFbComment.classList.add('visible');
-            tHelpModalFbTextarea.placeholder = 'Что не так?';
-            requestAnimationFrame(() => {
-                tHelpModalSupportBtn.scrollIntoView({ block: 'nearest', behavior: 'smooth', inline: 'nearest' });
+        if (tHelpModalFbTextarea) tHelpModalFbTextarea.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                openSupportFeedbackChat(buildSupportFeedbackComment(), currentModalArticleId);
+            }
+        });
+        tHelpModalSupportBtn.addEventListener('click', function () {
+            openSupportFeedbackChat(buildSupportFeedbackComment(), currentModalArticleId);
+        });
+        const tHelpModalFbReasons = document.getElementById('tHelpModalFbReasons');
+        if (tHelpModalFbReasons) {
+            tHelpModalFbReasons.addEventListener('click', function (e) {
+                const chip = e.target.closest('.help-fb-reason-chip');
+                if (!chip) return;
+                chip.classList.toggle('is-selected');
+                chip.setAttribute('aria-pressed', chip.classList.contains('is-selected') ? 'true' : 'false');
             });
+        }
+        if (supportFbChatBack) supportFbChatBack.addEventListener('click', closeSupportFeedbackChat);
+        if (supportFbChatBody) {
+            supportFbChatBody.addEventListener('click', function (e) {
+                const btn = e.target.closest('.support-fb-chat-help-tap');
+                if (!btn) return;
+                e.preventDefault();
+                e.stopPropagation();
+                const id = btn.getAttribute('data-open-help-article');
+                if (!id || !articles[id]) return;
+                closeSupportFeedbackChat();
+                openTHelpModal();
+                showModalArticle(id);
+            });
+        }
+        document.addEventListener('keydown', function (e) {
+            if (e.key !== 'Escape') return;
+            if (supportFeedbackChat && supportFeedbackChat.classList.contains('is-open')) closeSupportFeedbackChat();
         });
-        tHelpModalFbCommentToggle.addEventListener('click', () => {
-            tHelpModalFbCommentToggle.classList.remove('visible');
-            tHelpModalFbComment.classList.add('visible');
-        });
-        const sendModalArticleFb = () => {
-            const text = tHelpModalFbTextarea.value.trim();
-            if (text) alert('Обратная связь отправлена: ' + text);
-            else alert('Обратная связь отправлена');
-        };
-        tHelpModalFbSend.addEventListener('click', sendModalArticleFb);
-        tHelpModalFbTextarea.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendModalArticleFb(); }
-        });
-        tHelpModalSupportBtn.addEventListener('click', () => { closeTHelpModal(); openChatList(); });
 
         document.getElementById('tHelpModalSuggest').addEventListener('click', () => suggestArticleChange(currentModalArticleId));
         document.getElementById('tHelpModalPdf').addEventListener('click', () => printArticlePdf(currentModalArticleId));
