@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-10-31';
+            var appVersion = '2026-04-10-32';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -3316,12 +3316,6 @@
                 if (s2) s2.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             });
         }
-        function showArticleFeedbackImproveAndAutoOpen() {
-            showArticleFeedbackImprove();
-            setTimeout(() => {
-                openSupportChatFromHelpFeedback();
-            }, 380);
-        }
 
         const resetModalArticleFeedback = () => {
             if (tHelpModalFbStage1) tHelpModalFbStage1.hidden = false;
@@ -3360,7 +3354,7 @@
         });
 
         if (tHelpModalFbYes) tHelpModalFbYes.addEventListener('click', showArticleFeedbackThanks);
-        if (tHelpModalFbNo) tHelpModalFbNo.addEventListener('click', showArticleFeedbackImproveAndAutoOpen);
+        if (tHelpModalFbNo) tHelpModalFbNo.addEventListener('click', showArticleFeedbackImprove);
         const tHelpModalFbReasons = document.getElementById('tHelpModalFbReasons');
         if (tHelpModalFbReasons) {
             tHelpModalFbReasons.addEventListener('click', function (e) {
