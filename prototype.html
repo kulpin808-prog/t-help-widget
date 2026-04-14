@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-10-30';
+            var appVersion = '2026-04-10-31';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -3426,6 +3426,9 @@
                 '</div></div>' +
                 '<div class="support-fb-chat-row" id="supportFbChatTypingWrap"><div class="support-fb-chat-typing" aria-hidden="true"><span></span><span></span><span></span></div></div>';
             closeTHelpModal();
+            if (supportFeedbackChat.parentElement !== document.body) {
+                document.body.appendChild(supportFeedbackChat);
+            }
             supportFeedbackChat.classList.add('is-open');
             supportFeedbackChat.setAttribute('aria-hidden', 'false');
             document.body.classList.add('t-help-modal-open');
