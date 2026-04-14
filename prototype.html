@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-10-32';
+            var appVersion = '2026-04-10-33';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -501,6 +501,27 @@
         .support-fb-chat-row--op { display: flex; justify-content: flex-start; align-items: flex-end; gap: 8px; }
         .support-fb-chat-bubble--user { max-width: 88%; padding: 10px 12px 8px; border-radius: 18px 18px 4px 18px; background: var(--help-accent); color: #FFFFFF; font-size: 14px; line-height: 1.45; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08); }
         .support-fb-chat-bubble-text { white-space: pre-wrap; word-break: break-word; }
+        .support-fb-chat-bubble-text--with-help { display: flex; align-items: flex-start; gap: 8px; }
+        .support-fb-chat-material-line { flex: 1; min-width: 0; }
+        .support-fb-chat-help-tap {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            margin: -4px -4px -4px 0;
+            padding: 0;
+            border: none;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.15s ease, transform 0.12s ease;
+        }
+        .support-fb-chat-help-tap:hover { background: rgba(255, 255, 255, 0.32); }
+        .support-fb-chat-help-tap:active { transform: scale(0.96); background: rgba(255, 255, 255, 0.38); }
+        .support-fb-chat-help-tap svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; }
         .support-fb-chat-bubble-meta { display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-top: 6px; font-size: 11px; color: rgba(255, 255, 255, 0.85); }
         .support-fb-chat-checks { font-size: 12px; letter-spacing: -2px; opacity: 0.95; }
         .support-fb-chat-avatar-sm { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(145deg, #E0E7FF, #C7D2FE); flex-shrink: 0; font-size: 14px; display: flex; align-items: center; justify-content: center; }
@@ -3406,11 +3427,18 @@
             const trimmed = commentText && String(commentText).trim();
             const secondText = trimmed ? escapeHtml(trimmed) : 'Комментарий не добавлен';
             const t = new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-            const line1Text = 'Я прочитал материал: «' + escapeHtml(title) + '»' + (artId && articles[artId] ? ' [ID: ' + escapeHtml(artId) + ']' : '');
+            const HELP_TAP_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg>';
+            const line1Text = 'Я прочитал материал: «' + escapeHtml(title) + '»';
+            const helpBtn = (artId && articles[artId])
+                ? '<button type="button" class="support-fb-chat-help-tap" data-open-help-article="' + escapeHtml(artId) + '" aria-label="Открыть в Помощи" title="Открыть в Помощи">' + HELP_TAP_SVG + '</button>'
+                : '';
+            const line1Block = helpBtn
+                ? '<div class="support-fb-chat-bubble-text support-fb-chat-bubble-text--with-help"><span class="support-fb-chat-material-line">' + line1Text + '</span>' + helpBtn + '</div>'
+                : '<div class="support-fb-chat-bubble-text">' + line1Text + '</div>';
             supportFbChatBody.innerHTML =
                 '<div class="support-fb-chat-row support-fb-chat-row--user">' +
                 '<div class="support-fb-chat-bubble--user">' +
-                '<div class="support-fb-chat-bubble-text">' + line1Text + '</div>' +
+                line1Block +
                 '<div class="support-fb-chat-bubble-meta"><span>' + escapeHtml(t) + '</span><span class="support-fb-chat-checks" aria-hidden="true">✓✓</span></div>' +
                 '</div></div>' +
                 '<div class="support-fb-chat-row support-fb-chat-row--user">' +
@@ -3638,6 +3666,18 @@
             tick();
         })();
         if (supportFbChatBack) supportFbChatBack.addEventListener('click', closeSupportFeedbackChat);
+        if (supportFbChatBody) {
+            supportFbChatBody.addEventListener('click', function (e) {
+                const btn = e.target.closest('.support-fb-chat-help-tap');
+                if (!btn) return;
+                e.preventDefault();
+                const id = btn.getAttribute('data-open-help-article');
+                if (!id || !articles[id]) return;
+                closeSupportFeedbackChat();
+                openTHelpModal();
+                showModalArticle(id);
+            });
+        }
         document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && chatListOverlay.classList.contains('visible')) closeChatList(); });
         document.addEventListener('keydown', (e) => {
             if (e.key !== 'Escape') return;
