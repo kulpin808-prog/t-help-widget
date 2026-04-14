@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-10-27';
+            var appVersion = '2026-04-10-28';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -1476,6 +1476,7 @@
         .chat-list-item { display: flex; align-items: center; gap: 14px; padding: 14px 20px; cursor: pointer; border: none; background: none; width: 100%; text-align: left; }
         .chat-list-item:hover { background: #F5F5F5; }
         .chat-list-item:active { background: #EEEEEE; }
+        .chat-list-item.with-context { background: #FFF8E1; box-shadow: inset 3px 0 0 #F9A825; }
         .chat-list-icon { width: 48px; height: 48px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 600; color: #666; }
         .chat-list-icon.t-help { background: #FFF8E1; color: #F9A825; }
         .chat-list-icon.avto { background: #EFEBE9; color: #5D4037; }
@@ -3241,7 +3242,7 @@
         });
 
         if (tHelpModalFbYes) tHelpModalFbYes.addEventListener('click', showArticleFeedbackThanks);
-        if (tHelpModalFbNo) tHelpModalFbNo.addEventListener('click', showArticleFeedbackImprove);
+        if (tHelpModalFbNo) tHelpModalFbNo.addEventListener('click', openSupportChatFromHelpFeedback);
         const tHelpModalFbReasons = document.getElementById('tHelpModalFbReasons');
         if (tHelpModalFbReasons) {
             tHelpModalFbReasons.addEventListener('click', function (e) {
@@ -3261,6 +3262,20 @@
             if (txt) return txt;
             return '';
         }
+        function buildSupportContextMessage() {
+            const title = (tHelpModalArticleTitle && tHelpModalArticleTitle.textContent)
+                ? tHelpModalArticleTitle.textContent.trim()
+                : '';
+            const fb = buildPrototypeFeedbackText();
+            const line1 = title ? ('Не помогла статья: «' + title + '»') : 'Не помог материал из Помощи';
+            if (fb) return line1 + '\n' + fb;
+            return line1;
+        }
+        function openSupportChatFromHelpFeedback() {
+            const contextText = buildSupportContextMessage();
+            closeTHelpModal();
+            openChatList({ contextText: contextText, focusAction: 'business' });
+        }
         const sendModalArticleFb = () => {
             const payload = buildPrototypeFeedbackText();
             if (payload) alert('Обратная связь отправлена: ' + payload);
@@ -3270,7 +3285,7 @@
         if (tHelpModalFbTextarea) tHelpModalFbTextarea.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendModalArticleFb(); }
         });
-        if (tHelpModalSupportBtn) tHelpModalSupportBtn.addEventListener('click', () => { closeTHelpModal(); openChatList(); });
+        if (tHelpModalSupportBtn) tHelpModalSupportBtn.addEventListener('click', openSupportChatFromHelpFeedback);
 
         document.getElementById('tHelpModalSuggest').addEventListener('click', () => suggestArticleChange(currentModalArticleId));
         document.getElementById('tHelpModalPdf').addEventListener('click', () => printArticlePdf(currentModalArticleId));
@@ -3329,7 +3344,32 @@
 
         const chatListOverlay = document.getElementById('chatListOverlay');
         const floatBtnChat = document.getElementById('floatBtnChat');
-        function openChatList() {
+        const chatBusinessItem = document.querySelector('.chat-list-item[data-action="business"]');
+        const chatBusinessPreview = chatBusinessItem ? chatBusinessItem.querySelector('.chat-list-preview') : null;
+        const chatBusinessMeta = chatBusinessItem ? chatBusinessItem.querySelector('.chat-list-meta') : null;
+        const chatBusinessPreviewDefault = chatBusinessPreview ? chatBusinessPreview.textContent : '';
+        const chatBusinessMetaDefault = chatBusinessMeta ? chatBusinessMeta.textContent : '';
+        function applyChatListContext(opts) {
+            const hasContext = !!(opts && opts.contextText && String(opts.contextText).trim());
+            if (!chatBusinessItem || !chatBusinessPreview || !chatBusinessMeta) return;
+            if (!hasContext) {
+                chatBusinessItem.classList.remove('with-context');
+                chatBusinessPreview.textContent = chatBusinessPreviewDefault;
+                chatBusinessMeta.textContent = chatBusinessMetaDefault;
+                return;
+            }
+            const oneLine = String(opts.contextText).trim().replace(/\s+/g, ' ');
+            chatBusinessPreview.textContent = oneLine;
+            chatBusinessMeta.textContent = 'сейчас';
+            chatBusinessItem.classList.add('with-context');
+            if (opts.focusAction === 'business') {
+                requestAnimationFrame(() => {
+                    chatBusinessItem.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+                });
+            }
+        }
+        function openChatList(opts) {
+            applyChatListContext(opts || null);
             const rect = floatBtnChat.getBoundingClientRect();
             const wrapper = document.getElementById('chatListWrapper');
             const modalH = 583;
@@ -3346,6 +3386,7 @@
         }
         function closeChatList() {
             hideChatListHelpSuggest();
+            applyChatListContext(null);
             chatListOverlay.classList.remove('visible');
             document.body.classList.remove('t-help-modal-open');
         }
