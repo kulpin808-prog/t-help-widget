@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <script>
         (function applyCacheBusting() {
-            var appVersion = '2026-04-10-29';
+            var appVersion = '2026-04-10-30';
             window.__APP_VERSION__ = appVersion;
             var url = new URL(window.location.href);
             if (url.searchParams.get('v') !== appVersion) {
@@ -467,14 +467,21 @@
         .help-fb-send:hover { opacity: 0.92; }
         .support-feedback-chat {
             position: fixed;
-            inset: 0;
             z-index: 1125;
-            display: none;
+            display: flex;
             flex-direction: column;
+            width: 357px;
+            height: 583px;
             background: #F0F2F5;
             overflow: hidden;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.96);
+            transition: opacity 0.2s ease, transform 0.2s ease;
         }
-        .support-feedback-chat.is-open { display: flex; }
+        .support-feedback-chat.is-open { opacity: 1; pointer-events: auto; transform: scale(1); }
         .support-fb-chat-header { flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 8px 10px 10px; background: #FFFFFF; border-bottom: 1px solid rgba(0, 0, 0, 0.06); }
         .support-fb-chat-back { width: 44px; height: 44px; border: none; border-radius: 50%; background: transparent; cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: var(--help-accent); padding: 0; }
         .support-fb-chat-back:hover { background: rgba(91, 143, 240, 0.08); }
@@ -3288,6 +3295,7 @@
                 supportFeedbackChat.setAttribute('aria-hidden', 'true');
             }
             if (supportFbChatBody) supportFbChatBody.innerHTML = '';
+            document.body.classList.remove('t-help-modal-open');
         }
 
         function showArticleFeedbackThanks() {
@@ -3307,6 +3315,12 @@
                 const s2 = document.getElementById('tHelpModalFbStage2');
                 if (s2) s2.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
             });
+        }
+        function showArticleFeedbackImproveAndAutoOpen() {
+            showArticleFeedbackImprove();
+            setTimeout(() => {
+                openSupportChatFromHelpFeedback();
+            }, 380);
         }
 
         const resetModalArticleFeedback = () => {
@@ -3346,7 +3360,7 @@
         });
 
         if (tHelpModalFbYes) tHelpModalFbYes.addEventListener('click', showArticleFeedbackThanks);
-        if (tHelpModalFbNo) tHelpModalFbNo.addEventListener('click', openSupportChatFromHelpFeedback);
+        if (tHelpModalFbNo) tHelpModalFbNo.addEventListener('click', showArticleFeedbackImproveAndAutoOpen);
         const tHelpModalFbReasons = document.getElementById('tHelpModalFbReasons');
         if (tHelpModalFbReasons) {
             tHelpModalFbReasons.addEventListener('click', function (e) {
@@ -3381,6 +3395,16 @@
                 clearTimeout(supportFbOperatorTimer);
                 supportFbOperatorTimer = null;
             }
+            const rect = floatBtnChat.getBoundingClientRect();
+            const modalH = 583;
+            const pad = 24;
+            const gapFromBtn = 4;
+            supportFeedbackChat.style.right = (window.innerWidth - rect.left + gapFromBtn) + 'px';
+            let top = rect.top;
+            if (top + modalH > window.innerHeight - pad) top = window.innerHeight - modalH - pad;
+            if (top < pad) top = pad;
+            supportFeedbackChat.style.top = top + 'px';
+            supportFeedbackChat.style.bottom = 'auto';
             const title = (tHelpModalArticleTitle && tHelpModalArticleTitle.textContent)
                 ? tHelpModalArticleTitle.textContent.trim()
                 : 'Статья';
@@ -3404,6 +3428,7 @@
             closeTHelpModal();
             supportFeedbackChat.classList.add('is-open');
             supportFeedbackChat.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('t-help-modal-open');
             requestAnimationFrame(scrollSupportChatToEnd);
             supportFbOperatorTimer = setTimeout(function () {
                 const tw = document.getElementById('supportFbChatTypingWrap');
